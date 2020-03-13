@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Templates/Template.cpp</file>
+        <file>Templates/Template.h</file>
+        <file>Templates/TemplateClasses.h</file>
+        <file>Templates/TemplateModel.cpp</file>
+        <file>Templates/TemplateModel.h</file>
+    </qresource>
+</RCC>

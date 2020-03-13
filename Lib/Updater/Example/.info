@@ -1,0 +1,13 @@
+- Syntax of this file is:
+- One char command, whitespace, command parameters
+- Lines starts with '-', ' ', '#', '/' are treated as comments
+- D Directory to create
+- F File to copy
+- S Script file (exec after install, then remove it)
+- A Archive file (auto gz when pack, auto ungz when unpack)
+- E Execute file (F + 'chmod +x')
+- Q Sql script (exec SQL text after install, then remove it)
+- X E + A
+- I Information line, installer after unpack path
+- M Md5 hash of all files (auto done when pack)
+- Other chars at line start treated as illegal line

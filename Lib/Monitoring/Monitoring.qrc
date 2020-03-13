@@ -1,0 +1,15 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>Icons/Analysis.ico</file>
+        <file>Icons/TabState.png</file>
+        <file>Icons/TabLog.png</file>
+        <file>Icons/ToolRefresh.png</file>
+        <file>Icons/TabEvent.png</file>
+        <file>Icons/Excel export.png</file>
+        <file>Icons/Excel import.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>Icons/Preview.png</file>
+        <file>Icons/No image.png</file>
+    </qresource>
+</RCC>

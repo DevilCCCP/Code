@@ -1,0 +1,20 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Paste.png</file>
+        <file>Icons/Image.png</file>
+        <file>Icons/Stats.png</file>
+        <file>Icons/No image.png</file>
+        <file>Icons/Image File Next.png</file>
+        <file>Icons/Image File Prev.png</file>
+        <file>Icons/Image File.png</file>
+        <file>Icons/Open.png</file>
+        <file>Icons/Image Filter.png</file>
+        <file>Icons/ImageBorder.png</file>
+        <file>Icons/Next.png</file>
+        <file>Icons/Prev.png</file>
+        <file>Icons/Rectangle.png</file>
+        <file>Icons/Line.png</file>
+        <file>Icons/Select.png</file>
+        <file>Icons/White black.png</file>
+    </qresource>
+</RCC>

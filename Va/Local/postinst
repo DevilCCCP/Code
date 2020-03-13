@@ -1,0 +1,4 @@
+getent group gpio && (usermod -a -G gpio __ABBR__ || exit 101)
+getent group spi && (usermod -a -G spi __ABBR__ || exit 102)
+getent group i2c && (usermod -a -G i2c __ABBR__ || exit 103)
+getent group dialout && (usermod -a -G dialout __ABBR__ || exit 104)

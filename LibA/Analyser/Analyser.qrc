@@ -1,0 +1,27 @@
+<RCC>
+    <qresource prefix="/">
+        <file>UinFont/Uin 0.png</file>
+        <file>UinFont/Uin 1.png</file>
+        <file>UinFont/Uin 2.png</file>
+        <file>UinFont/Uin 3.png</file>
+        <file>UinFont/Uin 4.png</file>
+        <file>UinFont/Uin 5.png</file>
+        <file>UinFont/Uin 6.png</file>
+        <file>UinFont/Uin 7.png</file>
+        <file>UinFont/Uin 8.png</file>
+        <file>UinFont/Uin 9.png</file>
+        <file>UinFont/Uin A.png</file>
+        <file>UinFont/Uin B.png</file>
+        <file>UinFont/Uin C.png</file>
+        <file>UinFont/Uin D.png</file>
+        <file>UinFont/Uin E.png</file>
+        <file>UinFont/Uin H.png</file>
+        <file>UinFont/Uin K.png</file>
+        <file>UinFont/Uin M.png</file>
+        <file>UinFont/Uin O.png</file>
+        <file>UinFont/Uin P.png</file>
+        <file>UinFont/Uin T.png</file>
+        <file>UinFont/Uin X.png</file>
+        <file>UinFont/Uin Y.png</file>
+    </qresource>
+</RCC>

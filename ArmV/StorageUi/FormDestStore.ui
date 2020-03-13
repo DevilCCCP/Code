@@ -1,0 +1,421 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormDestStore</class>
+ <widget class="QWidget" name="FormDestStore">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>611</width>
+    <height>551</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QGroupBox" name="groupBoxFile">
+     <property name="title">
+      <string>Файл хранилища</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout">
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QToolButton" name="toolButtonOpen">
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="autoRaise">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="lineEditPath"/>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QWidget" name="widgetSettings" native="true">
+        <layout class="QGridLayout" name="gridLayout">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="1">
+          <widget class="QSpinBox" name="spinBoxCell">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="showGroupSeparator" stdset="0">
+            <bool>true</bool>
+           </property>
+           <property name="maximum">
+            <number>1073741823</number>
+           </property>
+           <property name="value">
+            <number>16777216</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QLabel" name="label">
+           <property name="text">
+            <string>Кластер</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QLabel" name="label_3">
+           <property name="text">
+            <string>Размер</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="5">
+          <widget class="QSpinBox" name="spinBoxSize">
+           <property name="maximum">
+            <number>16777216</number>
+           </property>
+           <property name="value">
+            <number>0</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLabel" name="label_2">
+           <property name="text">
+            <string>Страница</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QSpinBox" name="spinBoxPage">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="showGroupSeparator" stdset="0">
+            <bool>true</bool>
+           </property>
+           <property name="maximum">
+            <number>16777216</number>
+           </property>
+           <property name="value">
+            <number>1048576</number>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item>
+       <widget class="QTableView" name="tableViewMain">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="sizeAdjustPolicy">
+         <enum>QAbstractScrollArea::AdjustToContents</enum>
+        </property>
+        <property name="editTriggers">
+         <set>QAbstractItemView::NoEditTriggers</set>
+        </property>
+        <property name="showDropIndicator" stdset="0">
+         <bool>false</bool>
+        </property>
+        <property name="alternatingRowColors">
+         <bool>true</bool>
+        </property>
+        <property name="selectionBehavior">
+         <enum>QAbstractItemView::SelectRows</enum>
+        </property>
+        <attribute name="verticalHeaderVisible">
+         <bool>false</bool>
+        </attribute>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBarFile">
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="format">
+      <string>%v/%m</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelSuccess">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 102, 0);</string>
+     </property>
+     <property name="text">
+      <string>Файл успешно сохранён</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelErrorText">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Дело плохо</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxDb">
+     <property name="title">
+      <string>База данных</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_3">
+      <item>
+       <widget class="QWidget" name="widgetSettings_2" native="true">
+        <layout class="QGridLayout" name="gridLayout_2">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item row="0" column="7">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="6">
+          <widget class="QSpinBox" name="spinBoxSizeDb">
+           <property name="readOnly">
+            <bool>false</bool>
+           </property>
+           <property name="maximum">
+            <number>16777216</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
+          <widget class="QLabel" name="label_6">
+           <property name="text">
+            <string>Размер</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="label_5">
+           <property name="text">
+            <string>Кластер</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QSpinBox" name="spinBoxCellDb">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="showGroupSeparator" stdset="0">
+            <bool>true</bool>
+           </property>
+           <property name="maximum">
+            <number>1073741823</number>
+           </property>
+           <property name="value">
+            <number>16777216</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLabel" name="label_4">
+           <property name="text">
+            <string>Страница</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QSpinBox" name="spinBoxPageDb">
+           <property name="readOnly">
+            <bool>true</bool>
+           </property>
+           <property name="showGroupSeparator" stdset="0">
+            <bool>true</bool>
+           </property>
+           <property name="maximum">
+            <number>16777216</number>
+           </property>
+           <property name="value">
+            <number>1048576</number>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QComboBox" name="comboBoxDb"/>
+         </item>
+        </layout>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBarDb">
+     <property name="value">
+      <number>0</number>
+     </property>
+     <property name="format">
+      <string>%v/%m</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelSuccessDb">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(0, 102, 0);</string>
+     </property>
+     <property name="text">
+      <string>Сохранение индексов в БД завершено</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QLabel" name="labelErrorTextDb">
+     <property name="styleSheet">
+      <string notr="true">color: rgb(170, 0, 0);</string>
+     </property>
+     <property name="text">
+      <string>Дело плохо</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QCheckBox" name="checkBoxFile">
+       <property name="text">
+        <string>Записать файл</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QCheckBox" name="checkBoxDb">
+       <property name="text">
+        <string>Загрузить в БД</string>
+       </property>
+       <property name="checked">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonStop">
+       <property name="text">
+        <string>Остановить</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Lib/DbUi/DbUi.qrc">
+         <normaloff>:/Icons/Halt.png</normaloff>:/Icons/Halt.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonGo">
+       <property name="text">
+        <string>Выполнить цель</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Lib/DbUi/DbUi.qrc">
+         <normaloff>:/Icons/Green.png</normaloff>:/Icons/Green.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionOpenFile">
+   <property name="icon">
+    <iconset resource="StorageUi.qrc">
+     <normaloff>:/Icons/Folder.png</normaloff>:/Icons/Folder.png</iconset>
+   </property>
+   <property name="text">
+    <string>Выбрать файл хранилища</string>
+   </property>
+   <property name="toolTip">
+    <string>Выбрать файл хранилища</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="StorageUi.qrc"/>
+  <include location="../../Lib/DbUi/DbUi.qrc"/>
+ </resources>
+ <connections/>
+</ui>

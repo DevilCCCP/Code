@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>yava_srvd.ver</file>
+    </qresource>
+</RCC>

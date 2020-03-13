@@ -1,0 +1,14 @@
+#!/bin/bash
+
+service __ABBR___srvd stop > /dev/null
+/opt/__ABBR__/__ABBR___srvd.exe uninstall --skip-license > /dev/null
+
+service __ABBR___upd stop > /dev/null
+/opt/__ABBR__/__ABBR___upd.exe uninstall --skip-license > /dev/null
+
+rm /etc/systemd/system/__ABBR___instd.service
+systemctl daemon-reload
+
+test -d /opt/__ABBR__/Log && (rm -R /opt/__ABBR__/Log || exit 11)
+test -d /opt/__ABBR__/Var && (rm -R /opt/__ABBR__/Var || exit 12)
+test -d /opt/__ABBR__/Updates && (rm -R /opt/__ABBR__/Updates || exit 13)

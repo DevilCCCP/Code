@@ -1,0 +1,8 @@
+#!/bin/bash
+
+
+service __ABBR___upd stop
+/opt/__ABBR__/__ABBR___upd.exe uninstall --skip-license
+
+rm /etc/systemd/system/__ABBR___instd.service
+systemctl daemon-reload

@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Ptz/GetCapabilities.xml</file>
+        <file>Ptz/GetConfigurationOptions.xml</file>
+        <file>Ptz/ContinuousMove.xml</file>
+        <file>Ptz/GetProfiles.xml</file>
+        <file>Ptz/GetStatus.xml</file>
+        <file>Ptz/AbsoluteMove.xml</file>
+        <file>Ptz/Vector.xml</file>
+        <file>Ptz/RelativeMove.xml</file>
+        <file>Ptz/Stop.xml</file>
+        <file>Ptz/Security.xml</file>
+    </qresource>
+</RCC>

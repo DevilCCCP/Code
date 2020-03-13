@@ -1,0 +1,21 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/StatusGray.png</file>
+        <file>Icons/StatusGreen.png</file>
+        <file>Icons/StatusRed.png</file>
+        <file>Icons/StatusYellow.png</file>
+        <file>Icons/No image.png</file>
+        <file>Icons/Layout.png</file>
+        <file>Icons/LayoutGrayed.png</file>
+        <file>Icons/LayoutSelected.png</file>
+        <file>Icons/Monitor.png</file>
+        <file>Icons/Find.png</file>
+        <file>Icons/Filter.png</file>
+        <file>Icons/Resize.png</file>
+        <file>Icons/Save.png</file>
+        <file>Icons/Refresh.png</file>
+        <file>Icons/Cancel.png</file>
+        <file>Icons/Play.png</file>
+        <file>Icons/Stop.png</file>
+    </qresource>
+</RCC>

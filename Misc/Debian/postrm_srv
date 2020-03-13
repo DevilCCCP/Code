@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+getent passwd __ABBR__ && (userdel __ABBR__ || exit 10)
+getent group __ABBR__ && (groupdel __ABBR__ || exit 15)

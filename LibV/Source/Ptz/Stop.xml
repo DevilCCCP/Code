@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:tptz="http://www.onvif.org/ver20/ptz/wsdl">
+%%SECURITY%%
+  <soap:Body>
+    <tptz:Stop>
+      <tptz:ProfileToken>Profile1</tptz:ProfileToken>
+      <tptz:PanTilt>true</tptz:PanTilt>
+      <tptz:Zoom>true</tptz:Zoom>
+    </tptz:Stop>
+  </soap:Body>
+</soap:Envelope>

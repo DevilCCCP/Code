@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormUpdateSync</class>
+ <widget class="QWidget" name="FormUpdateSync">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>442</width>
+    <height>278</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Update</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QLabel" name="label">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+       <property name="maximumSize">
+        <size>
+         <width>64</width>
+         <height>64</height>
+        </size>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap resource="Ui.qrc">:/Icons/Update.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelUpdateAvailable">
+       <property name="text">
+        <string>New update is available and will be installed in ...</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelSecs">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QCommandLinkButton" name="commandLinkButtonNow">
+     <property name="text">
+      <string>Install as fast, as possible</string>
+     </property>
+     <property name="icon">
+      <iconset resource="Ui.qrc">
+       <normaloff>:/Icons/DoNow.png</normaloff>:/Icons/DoNow.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCommandLinkButton" name="commandLinkButtonWaitMin">
+     <property name="text">
+      <string>Delay for 2 m</string>
+     </property>
+     <property name="icon">
+      <iconset resource="Ui.qrc">
+       <normaloff>:/Icons/Schedule.png</normaloff>:/Icons/Schedule.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QCommandLinkButton" name="commandLinkButtonWaitMax">
+     <property name="text">
+      <string>Delay for 30 m (max)</string>
+     </property>
+     <property name="icon">
+      <iconset resource="Ui.qrc">
+       <normaloff>:/Icons/Schedule.png</normaloff>:/Icons/Schedule.png</iconset>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QCommandLinkButton" name="commandLinkButtonWaitCustom">
+       <property name="text">
+        <string>Delay for ...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="Ui.qrc">
+         <normaloff>:/Icons/Schedule.png</normaloff>:/Icons/Schedule.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QDoubleSpinBox" name="doubleSpinBoxCustom">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="suffix">
+        <string> m</string>
+       </property>
+       <property name="minimum">
+        <double>1.000000000000000</double>
+       </property>
+       <property name="maximum">
+        <double>30.000000000000000</double>
+       </property>
+       <property name="value">
+        <double>15.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
+  </layout>
+ </widget>
+ <resources>
+  <include location="Ui.qrc"/>
+ </resources>
+ <connections/>
+</ui>

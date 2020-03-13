@@ -1,0 +1,9 @@
+*build-*/
+build/
+bin/
+debug/
+release/
+*.user
+*.log
+*/Install/Update/
+\.~lock\.*

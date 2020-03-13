@@ -1,0 +1,30 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Calendar.png</file>
+        <file>Icons/Clock.png</file>
+        <file>Icons/Download.png</file>
+        <file>Icons/Download2.png</file>
+        <file>Icons/Info.png</file>
+        <file>Icons/Info2.png</file>
+        <file>Icons/LeftPos.png</file>
+        <file>Icons/Live.png</file>
+        <file>Icons/Record.png</file>
+        <file>Icons/RightPos.png</file>
+        <file>Icons/Save.png</file>
+        <file>Icons/SoundOff.png</file>
+        <file>Icons/SoundOn.png</file>
+        <file>Icons/StatusGray.png</file>
+        <file>Icons/StatusGreen.png</file>
+        <file>Icons/StatusRed.png</file>
+        <file>Icons/StatusYellow.png</file>
+        <file>Icons/Speed1.png</file>
+        <file>Icons/Speed2.png</file>
+        <file>Icons/Speed4.png</file>
+        <file>Icons/Speed8.png</file>
+        <file>Icons/Reverse.png</file>
+        <file>Icons/ReverseNo.png</file>
+        <file>Icons/No Video.png</file>
+        <file>Icons/ScaleBest.png</file>
+        <file>Icons/ScaleFull.png</file>
+    </qresource>
+</RCC>

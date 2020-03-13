@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Anal.png</file>
+        <file>Icons/Separator.png</file>
+        <file>Icons/SeparatorV.png</file>
+        <file>Icons/64bit.png</file>
+        <file>Icons/Copy.png</file>
+        <file>Icons/Paste.png</file>
+        <file>Icons/Save.png</file>
+        <file>Icons/Folder.png</file>
+        <file>Icons/Script.png</file>
+    </qresource>
+</RCC>

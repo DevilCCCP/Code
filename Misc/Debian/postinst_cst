@@ -1,0 +1,42 @@
+#!/bin/bash
+
+getent passwd __ABBR__ || (adduser --no-create-home --disabled-password --gecos "" __ABBR__ || exit 1)
+getent group video && (usermod -a -G video __ABBR__ || exit 2)
+mkdir /opt/__ABBR__/Var || exit 3
+
+cp /opt/__ABBR__/Install/connection.ini /opt/__ABBR__/Var/connection.ini || exit 10
+
+chown -R __ABBR__:__ABBR__ /opt/__ABBR__ || exit 20
+if [ -x /opt/__ABBR__/License.exe ]; then
+  su -c /opt/__ABBR__/License.exe __ABBR__ > /dev/null || exit 21
+  mv /opt/__ABBR__/key.ini /opt/__ABBR__/Var/key.ini || exit 22
+  rm /opt/__ABBR__/License.exe || exit 23
+fi
+
+function ExecPreSql() {
+  su -c "/usr/bin/psql -q -w -v ON_ERROR_STOP=1 -f $1" postgres
+  retCode=$?
+  return ${retCode}
+}
+function ExecMainSql() {
+  su -c "/usr/bin/psql -q -d $1 -w --single-transaction -v ON_ERROR_STOP=1 -f $2" postgres
+  retCode=$?
+  return ${retCode}
+}
+
+ExecPreSql /opt/__ABBR__/Install/CreateUsers.sql || exit 50
+ExecPreSql /opt/__ABBR__/Install/CreateGroups.sql || exit 51
+ExecPreSql /opt/__ABBR__/Install/CreateDb.sql || exit 52
+ExecMainSql __ABBR__db /opt/__ABBR__/Install/Install.sql || exit 55
+rm -R /opt/__ABBR__/Install || exit 59
+
+PgConf=$(su -c "/usr/bin/psql -d __ABBR__db -t -P format=unaligned -q -w -c 'SHOW config_file;'" postgres) || exit 60
+sed -i $'s/.*\\blisten_addresses\\b.*=.*/listen_addresses = \'*\'/g; s/timezone\\b.*=.*/timezone = \'Europe\/Moscow\'/' "${PgConf}" || exit 61
+PgHba=$(sudo su -c "/usr/bin/psql -d __ABBR__db -t -P format=unaligned -q -w -c 'SHOW hba_file;'" postgres) || exit 62
+printf 'host  __ABBR__db  __ABBR__2  0.0.0.0/0  md5\nhost  __ABBR__db  __ABBR__1  0.0.0.0/0  md5\nhost	__ABBR__db	+su	0.0.0.0/0	md5\nhost	__ABBR__db	+usr	0.0.0.0/0	md5\n' >> ${PgHba} || exit 63
+grep -q '::1' ${PgHba} && (printf 'host  __ABBR__db  __ABBR__2  ::/0  md5\nhost  __ABBR__db  __ABBR__1  ::/0  md5\nhost	__ABBR__db	+su	0.0.0.0/0	md5\nhost	__ABBR__db	+usr	0.0.0.0/0	md5\n' >> ${PgHba} || exit 64)
+systemctl restart postgresql || exit 69
+
+mv /opt/__ABBR__/Updates/instd.service /etc/systemd/system/__ABBR___instd.service || exit 90
+/opt/__ABBR__/__ABBR___upd.exe install --skip-license > /dev/null || exit 91
+systemctl start __ABBR___upd || exit 96

@@ -1,0 +1,2 @@
+#host::port::Data base name::user::password
+localhost::5432::postgres::su::`1q2w3e

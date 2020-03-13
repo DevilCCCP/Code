@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormEditPack</class>
+ <widget class="QWidget" name="FormEditPack">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>379</width>
+    <height>206</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QHBoxLayout" name="horizontalLayout">
+   <item>
+    <widget class="QTreeView" name="treeViewPack"/>
+   </item>
+   <item>
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <widget class="QToolButton" name="toolButtonOpen">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../DbUi.qrc">
+         <normaloff>:/ObjTree/Icons/Open.png</normaloff>:/ObjTree/Icons/Open.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonSave">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../DbUi.qrc">
+         <normaloff>:/ObjTree/Icons/Save.png</normaloff>:/ObjTree/Icons/Save.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>20</width>
+         <height>40</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="../DbUi.qrc">
+     <normaloff>:/ObjTree/Icons/Open.png</normaloff>:/ObjTree/Icons/Open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create from folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Create from folder</string>
+   </property>
+  </action>
+  <action name="actionSave">
+   <property name="icon">
+    <iconset resource="../DbUi.qrc">
+     <normaloff>:/ObjTree/Icons/Save.png</normaloff>:/ObjTree/Icons/Save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Download to folder</string>
+   </property>
+   <property name="toolTip">
+    <string>Download to folder</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../DbUi.qrc"/>
+ </resources>
+ <connections/>
+</ui>

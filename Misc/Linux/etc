@@ -1,0 +1,63 @@
+sudo adduser --no-create-home --disabled-password --gecos "" vica
+sudo usermod -a -G vica devil
+
+
+# so depends
+~/ksvd4-test$ dpkg-shlibdeps ./opt/ksvd4/*
+mkdir ./debian
+touch ./debian/control
+dpkg-shlibdeps ./*
+
+
+# You can install it using 
+sudo dpkg -i /path/to/deb/file
+# followed by 
+sudo apt-get install -f
+
+
+
+armhf
+i386
+
+apt-get install -y postgresql
+
+
+//ntserver/docs /mnt/samba cifs username=docsadm,password=D1Y4x9sw 0 0
+
+
+touch *
+touch */*
+touch */*/*
+
+#!/bin/bash
+
+export DISPLAY=:0
+
+xrandr --newmode "1920x1080_60.00" 173.00 1920 2048 2248 2576 1080 1083 1088 1120 -hsync +vsync
+xrandr --addmode DP-4 1920x1080_60.00
+xrandr --output DP-4 --mode 1920x1080_60.00
+
+sudo h3disp
+
+#!/bin/bash
+
+export DISPLAY=:0
+
+x11vnc -xkb -forever -display :0 -rfbport 5900 -bg -o /home/devil/x11vnc.log
+
+
+function ReplacePostgresConfParams() {
+ params=( "$@" )
+ size=${#params[@]}
+
+ sedCmd=""
+ for ((i=0;i<size/2;i++)); do
+ key=${params[(($i * 2 + 0))]}
+ value=${params[(($i * 2 + 1))]}
+ sedCmd="${sedCmd}s/^[ \t#]*$key\s*=\?.*[#$]/$key = $value<->#/; "
+ done
+
+ PgConf=$(su -c "/usr/bin/psql -d __ABBR__db -t -P format=unaligned -q -w -c 'SHOW config_file;'" postgres) || exit 60
+ sed -i "$sedCmd" ./postgresql2.conf "${PgConf}" || exit 61
+}
+ReplacePostgresConfParams listen_addresses "'*'" timezone "'Europe/Moscow'" max_connections 5000

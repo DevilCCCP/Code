@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/ObjTree">
+        <file alias="srv">Icons/Server.png</file>
+        <file alias="upd">Icons/Update.png</file>
+        <file alias="uni">Icons/Unite.png</file>
+        <file alias="sr_">Icons/ServerRemote.png</file>
+        <file alias="sch">Icons/Schedule.png</file>
+        <file alias="rpt">Icons/Report.png</file>
+        <file>Icons/Script.png</file>
+        <file>Icons/System.png</file>
+        <file>Icons/Admin.ico</file>
+    </qresource>
+</RCC>

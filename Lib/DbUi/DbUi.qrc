@@ -1,0 +1,55 @@
+<RCC>
+    <qresource prefix="/ObjTree">
+        <file alias="srv">Icons/Server.png</file>
+        <file alias="tmp">Icons/Template.png</file>
+        <file alias="usr">Icons/User.png</file>
+        <file>Icons/Web.png</file>
+        <file>Icons/Link.png</file>
+        <file>Icons/Unlink.png</file>
+        <file alias="default">Icons/None.png</file>
+        <file>Icons/Add.png</file>
+        <file>Icons/Remove.png</file>
+        <file>Icons/Refresh.png</file>
+        <file>Icons/Open.png</file>
+        <file>Icons/Save.png</file>
+        <file>Icons/Reboot.png</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>Icons/Add.png</file>
+        <file>Icons/Csv.png</file>
+        <file>Icons/Filter.png</file>
+        <file>Icons/Link.png</file>
+        <file>Icons/Remove.png</file>
+        <file>Icons/Unlink.png</file>
+        <file>Icons/Menu Clone.png</file>
+        <file>Icons/Menu Edit.png</file>
+        <file>Icons/Menu New.png</file>
+        <file>Icons/Menu Remove.png</file>
+        <file>Icons/Limit.png</file>
+        <file>Icons/Refresh.png</file>
+        <file>Icons/Menu Ok.png</file>
+        <file>Icons/Csv2Db.png</file>
+        <file>Icons/Db2Csv.png</file>
+        <file>Icons/Table.png</file>
+        <file>Icons/Green.png</file>
+        <file>Icons/Halt.png</file>
+        <file>Icons/Collapse.png</file>
+        <file>Icons/Tree.png</file>
+        <file>Icons/Warn.png</file>
+        <file>Icons/Folder.png</file>
+        <file>Icons/File.png</file>
+    </qresource>
+    <qresource prefix="/Translate">
+        <file>Icons/Analysis.ico</file>
+        <file>Icons/TabState.png</file>
+        <file>Icons/TabLog.png</file>
+        <file>Icons/ToolRefresh.png</file>
+        <file>Icons/TabEvent.png</file>
+        <file>Icons/Excel export.png</file>
+        <file>Icons/Excel import.png</file>
+        <file>Icons/Statistics.png</file>
+    </qresource>
+    <qresource prefix="/Tr">
+        <file>DbUi_ru.qm</file>
+    </qresource>
+</RCC>

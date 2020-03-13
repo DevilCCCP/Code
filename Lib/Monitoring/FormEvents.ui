@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormEvents</class>
+ <widget class="QWidget" name="FormEvents">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>507</width>
+    <height>475</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="groupBoxLogFilter_3">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="title">
+      <string>Фильтр</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_7">
+      <item>
+       <layout class="QFormLayout" name="formLayout_2">
+        <property name="labelAlignment">
+         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+        </property>
+        <item row="2" column="0">
+         <widget class="QLabel" name="label_14">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Тип события</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QComboBox" name="comboBoxEventFilterEventType"/>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="label_15">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Вывод</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_16">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="text">
+           <string>Объект</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QComboBox" name="comboBoxEventFilterObject"/>
+        </item>
+        <item row="1" column="0">
+         <widget class="QCheckBox" name="checkBoxEventFilterPeriod">
+          <property name="text">
+           <string>Период</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QRadioButton" name="radioButtonEventFilterOutAll">
+            <property name="text">
+             <string>Подробно</string>
+            </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButtonEventFilterOutHour">
+            <property name="text">
+             <string>По часам</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QRadioButton" name="radioButtonEventFilterOutDays">
+            <property name="text">
+             <string>По дням</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <spacer name="horizontalSpacer_6">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </item>
+        <item row="1" column="1">
+         <widget class="QWidget" name="widgetFilterEventPeriod" native="true">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayoutFilterEventPeriod">
+             <item>
+              <widget class="QLabel" name="label_12">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>с</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateTimeEdit" name="dateTimeEditEventFilterFrom">
+               <property name="showGroupSeparator" stdset="0">
+                <bool>false</bool>
+               </property>
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QLabel" name="label_13">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="text">
+                <string>по</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QDateTimeEdit" name="dateTimeEditEventFilterTo">
+               <property name="calendarPopup">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
+        <item>
+         <widget class="QPushButton" name="pushButtonEventExport">
+          <property name="text">
+           <string>Экспорт</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../DbUi/DbUi.qrc">
+            <normaloff>:/icons/Icons/Excel export.png</normaloff>:/icons/Icons/Excel export.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonEventImport">
+          <property name="text">
+           <string>Импорт</string>
+          </property>
+          <property name="icon">
+           <iconset resource="../DbUi/DbUi.qrc">
+            <normaloff>:/icons/Icons/Excel import.png</normaloff>:/icons/Icons/Excel import.png</iconset>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="checkBoxResultLimit">
+          <property name="text">
+           <string>лимит</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBoxResultLimit">
+          <property name="maximum">
+           <number>1000000</number>
+          </property>
+          <property name="value">
+           <number>200</number>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QPushButton" name="pushButtonEventFilterApply">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="text">
+           <string>Применить</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTreeView" name="treeViewEvents">
+     <property name="editTriggers">
+      <set>QAbstractItemView::NoEditTriggers</set>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionPreview">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Monitoring.qrc">
+     <normaloff>:/Icons/Preview.png</normaloff>:/Icons/Preview.png</iconset>
+   </property>
+   <property name="text">
+    <string>Предпросмотр событий</string>
+   </property>
+   <property name="toolTip">
+    <string>Предпросмотр событий</string>
+   </property>
+  </action>
+  <action name="actionShowEvent">
+   <property name="icon">
+    <iconset resource="../../LibV/VideoUi/VideoUi.qrc">
+     <normaloff>:/Icons/Play.png</normaloff>:/Icons/Play.png</iconset>
+   </property>
+   <property name="text">
+    <string>Просмотр события</string>
+   </property>
+   <property name="toolTip">
+    <string>Просмотр события</string>
+   </property>
+  </action>
+  <action name="actionShowClose">
+   <property name="icon">
+    <iconset resource="../../LibV/VideoUi/VideoUi.qrc">
+     <normaloff>:/Icons/Stop.png</normaloff>:/Icons/Stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Остановить просмотр</string>
+   </property>
+   <property name="toolTip">
+    <string>Остановить просмотр</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="../DbUi/DbUi.qrc"/>
+  <include location="Monitoring.qrc"/>
+  <include location="../../LibV/VideoUi/VideoUi.qrc"/>
+ </resources>
+ <connections/>
+</ui>

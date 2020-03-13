@@ -1,0 +1,629 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormTable</class>
+ <widget class="QWidget" name="FormTable">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>597</width>
+    <height>408</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayoutMain">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QWidget" name="widgetQuery" native="true">
+     <layout class="QHBoxLayout" name="horizontalLayout_2">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>0</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
+       <number>0</number>
+      </property>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_4">
+        <item>
+         <widget class="QToolButton" name="toolButtonAddFilter">
+          <property name="text">
+           <string>...</string>
+          </property>
+          <property name="icon">
+           <iconset resource="DbUi.qrc">
+            <normaloff>:/Icons/Filter.png</normaloff>:/Icons/Filter.png</iconset>
+          </property>
+          <property name="autoRaise">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout">
+        <item>
+         <widget class="QComboBox" name="comboBoxTypeMain">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>160</width>
+            <height>0</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_5">
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_6">
+       <item>
+        <widget class="QToolButton" name="toolButtonLimits">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="DbUi.qrc">
+           <normaloff>:/Icons/Limit.png</normaloff>:/Icons/Limit.png</iconset>
+         </property>
+         <property name="checkable">
+          <bool>true</bool>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <item>
+        <widget class="QLabel" name="label_4">
+         <property name="text">
+          <string>Limit</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinBoxLimit">
+         <property name="maximum">
+          <number>1000000000</number>
+         </property>
+         <property name="value">
+          <number>200</number>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="label_3">
+         <property name="text">
+          <string>Total loaded</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QSpinBox" name="spinBoxTotal">
+         <property name="readOnly">
+          <bool>true</bool>
+         </property>
+         <property name="maximum">
+          <number>1000000000</number>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonRefresh">
+       <property name="text">
+        <string>...</string>
+       </property>
+       <property name="icon">
+        <iconset resource="DbUi.qrc">
+         <normaloff>:/Icons/Refresh.png</normaloff>:/Icons/Refresh.png</iconset>
+       </property>
+       <property name="autoRaise">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QWidget" name="widgetCount" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>Count</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QSpinBox" name="spinBoxCount">
+          <property name="readOnly">
+           <bool>true</bool>
+          </property>
+          <property name="maximum">
+           <number>1000000000</number>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayoutList">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QWidget" name="widgetControlsMain" native="true">
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+        <item>
+         <widget class="QWidget" name="widgetControls" native="true">
+          <layout class="QVBoxLayout" name="verticalLayoutControls">
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QToolButton" name="toolButtonCreate">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="DbUi.qrc">
+               <normaloff>:/Icons/Menu New.png</normaloff>:/Icons/Menu New.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelActionsFirst">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>:/Icons/Separator.png</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonEdit">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="DbUi.qrc">
+               <normaloff>:/Icons/Menu Edit.png</normaloff>:/Icons/Menu Edit.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonClone">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="DbUi.qrc">
+               <normaloff>:/Icons/Menu Clone.png</normaloff>:/Icons/Menu Clone.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonExport">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Ui/Ui.qrc">
+               <normaloff>:/Icons/Link.png</normaloff>:/Icons/Link.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonImport">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="../Ui/Ui.qrc">
+               <normaloff>:/Icons/Unlink.png</normaloff>:/Icons/Unlink.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonBackup">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="DbUi.qrc">
+               <normaloff>:/Icons/Db2Csv.png</normaloff>:/Icons/Db2Csv.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonRestore">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="DbUi.qrc">
+               <normaloff>:/Icons/Csv2Db.png</normaloff>:/Icons/Csv2Db.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QLabel" name="labelActionsSecond">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
+             <property name="maximumSize">
+              <size>
+               <width>16777215</width>
+               <height>16777215</height>
+              </size>
+             </property>
+             <property name="text">
+              <string/>
+             </property>
+             <property name="pixmap">
+              <pixmap>:/Icons/Separator.png</pixmap>
+             </property>
+             <property name="scaledContents">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QToolButton" name="toolButtonRemove">
+             <property name="text">
+              <string>...</string>
+             </property>
+             <property name="icon">
+              <iconset resource="DbUi.qrc">
+               <normaloff>:/Icons/Menu Remove.png</normaloff>:/Icons/Menu Remove.png</iconset>
+             </property>
+             <property name="autoRaise">
+              <bool>true</bool>
+             </property>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <spacer name="verticalSpacer">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>20</width>
+            <height>40</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QTreeView" name="treeViewTable">
+       <property name="editTriggers">
+        <set>QAbstractItemView::NoEditTriggers</set>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+       <property name="selectionMode">
+        <enum>QAbstractItemView::ExtendedSelection</enum>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="indentation">
+        <number>6</number>
+       </property>
+       <property name="sortingEnabled">
+        <bool>true</bool>
+       </property>
+       <attribute name="headerShowSortIndicator" stdset="0">
+        <bool>true</bool>
+       </attribute>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+  <action name="actionNew">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Menu New.png</normaloff>:/Icons/Menu New.png</iconset>
+   </property>
+   <property name="text">
+    <string>New</string>
+   </property>
+  </action>
+  <action name="actionEdit">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Menu Edit.png</normaloff>:/Icons/Menu Edit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Edit</string>
+   </property>
+  </action>
+  <action name="actionRemove">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Menu Remove.png</normaloff>:/Icons/Menu Remove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove</string>
+   </property>
+  </action>
+  <action name="actionClone">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Menu Clone.png</normaloff>:/Icons/Menu Clone.png</iconset>
+   </property>
+   <property name="text">
+    <string>Clone</string>
+   </property>
+  </action>
+  <action name="actionAddFilter">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Filter.png</normaloff>:/Icons/Filter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Add filter</string>
+   </property>
+   <property name="toolTip">
+    <string>Add extra filter</string>
+   </property>
+  </action>
+  <action name="actionRemoveFilter">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Filter.png</normaloff>:/Icons/Filter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Remove filter</string>
+   </property>
+   <property name="toolTip">
+    <string>Remove this filter</string>
+   </property>
+  </action>
+  <action name="actionLimit">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Limit.png</normaloff>:/Icons/Limit.png</iconset>
+   </property>
+   <property name="text">
+    <string>Limit</string>
+   </property>
+   <property name="toolTip">
+    <string>Use limit</string>
+   </property>
+  </action>
+  <action name="actionExport">
+   <property name="icon">
+    <iconset resource="../Ui/Ui.qrc">
+     <normaloff>:/Icons/Link.png</normaloff>:/Icons/Link.png</iconset>
+   </property>
+   <property name="text">
+    <string>Export to .scv file</string>
+   </property>
+   <property name="toolTip">
+    <string>Export to .scv file</string>
+   </property>
+  </action>
+  <action name="actionImport">
+   <property name="icon">
+    <iconset resource="../Ui/Ui.qrc">
+     <normaloff>:/Icons/Unlink.png</normaloff>:/Icons/Unlink.png</iconset>
+   </property>
+   <property name="text">
+    <string>Import from .scv file</string>
+   </property>
+   <property name="toolTip">
+    <string>Import from .scv file</string>
+   </property>
+  </action>
+  <action name="actionReload">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Refresh.png</normaloff>:/Icons/Refresh.png</iconset>
+   </property>
+   <property name="text">
+    <string>Reload</string>
+   </property>
+   <property name="toolTip">
+    <string>Reload</string>
+   </property>
+  </action>
+  <action name="actionBackup">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Db2Csv.png</normaloff>:/Icons/Db2Csv.png</iconset>
+   </property>
+   <property name="text">
+    <string>Backup to .scv file</string>
+   </property>
+   <property name="toolTip">
+    <string>Backup to .scv file</string>
+   </property>
+  </action>
+  <action name="actionRestore">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Csv2Db.png</normaloff>:/Icons/Csv2Db.png</iconset>
+   </property>
+   <property name="text">
+    <string>Restore from .scv file</string>
+   </property>
+   <property name="toolTip">
+    <string>Restore from .scv file</string>
+   </property>
+  </action>
+ </widget>
+ <tabstops>
+  <tabstop>toolButtonAddFilter</tabstop>
+  <tabstop>comboBoxTypeMain</tabstop>
+  <tabstop>toolButtonLimits</tabstop>
+  <tabstop>spinBoxLimit</tabstop>
+  <tabstop>spinBoxTotal</tabstop>
+  <tabstop>toolButtonRefresh</tabstop>
+  <tabstop>spinBoxCount</tabstop>
+  <tabstop>toolButtonCreate</tabstop>
+  <tabstop>toolButtonEdit</tabstop>
+  <tabstop>toolButtonClone</tabstop>
+  <tabstop>toolButtonExport</tabstop>
+  <tabstop>toolButtonImport</tabstop>
+  <tabstop>toolButtonRemove</tabstop>
+  <tabstop>treeViewTable</tabstop>
+ </tabstops>
+ <resources>
+  <include location="../Ui/Ui.qrc"/>
+  <include location="DbUi.qrc"/>
+ </resources>
+ <connections/>
+</ui>

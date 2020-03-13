@@ -1,0 +1,23 @@
+[Unit]
+Description=__ABBR__ update installer
+After=network.target
+Requires=postgresql.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/__ABBR__
+Restart=on-failure
+
+User=__ABBR__
+Group=__ABBR__
+
+Environment=
+
+ExecStart=/bin/bash /opt/__ABBR__/install.sh
+KillMode=process
+TimeoutStartSec=10
+TimeoutStopSec=7
+SendSIGKILL=no
+
+[Install]
+WantedBy=multi-user.target

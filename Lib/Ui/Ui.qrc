@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/">
+        <file alias="separator">Icons/Separator.png</file>
+        <file alias="separetorV">Icons/SeparatorV.png</file>
+        <file>Icons/Section hidden.png</file>
+        <file>Icons/Section shown.png</file>
+        <file>Icons/Schedule.png</file>
+        <file>Icons/DoNow.png</file>
+        <file>Icons/Update.png</file>
+        <file>Icons/Link.png</file>
+        <file>Icons/Unlink.png</file>
+        <file>Icons/Resize.png</file>
+        <file>Icons/Undo.png</file>
+        <file>Icons/Redo.png</file>
+        <file>Icons/Green.png</file>
+        <file>Icons/Halt.png</file>
+        <file>Icons/Menu Clone.png</file>
+        <file>Icons/Menu Edit.png</file>
+        <file>Icons/Menu New.png</file>
+        <file>Icons/Menu Ok.png</file>
+        <file>Icons/Menu Remove.png</file>
+        <file>Icons/Add.png</file>
+        <file>Icons/Refresh.png</file>
+        <file>Icons/Remove.png</file>
+    </qresource>
+</RCC>

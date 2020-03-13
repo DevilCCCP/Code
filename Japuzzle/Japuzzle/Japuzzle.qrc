@@ -1,0 +1,44 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/User.png</file>
+        <file>Icons/Open.png</file>
+        <file>Icons/Remove.png</file>
+        <file>Icons/Question.png</file>
+        <file>Icons/Question2.png</file>
+        <file>Icons/Question3.png</file>
+        <file>Icons/Erase.png</file>
+        <file>Icons/QuestionRemove.png</file>
+        <file>Icons/Redo.png</file>
+        <file>Icons/Undo.png</file>
+        <file>Icons/Settings.png</file>
+        <file>Icons/Info.png</file>
+        <file>Icons/ZoomIn.png</file>
+        <file>Icons/ZoomOut.png</file>
+        <file>Icons/Star Gray.png</file>
+        <file>Icons/Star Yellow.png</file>
+        <file>Icons/Game Not Solve 128x128.png</file>
+        <file>Icons/Game Not Solve.png</file>
+        <file>Icons/Game Solve Ai 128x128.png</file>
+        <file>Icons/Game Solve Ai.png</file>
+        <file>Icons/Game Solve Bad 128x128.png</file>
+        <file>Icons/Game Solve Bad.png</file>
+        <file>Icons/Game Solve Man 128x128.png</file>
+        <file>Icons/Game Solve Man.png</file>
+        <file>Icons/Game Solve Unknown 128x128.png</file>
+        <file>Icons/Game Solve Unknown.png</file>
+        <file>Icons/Clear.png</file>
+        <file>Icons/Japuzzle 128x128.png</file>
+        <file>Icons/Full screen.png</file>
+        <file>Icons/Game Solve Help.png</file>
+        <file>Icons/QuestionApply.png</file>
+        <file>Icons/List.png</file>
+        <file>Icons/Creator.png</file>
+        <file>Icons/Brick1.png</file>
+        <file>Icons/Brick5.png</file>
+        <file>Icons/Brick9.png</file>
+        <file>Icons/Save.png</file>
+        <file>Icons/New.png</file>
+        <file>Icons/SaveAs.png</file>
+        <file>Icons/Menu Ok.png</file>
+    </qresource>
+</RCC>

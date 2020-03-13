@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Folder.png</file>
+        <file>Icons/Cluster.png</file>
+        <file>Icons/Db.png</file>
+        <file>Icons/Communism.png</file>
+        <file>Icons/Find.png</file>
+    </qresource>
+</RCC>

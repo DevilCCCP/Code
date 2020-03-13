@@ -1,0 +1,4 @@
+      <tptz:%%NAME%%>
+        <tt:PanTilt x="%%X%%" y="%%Y%%"/>
+        <tt:Zoom x="%%Z%%"/>
+      </tptz:%%NAME%%>

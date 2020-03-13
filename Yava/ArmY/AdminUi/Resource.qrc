@@ -1,0 +1,13 @@
+<RCC>
+    <qresource prefix="/ObjTree">
+        <file alias="www">Icons/Web.png</file>
+        <file alias="cam">Icons/Camera.png</file>
+        <file alias="srv">Icons/Server.png</file>
+        <file alias="rep">Icons/Storage.png</file>
+        <file alias="arm">Icons/Arm.png</file>
+        <file alias="mon">Icons/Monitor.png</file>
+        <file alias="va1">Icons/Anal.png</file>
+        <file alias="upd">Icons/Update.png</file>
+        <file alias="sch">Icons/Schedule.png</file>
+    </qresource>
+</RCC>

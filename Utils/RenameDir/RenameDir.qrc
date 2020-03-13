@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/Folder.png</file>
+        <file>Icons/CommandLine.png</file>
+        <file>Icons/Menu Green.png</file>
+        <file>Icons/Halt.png</file>
+    </qresource>
+</RCC>

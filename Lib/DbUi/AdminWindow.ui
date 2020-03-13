@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AdminWindow</class>
+ <widget class="QMainWindow" name="AdminWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>677</width>
+    <height>553</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>AdminWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="DbUi.qrc">
+    <normaloff>:/ObjTree/srv</normaloff>:/ObjTree/srv</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QHBoxLayout" name="horizontalLayout">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item>
+     <widget class="QFrame" name="frame">
+      <property name="frameShape">
+       <enum>QFrame::Panel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QTabWidget" name="tabWidgetMain">
+         <property name="currentIndex">
+          <number>0</number>
+         </property>
+         <widget class="QWidget" name="tabSystem">
+          <attribute name="icon">
+           <iconset resource="../../Ls/ArmZ/AdminUi/Admin.qrc">
+            <normaloff>:/ObjTree/Icons/System.png</normaloff>:/ObjTree/Icons/System.png</iconset>
+          </attribute>
+          <attribute name="title">
+           <string>Система</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_2">
+           <item>
+            <widget class="QSplitter" name="splitterMain">
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <widget class="QWidget" name="verticalLayoutWidget_2">
+              <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0">
+               <item>
+                <widget class="QTreeView" name="treeViewSystemTree">
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::DoubleClicked</set>
+                 </property>
+                 <property name="showDropIndicator" stdset="0">
+                  <bool>false</bool>
+                 </property>
+                 <property name="alternatingRowColors">
+                  <bool>true</bool>
+                 </property>
+                 <property name="headerHidden">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QLabel" name="labelConnectionChange">
+                 <property name="text">
+                  <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;here&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;localhost:5432&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                 </property>
+                 <property name="openExternalLinks">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QListView" name="listViewConnections">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
+                 </property>
+                 <property name="sizeAdjustPolicy">
+                  <enum>QAbstractScrollArea::AdjustToContents</enum>
+                 </property>
+                 <property name="editTriggers">
+                  <set>QAbstractItemView::NoEditTriggers</set>
+                 </property>
+                 <property name="selectionBehavior">
+                  <enum>QAbstractItemView::SelectRows</enum>
+                 </property>
+                 <property name="viewMode">
+                  <enum>QListView::ListMode</enum>
+                 </property>
+                 <property name="uniformItemSizes">
+                  <bool>false</bool>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </widget>
+             <widget class="QWidget" name="verticalLayoutWidget">
+              <layout class="QVBoxLayout" name="verticalLayoutSystemItem"/>
+             </widget>
+            </widget>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabScript">
+          <attribute name="icon">
+           <iconset resource="../../Ls/ArmZ/AdminUi/Admin.qrc">
+            <normaloff>:/ObjTree/Icons/Script.png</normaloff>:/ObjTree/Icons/Script.png</iconset>
+          </attribute>
+          <attribute name="title">
+           <string>Скрипты</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <item>
+            <widget class="FormScript" name="formScript" native="true"/>
+           </item>
+          </layout>
+         </widget>
+         <widget class="QWidget" name="tabAbout">
+          <attribute name="icon">
+           <iconset>
+            <normaloff>:/ObjTree/Icons/About.png</normaloff>:/ObjTree/Icons/About.png</iconset>
+          </attribute>
+          <attribute name="title">
+           <string>О ...</string>
+          </attribute>
+          <layout class="QVBoxLayout" name="verticalLayoutAbout"/>
+         </widget>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="DockWidget2" name="dockWidgetTools">
+   <property name="windowIcon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/ObjTree/tmp</normaloff>:/ObjTree/tmp</iconset>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">font: 9pt \&quot;Segoe UI\&quot;, Verdana;</string>
+   </property>
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Инструмент</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContentsTools">
+    <layout class="QVBoxLayout" name="verticalLayoutToolsBase">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frameContentsTools">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutTools">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="DockWidget2" name="dockWidgetProperties">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="windowTitle">
+    <string>Свойства</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContentsProperties">
+    <layout class="QVBoxLayout" name="verticalLayoutPropertiesBase">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item>
+      <widget class="QFrame" name="frameContentsProperties">
+       <property name="frameShape">
+        <enum>QFrame::StyledPanel</enum>
+       </property>
+       <property name="frameShadow">
+        <enum>QFrame::Sunken</enum>
+       </property>
+       <layout class="QVBoxLayout" name="verticalLayoutProperties">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>0</number>
+        </property>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <zorder>dockWidgetProperties</zorder>
+  <zorder>dockWidgetTools</zorder>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DockWidget2</class>
+   <extends>QDockWidget</extends>
+   <header>Lib/Ui/DockWidget2.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>FormScript</class>
+   <extends>QWidget</extends>
+   <header>Admin/FormScript.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="DbUi.qrc"/>
+  <include location="../../Ls/ArmZ/AdminUi/Admin.qrc"/>
+  <include location="../../Ls/ArmZ/AdminUi/Admin.qrc"/>
+ </resources>
+ <connections/>
+</ui>

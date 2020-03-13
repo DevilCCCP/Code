@@ -1,0 +1,26 @@
+#!/bin/bash
+
+getent passwd __ABBR__ || (adduser --no-create-home --disabled-password --gecos "" __ABBR__ || exit 1)
+getent group video && (usermod -a -G video __ABBR__ || exit 2)
+mkdir /opt/__ABBR__/Var || exit 3
+
+mv /opt/__ABBR__/Install/connection.ini /opt/__ABBR__/Var/connection.ini || exit 10
+mv /opt/__ABBR__/Install/Update.sql /opt/__ABBR__/Updates/Update.sql || exit 11
+rmdir /opt/__ABBR__/Install || exit 12
+SrvName=$(hostname) || exit 15
+SrvUuid=$(cat /proc/sys/kernel/random/uuid) || exit 16
+printf "[General]\nName=${SrvName}\nGUID=${SrvUuid}\nUpdated=false\nIP=" > /opt/__ABBR__/Var/__ABBR___srvd.ini || exit 17
+
+chown -R __ABBR__:__ABBR__ /opt/__ABBR__ || exit 20
+if [ -x /opt/__ABBR__/License.exe ]; then
+  su -c /opt/__ABBR__/License.exe __ABBR__ > /dev/null || exit 21
+  mv /opt/__ABBR__/key.ini /opt/__ABBR__/Var/key.ini || exit 22
+  rm /opt/__ABBR__/License.exe || exit 23
+fi
+
+mv /opt/__ABBR__/Updates/instd.service /etc/systemd/system/__ABBR___instd.service || exit 80
+systemctl daemon-reload || exit 83
+/opt/__ABBR__/__ABBR___upd.exe install --skip-license > /dev/null || exit 90
+/opt/__ABBR__/__ABBR___srvd.exe install --skip-license > /dev/null || exit 91
+systemctl start __ABBR___srvd || exit 92
+systemctl start __ABBR___upd || exit 93

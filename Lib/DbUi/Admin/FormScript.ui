@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FormScript</class>
+ <widget class="QWidget" name="FormScript">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>707</width>
+    <height>587</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Form</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <property name="leftMargin">
+    <number>0</number>
+   </property>
+   <property name="topMargin">
+    <number>0</number>
+   </property>
+   <property name="rightMargin">
+    <number>0</number>
+   </property>
+   <property name="bottomMargin">
+    <number>0</number>
+   </property>
+   <item>
+    <widget class="QTableView" name="tableViewScript">
+     <property name="editTriggers">
+      <set>QAbstractItemView::CurrentChanged|QAbstractItemView::DoubleClicked|QAbstractItemView::EditKeyPressed|QAbstractItemView::SelectedClicked</set>
+     </property>
+     <property name="alternatingRowColors">
+      <bool>true</bool>
+     </property>
+     <property name="selectionMode">
+      <enum>QAbstractItemView::ExtendedSelection</enum>
+     </property>
+     <property name="selectionBehavior">
+      <enum>QAbstractItemView::SelectRows</enum>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="textEditLog">
+     <property name="readOnly">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+  <action name="actionScriptCreate">
+   <property name="icon">
+    <iconset resource="../../ArmK/AdminUi/Resource.qrc">
+     <normaloff>:/ObjTree/Icons/System.png</normaloff>:/ObjTree/Icons/System.png</iconset>
+   </property>
+   <property name="text">
+    <string>Скрипт создания</string>
+   </property>
+   <property name="toolTip">
+    <string>Скрипт создания текущей системы</string>
+   </property>
+  </action>
+  <action name="actionScriptOpen">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/ObjTree/Icons/Open.png</normaloff>:/ObjTree/Icons/Open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Открыть скрипт</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть скрипт из .csv файла</string>
+   </property>
+  </action>
+  <action name="actionScriptSave">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/ObjTree/Icons/Save.png</normaloff>:/ObjTree/Icons/Save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сохранить скрипт</string>
+   </property>
+   <property name="toolTip">
+    <string>Сохранить скрипт в csv файле</string>
+   </property>
+  </action>
+  <action name="actionUseScript">
+   <property name="icon">
+    <iconset resource="../../ArmK/AdminUi/Resource.qrc">
+     <normaloff>:/ObjTree/Icons/Script.png</normaloff>:/ObjTree/Icons/Script.png</iconset>
+   </property>
+   <property name="text">
+    <string>Применить скрипт</string>
+   </property>
+   <property name="toolTip">
+    <string>Создать записи из скрипта в данном кластере</string>
+   </property>
+  </action>
+  <action name="actionScriptCreateUp">
+   <property name="icon">
+    <iconset resource="../../ArmK/AdminUi/Resource.qrc">
+     <normaloff>:/ObjTree/Icons/System.png</normaloff>:/ObjTree/Icons/System.png</iconset>
+   </property>
+   <property name="text">
+    <string>Скрипт обновления</string>
+   </property>
+   <property name="toolTip">
+    <string>Скрипт обновления данной системы</string>
+   </property>
+  </action>
+ </widget>
+ <resources>
+  <include location="DbUi.qrc"/>
+  <include location="../../ArmK/AdminUi/Resource.qrc"/>
+  <include location="../../ArmK/AdminUi/Resource.qrc"/>
+  <include location="../../ArmK/AdminUi/Resource.qrc"/>
+  <include location="../../ArmK/AdminUi/Resource.qrc"/>
+  <include location="../../ArmK/AdminUi/Resource.qrc"/>
+ </resources>
+ <connections/>
+</ui>

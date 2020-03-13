@@ -1,0 +1,39 @@
+<RCC>
+    <qresource prefix="/ObjTree">
+        <file alias="www">Icons/Web.png</file>
+        <file alias="cam">Icons/Camera.png</file>
+        <file alias="srv">Icons/Server.png</file>
+        <file alias="rep">Icons/Storage.png</file>
+        <file alias="arm">Icons/Arm.png</file>
+        <file alias="va">Icons/Anal.png</file>
+        <file alias="iod">Icons/InOutDetector.png</file>
+        <file alias="ioo">Icons/InOutDoor.png</file>
+        <file alias="upd">Icons/Update.png</file>
+        <file alias="ign">Icons/Ghost.png</file>
+        <file alias="uni">Icons/Unite.png</file>
+        <file alias="sr_">Icons/ServerRemote.png</file>
+        <file alias="ca_">Icons/CameraRemote.png</file>
+        <file alias="qud">Icons/Queue.png</file>
+        <file alias="va1">Icons/Anal 1.png</file>
+        <file alias="va2">Icons/Anal 2.png</file>
+        <file alias="vaq">Icons/Anal Queue.png</file>
+        <file alias="sch">Icons/Schedule.png</file>
+        <file alias="izd">Icons/InZone.png</file>
+        <file alias="rpt">Icons/Report.png</file>
+        <file alias="smp">Icons/Post.png</file>
+        <file alias="eml">Icons/Email.png</file>
+        <file alias="vac">Icons/Anal Counter.png</file>
+        <file>Icons/Script.png</file>
+        <file>Icons/System.png</file>
+        <file alias="vaa">Icons/Anal Vin.png</file>
+        <file alias="arn">Icons/Car.png</file>
+        <file alias="bak">Icons/Db2Csv.png</file>
+    </qresource>
+    <qresource prefix="/Events">
+        <file>Icons/man_in.png</file>
+        <file>Icons/man_out.png</file>
+        <file>Icons/man_zone.png</file>
+        <file>Icons/queue_off.png</file>
+        <file>Icons/queue_on.png</file>
+    </qresource>
+</RCC>

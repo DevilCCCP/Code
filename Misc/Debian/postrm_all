@@ -1,0 +1,14 @@
+#!/bin/bash
+
+
+function ExecSql() {
+  su -c "/usr/bin/psql -q -w -v ON_ERROR_STOP=1 -c \"$1\"" postgres
+  retCode=$?
+  return ${retCode}
+}
+
+ExecSql "DROP DATABASE __ABBR__db;" || echo Drop __ABBR__db fail
+ExecSql "DROP ROLE __ABBR__1; DROP ROLE __ABBR__2;" || echo Drop roles fail
+
+getent passwd __ABBR__ && (userdel __ABBR__ || exit 10)
+getent group __ABBR__ && (groupdel __ABBR__ || exit 15)

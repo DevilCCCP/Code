@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope"
+               xmlns:tptz="http://www.onvif.org/ver20/ptz/wsdl">
+%%SECURITY%%
+  <soap:Body>
+    <tptz:GetConfigurationOptions>
+      <tptz:ConfigurationToken>%%TOKEN%%</tptz:ConfigurationToken>
+    </tptz:GetConfigurationOptions>
+  </soap:Body>
+</soap:Envelope>

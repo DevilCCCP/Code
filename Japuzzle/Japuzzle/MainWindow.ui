@@ -1,0 +1,960 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="font">
+   <font>
+    <family>Segoe UI</family>
+    <pointsize>10</pointsize>
+   </font>
+  </property>
+  <property name="mouseTracking">
+   <bool>true</bool>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <property name="windowIcon">
+   <iconset resource="Japuzzle.qrc">
+    <normaloff>:/Icons/Japuzzle 128x128.png</normaloff>:/Icons/Japuzzle 128x128.png</iconset>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="mouseTracking">
+    <bool>true</bool>
+   </property>
+   <layout class="QGridLayout" name="gridLayout_2">
+    <property name="leftMargin">
+     <number>0</number>
+    </property>
+    <property name="topMargin">
+     <number>0</number>
+    </property>
+    <property name="rightMargin">
+     <number>0</number>
+    </property>
+    <property name="bottomMargin">
+     <number>0</number>
+    </property>
+    <item row="1" column="1">
+     <widget class="QScrollArea" name="scrollAreaMain">
+      <property name="mouseTracking">
+       <bool>true</bool>
+      </property>
+      <property name="widgetResizable">
+       <bool>true</bool>
+      </property>
+      <property name="alignment">
+       <set>Qt::AlignCenter</set>
+      </property>
+      <widget class="QWidgetB" name="scrollAreaWidgetContents">
+       <property name="geometry">
+        <rect>
+         <x>0</x>
+         <y>0</y>
+         <width>715</width>
+         <height>414</height>
+        </rect>
+       </property>
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="mouseTracking">
+        <bool>true</bool>
+       </property>
+       <widget class="DigitsWidget" name="digitsWidgetLeft" native="true">
+        <property name="geometry">
+         <rect>
+          <x>0</x>
+          <y>152</y>
+          <width>228</width>
+          <height>152</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="DigitsWidget" name="digitsWidgetRight" native="true">
+        <property name="geometry">
+         <rect>
+          <x>457</x>
+          <y>152</y>
+          <width>228</width>
+          <height>152</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="DigitsWidget" name="digitsWidgetBottom" native="true">
+        <property name="geometry">
+         <rect>
+          <x>228</x>
+          <y>304</y>
+          <width>229</width>
+          <height>152</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="DigitsWidget" name="digitsWidgetTop" native="true">
+        <property name="geometry">
+         <rect>
+          <x>228</x>
+          <y>0</y>
+          <width>229</width>
+          <height>152</height>
+         </rect>
+        </property>
+       </widget>
+       <widget class="TableWidget" name="tableWidget" native="true">
+        <property name="geometry">
+         <rect>
+          <x>228</x>
+          <y>152</y>
+          <width>229</width>
+          <height>152</height>
+         </rect>
+        </property>
+        <property name="mouseTracking">
+         <bool>true</bool>
+        </property>
+       </widget>
+      </widget>
+     </widget>
+    </item>
+    <item row="1" column="2">
+     <spacer name="horizontalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="0" column="1">
+     <spacer name="verticalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>0</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="1" column="0">
+     <spacer name="horizontalSpacer_3">
+      <property name="orientation">
+       <enum>Qt::Horizontal</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Preferred</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>0</width>
+        <height>20</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+    <item row="4" column="1">
+     <widget class="QWidget" name="widgetZoom" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <widget class="QSlider" name="horizontalSliderZoom">
+         <property name="minimum">
+          <number>5</number>
+         </property>
+         <property name="maximum">
+          <number>15</number>
+         </property>
+         <property name="pageStep">
+          <number>1</number>
+         </property>
+         <property name="value">
+          <number>10</number>
+         </property>
+         <property name="tracking">
+          <bool>true</bool>
+         </property>
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="invertedAppearance">
+          <bool>false</bool>
+         </property>
+         <property name="invertedControls">
+          <bool>false</bool>
+         </property>
+         <property name="tickPosition">
+          <enum>QSlider::NoTicks</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelZoom">
+         <property name="text">
+          <string>100%</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButtonZoomOut">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButtonZoomIn">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButtonFullScreen">
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="3" column="1">
+     <widget class="QWidget" name="widgetState" native="true">
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <property name="leftMargin">
+        <number>0</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>0</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <item>
+        <spacer name="horizontalSpacer_5">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>0</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelStar5">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Japuzzle.qrc">:/Icons/Star Gray.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelStar4">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Japuzzle.qrc">:/Icons/Star Gray.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelStar3">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Japuzzle.qrc">:/Icons/Star Gray.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelStar2">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Japuzzle.qrc">:/Icons/Star Gray.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="labelStar1">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Japuzzle.qrc">:/Icons/Star Yellow.png</pixmap>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="horizontalSpacer_6">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Maximum</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>8</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <widget class="QToolButton" name="toolButtonState">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="toolTip">
+          <string>Состояние текущей сборки</string>
+         </property>
+         <property name="text">
+          <string>...</string>
+         </property>
+         <property name="icon">
+          <iconset resource="Japuzzle.qrc">
+           <normaloff>:/Icons/Game Not Solve.png</normaloff>:/Icons/Game Not Solve.png</iconset>
+         </property>
+         <property name="iconSize">
+          <size>
+           <width>24</width>
+           <height>24</height>
+          </size>
+         </property>
+         <property name="autoRaise">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+    <item row="2" column="1">
+     <spacer name="verticalSpacer_4">
+      <property name="orientation">
+       <enum>Qt::Vertical</enum>
+      </property>
+      <property name="sizeType">
+       <enum>QSizePolicy::Minimum</enum>
+      </property>
+      <property name="sizeHint" stdset="0">
+       <size>
+        <width>20</width>
+        <height>0</height>
+       </size>
+      </property>
+     </spacer>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>800</width>
+     <height>31</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menu">
+    <property name="title">
+     <string>Файл</string>
+    </property>
+    <addaction name="actionLogin"/>
+    <addaction name="separator"/>
+    <addaction name="actionOpen"/>
+    <addaction name="actionList"/>
+    <addaction name="actionCreator"/>
+    <addaction name="actionSettings"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menu_2">
+    <property name="title">
+     <string>Вид</string>
+    </property>
+    <addaction name="actionZoomIn"/>
+    <addaction name="actionZoomOut"/>
+    <addaction name="actionFullScreen"/>
+    <addaction name="separator"/>
+    <addaction name="actionErase"/>
+    <addaction name="actionProp1"/>
+    <addaction name="actionProp2"/>
+    <addaction name="actionProp3"/>
+   </widget>
+   <widget class="QMenu" name="menu_3">
+    <property name="title">
+     <string>Действия</string>
+    </property>
+    <addaction name="actionClearAll"/>
+    <addaction name="actionUndo"/>
+    <addaction name="actionRedo"/>
+    <addaction name="separator"/>
+    <addaction name="actionPropApply"/>
+    <addaction name="actionPropClear"/>
+    <addaction name="separator"/>
+    <addaction name="actionTest"/>
+    <addaction name="actionHint"/>
+    <addaction name="actionSolve"/>
+   </widget>
+   <widget class="QMenu" name="menu_4">
+    <property name="title">
+     <string>?</string>
+    </property>
+    <addaction name="actionAbout"/>
+   </widget>
+   <addaction name="menu"/>
+   <addaction name="menu_3"/>
+   <addaction name="menu_2"/>
+   <addaction name="menu_4"/>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+  <widget class="DockWidget2" name="dockWidgetPic">
+   <property name="floating">
+    <bool>false</bool>
+   </property>
+   <property name="features">
+    <set>QDockWidget::DockWidgetFloatable|QDockWidget::DockWidgetMovable</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::NoDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Предпросмотр</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>2</number>
+   </attribute>
+   <widget class="QWidget" name="dockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout" rowstretch="0,1,0" columnstretch="0,1,0" rowminimumheight="0,1,0" columnminimumwidth="0,1,0">
+     <property name="leftMargin">
+      <number>0</number>
+     </property>
+     <property name="topMargin">
+      <number>0</number>
+     </property>
+     <property name="rightMargin">
+      <number>0</number>
+     </property>
+     <property name="bottomMargin">
+      <number>0</number>
+     </property>
+     <item row="1" column="0">
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="2" column="1">
+      <spacer name="verticalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="0" column="1">
+      <spacer name="verticalSpacer">
+       <property name="orientation">
+        <enum>Qt::Vertical</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>10</width>
+         <height>0</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item row="1" column="1">
+      <widget class="PreviewWidget" name="previewWidget" native="true">
+       <property name="sizePolicy">
+        <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+         <horstretch>0</horstretch>
+         <verstretch>0</verstretch>
+        </sizepolicy>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="2">
+      <spacer name="horizontalSpacer_2">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>0</width>
+         <height>10</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </widget>
+  </widget>
+  <widget class="QToolBar" name="toolBar">
+   <property name="windowTitle">
+    <string>Инструменты</string>
+   </property>
+   <property name="movable">
+    <bool>false</bool>
+   </property>
+   <property name="floatable">
+    <bool>false</bool>
+   </property>
+   <attribute name="toolBarArea">
+    <enum>TopToolBarArea</enum>
+   </attribute>
+   <attribute name="toolBarBreak">
+    <bool>false</bool>
+   </attribute>
+   <addaction name="actionLogin"/>
+   <addaction name="actionOpen"/>
+   <addaction name="actionList"/>
+   <addaction name="actionCreator"/>
+   <addaction name="actionSettings"/>
+   <addaction name="separator"/>
+   <addaction name="actionClearAll"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
+   <addaction name="separator"/>
+   <addaction name="actionErase"/>
+   <addaction name="actionProp1"/>
+   <addaction name="actionProp2"/>
+   <addaction name="actionProp3"/>
+   <addaction name="separator"/>
+   <addaction name="actionPropApply"/>
+   <addaction name="actionPropClear"/>
+   <addaction name="separator"/>
+   <addaction name="actionTest"/>
+   <addaction name="actionHint"/>
+   <addaction name="actionSolve"/>
+  </widget>
+  <action name="actionLogin">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/User.png</normaloff>:/Icons/User.png</iconset>
+   </property>
+   <property name="text">
+    <string>Регистрация</string>
+   </property>
+   <property name="toolTip">
+    <string>Регистрация</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+  <action name="actionExit">
+   <property name="text">
+    <string>Выход</string>
+   </property>
+   <property name="toolTip">
+    <string>Выход</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionOpen">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Open.png</normaloff>:/Icons/Open.png</iconset>
+   </property>
+   <property name="text">
+    <string>Открыть рисунок</string>
+   </property>
+   <property name="toolTip">
+    <string>Открыть рисунок</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
+   </property>
+  </action>
+  <action name="actionProp1">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Question.png</normaloff>:/Icons/Question.png</iconset>
+   </property>
+   <property name="text">
+    <string>Режим предположений &amp;1 уровня</string>
+   </property>
+   <property name="toolTip">
+    <string>Режим предположений 1 уровня</string>
+   </property>
+   <property name="shortcut">
+    <string>Ins</string>
+   </property>
+  </action>
+  <action name="actionProp2">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Question2.png</normaloff>:/Icons/Question2.png</iconset>
+   </property>
+   <property name="text">
+    <string>Режим предположений &amp;2 уровня</string>
+   </property>
+   <property name="toolTip">
+    <string>Режим предположений 2 уровня</string>
+   </property>
+  </action>
+  <action name="actionProp3">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Question3.png</normaloff>:/Icons/Question3.png</iconset>
+   </property>
+   <property name="text">
+    <string>Режим предположений &amp;3 уровня</string>
+   </property>
+   <property name="toolTip">
+    <string>Режим предположений 3 уровня</string>
+   </property>
+  </action>
+  <action name="actionErase">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Erase.png</normaloff>:/Icons/Erase.png</iconset>
+   </property>
+   <property name="text">
+    <string>Режим удаления</string>
+   </property>
+   <property name="toolTip">
+    <string>Режим удаления</string>
+   </property>
+  </action>
+  <action name="actionPropClear">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/QuestionRemove.png</normaloff>:/Icons/QuestionRemove.png</iconset>
+   </property>
+   <property name="text">
+    <string>Удалить предположения</string>
+   </property>
+   <property name="toolTip">
+    <string>Удалить предположения текущего уровня</string>
+   </property>
+   <property name="shortcut">
+    <string>Del</string>
+   </property>
+  </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Undo.png</normaloff>:/Icons/Undo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Отменить действие</string>
+   </property>
+   <property name="toolTip">
+    <string>Отменить действие</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Redo.png</normaloff>:/Icons/Redo.png</iconset>
+   </property>
+   <property name="text">
+    <string>Повторить действие</string>
+   </property>
+   <property name="toolTip">
+    <string>Повторить действие</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+Z</string>
+   </property>
+  </action>
+  <action name="actionSettings">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Settings.png</normaloff>:/Icons/Settings.png</iconset>
+   </property>
+   <property name="text">
+    <string>Настройка</string>
+   </property>
+   <property name="toolTip">
+    <string>Настройка</string>
+   </property>
+  </action>
+  <action name="actionZoomIn">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/ZoomIn.png</normaloff>:/Icons/ZoomIn.png</iconset>
+   </property>
+   <property name="text">
+    <string>Увеличить</string>
+   </property>
+   <property name="toolTip">
+    <string>Увеличить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+=</string>
+   </property>
+  </action>
+  <action name="actionZoomOut">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/ZoomOut.png</normaloff>:/Icons/ZoomOut.png</iconset>
+   </property>
+   <property name="text">
+    <string>Уменьшить</string>
+   </property>
+   <property name="toolTip">
+    <string>Уменьшить</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+-</string>
+   </property>
+  </action>
+  <action name="actionClearAll">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Clear.png</normaloff>:/Icons/Clear.png</iconset>
+   </property>
+   <property name="text">
+    <string>Очистить</string>
+   </property>
+   <property name="toolTip">
+    <string>Очистить сборку</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Del</string>
+   </property>
+  </action>
+  <action name="actionAbout">
+   <property name="text">
+    <string>О программе</string>
+   </property>
+   <property name="toolTip">
+    <string>О программе</string>
+   </property>
+  </action>
+  <action name="actionFullScreen">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Full screen.png</normaloff>:/Icons/Full screen.png</iconset>
+   </property>
+   <property name="text">
+    <string>Полноэкранный режим</string>
+   </property>
+   <property name="toolTip">
+    <string>Полноэкранный режим</string>
+   </property>
+   <property name="shortcut">
+    <string>F11</string>
+   </property>
+  </action>
+  <action name="actionHint">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Game Solve Help.png</normaloff>:/Icons/Game Solve Help.png</iconset>
+   </property>
+   <property name="text">
+    <string>Подсказка</string>
+   </property>
+   <property name="toolTip">
+    <string>Подсказка в сборке рисунка</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+H</string>
+   </property>
+  </action>
+  <action name="actionSolve">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Game Solve Ai.png</normaloff>:/Icons/Game Solve Ai.png</iconset>
+   </property>
+   <property name="text">
+    <string>Сборка</string>
+   </property>
+   <property name="toolTip">
+    <string>Собрать весь рисунок</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+V</string>
+   </property>
+  </action>
+  <action name="actionPropApply">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/QuestionApply.png</normaloff>:/Icons/QuestionApply.png</iconset>
+   </property>
+   <property name="text">
+    <string>Принять предположения</string>
+   </property>
+   <property name="toolTip">
+    <string>Принять предположения текущего уровня</string>
+   </property>
+  </action>
+  <action name="actionTest">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Game Not Solve.png</normaloff>:/Icons/Game Not Solve.png</iconset>
+   </property>
+   <property name="text">
+    <string>Проверка</string>
+   </property>
+   <property name="toolTip">
+    <string>Проверка наличия ошибок в сборке рисунка</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+T</string>
+   </property>
+  </action>
+  <action name="actionList">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/List.png</normaloff>:/Icons/List.png</iconset>
+   </property>
+   <property name="text">
+    <string>Список рисунков</string>
+   </property>
+   <property name="toolTip">
+    <string>Список рисунков</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+L</string>
+   </property>
+  </action>
+  <action name="actionCreator">
+   <property name="icon">
+    <iconset resource="Japuzzle.qrc">
+     <normaloff>:/Icons/Creator.png</normaloff>:/Icons/Creator.png</iconset>
+   </property>
+   <property name="text">
+    <string>Создать рисунок</string>
+   </property>
+   <property name="toolTip">
+    <string>Создать рисунок</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
+   </property>
+  </action>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>DockWidget2</class>
+   <extends>QDockWidget</extends>
+   <header location="global">Lib/CoreUi/DockWidget2.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>TableWidget</class>
+   <extends>QWidget</extends>
+   <header>TableWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>DigitsWidget</class>
+   <extends>QWidget</extends>
+   <header>DigitsWidget.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>QWidgetB</class>
+   <extends>QWidget</extends>
+   <header location="global">Lib/CoreUi/QWidgetB.h</header>
+   <container>1</container>
+  </customwidget>
+  <customwidget>
+   <class>PreviewWidget</class>
+   <extends>QWidget</extends>
+   <header>PreviewWidget.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Japuzzle.qrc"/>
+ </resources>
+ <connections/>
+</ui>
