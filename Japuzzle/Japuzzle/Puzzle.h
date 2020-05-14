@@ -48,23 +48,30 @@ public:
   Cell& Value(int i, int j) { return mTable[i + j * mWidth]; }
   bool IsValid(const QPoint& p) const { return p.x() >= 0 && p.x() < mWidth && p.y() >= 0 && p.y() < mHeight; }
   void SetName(const QString& _SourceName);
+  int Stars() const { return mStars; }
+  void SetStars(int stars) { mStars = stars; }
+  QString StarsText();
 
 public:
   void New(int width, int height);
+  void Reset();
   bool IsBlank();
   void Clear();
+  void ClearPropMark();
   void Copy(const Puzzle& puzzle);
   void Apply(const Puzzle& puzzle);
   bool Load(const QString& filename, bool compact = true);
   bool Save(const QString& filename);
   int Count() const;
+  int Size() const;
   void SetEditing(const EditingS& _Editing);
 
   void SetCells(const QPoint& p1, const QPoint& p2, int mark, int level);
   void ClearProp(int level);
   void ApplyProp(int level);
   int GetAutoPropLevel();
-  void SolveTest(bool isAi = false);
+  bool SolveTest(bool isAi = false);
+  bool CalcSolve(bool& realSolved);
 
   void SetDigit(Qt::Orientation type, const QPoint& p1, const QPoint& p2, int value);
   void SetDigit(Qt::Orientation type, const QPoint& p, int value);
@@ -77,6 +84,8 @@ public:
   bool DoRedo();
 
   void Resize(const QRect& realRect);
+  void ToByteArray(QByteArray& data);
+  void FromByteArray(const QByteArray& data);
 
 private:
   void ApplyUndo();

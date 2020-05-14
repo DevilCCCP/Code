@@ -25,6 +25,7 @@ public:
   MainWindow2(QWidget* parent = 0, Qt::WindowFlags flags = 0);
 
 protected:
+  QSettings* GetSettings() { return mSettings.data(); }
   bool Restore();
 
   template <typename Func1>

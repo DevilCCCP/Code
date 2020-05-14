@@ -6,7 +6,7 @@
 const int kUpdateTimeMs = 1000;
 
 
-bool ObjectStateValuesItem::Equals(const TableItem &other)
+bool ObjectStateValuesItem::Equals(const TableItem &other) const
 {
   const ObjectStateValuesItem& other_ = static_cast<const ObjectStateValuesItem&>(other);
   return Id == other_.Id && Name == other_.Name && Descr == other_.Descr
@@ -88,7 +88,7 @@ ObjectStateTypeTable::~ObjectStateTypeTable()
 }
 
 
-bool ObjectStateItem::Equals(const TableItem &other)
+bool ObjectStateItem::Equals(const TableItem &other) const
 {
   const ObjectStateItem& other_ = static_cast<const ObjectStateItem&>(other);
   return Id == other_.Id && ObjectId == other_.ObjectId && ObjectStateTypeId == other_.ObjectStateTypeId

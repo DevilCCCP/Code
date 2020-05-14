@@ -15,7 +15,7 @@ public:
   QString    Value;
 
 public:
-  /*override */virtual bool Equals(const DbItem& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItem& other) const Q_DECL_OVERRIDE
   {
     const Variables& vs = static_cast<const Variables&>(other);
     return DbItem::Equals(other) && Object == vs.Object && Key == vs.Key && Value == vs.Value;

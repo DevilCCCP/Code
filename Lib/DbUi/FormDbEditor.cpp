@@ -21,10 +21,6 @@ FormDbEditor::FormDbEditor(QWidget* parent)
 {
   Q_INIT_RESOURCE(DbUi);
 
-  QTranslator* translator = new QTranslator(this);
-  translator->load(":/Tr/DbUi_ru.qm");
-  QApplication::instance()->installTranslator(translator);
-
   ui->setupUi(this);
 
   ui->toolButtonReload->setDefaultAction(ui->actionReload);
@@ -219,6 +215,23 @@ void FormDbEditor::AddAction(QAction* action, DbTreeSchema* schema, OnTriggeredA
   connect(action, &QAction::triggered, this, onTriggered);
 }
 
+bool FormDbEditor::UpdateItem(DbTreeSchema* schema, DbItemBS& item)
+{
+  if (!item || !item->Id) {
+    return false;
+  }
+
+  QVector<DbItemBS> itemList;
+  if (schema->Table->Select(QString("WHERE _id=%1").arg(item->Id), itemList) && itemList.size() == 1) {
+    DbItemBS loadItem = itemList.first();
+    if (!item->Equals(*loadItem)) {
+      item = loadItem;
+      return true;
+    }
+  }
+  return false;
+}
+
 void FormDbEditor::CreateActions()
 {
   foreach (QAction* action, mCurrentActionList) {
@@ -246,6 +259,7 @@ void FormDbEditor::CreateActions()
     }
   }
   if (hasSchema) {
+    AddCreateAction(itemSchema);
     foreach (const DbTreeSchemaS& schema, itemSchema->TreeChilds) {
       AddCreateAction(schema.data());
     }
@@ -272,6 +286,9 @@ void FormDbEditor::CreateRootItem(DbTreeSchema* schema)
       return;
     }
   }
+
+  UpdateItem(schema, item);
+
   TreeItemBS treeItem(new TreeItemB(item, schema));
   mTreeModel->AppendChild(treeItem);
 }
@@ -546,6 +563,11 @@ void FormDbEditor::CreateEdit()
   }
 
   mCurrentEditItem = mTreeModel->ItemFromIndex(index);
+  DbItemBS item = mCurrentEditItem->Item();
+  if (UpdateItem(mCurrentEditItem->Schema(), item)) {
+    mCurrentEditItem->SetItem(item);
+    mTreeModel->UpdateItem(mCurrentEditItem);
+  }
 
   QFormLayout* formLayoutEdit = new QFormLayout(ui->widgetEdit);
   formLayoutEdit->setObjectName(QStringLiteral("formLayoutEdit"));
@@ -554,6 +576,7 @@ void FormDbEditor::CreateEdit()
   if (!mCurrentEditItem->Schema()->EditSchema) {
     return;
   }
+
   mCurrentEditSchema = mCurrentEditItem->Schema()->EditSchema.data();
   for (int i = 0; i < mCurrentEditSchema->Columns.size(); i++) {
     const TableEditSchema::ColumnSchema& columnSchema = mCurrentEditSchema->Columns.at(i);

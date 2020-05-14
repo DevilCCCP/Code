@@ -36,4 +36,5 @@ private slots:
   void on_toolButtonPreview_clicked();
   void on_toolButtonCalcWindow_clicked();
   void on_comboBoxLevelProfile_currentIndexChanged(int index);
+  void on_toolButtonCalcStars_clicked();
 };

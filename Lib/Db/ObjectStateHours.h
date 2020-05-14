@@ -20,7 +20,7 @@ public:
   QDateTime  TriggeredHour;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE
   {
     const ObjectStateHours& vs = static_cast<const ObjectStateHours&>(other);
     return DbItemT<qint64>::Equals(other) && ObjectId == vs.ObjectId && OstypeId == vs.OstypeId && StateGood == vs.StateGood && StateBad == vs.StateBad && TriggeredHour == vs.TriggeredHour;

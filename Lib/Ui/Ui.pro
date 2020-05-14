@@ -24,7 +24,9 @@ SOURCES += \
     QSpinBoxZ.cpp \
     ScheduleWidget.cpp \
     FormSchedule.cpp \
-    GraphWidget.cpp
+    GraphWidget.cpp \
+    FormWorkSpace.cpp \
+    UserIdleEventFilter.cpp
 
 HEADERS += \
     DockWidget2.h \
@@ -40,7 +42,9 @@ HEADERS += \
     QSpinBoxZ.h \
     ScheduleWidget.h \
     FormSchedule.h \
-    GraphWidget.h
+    GraphWidget.h \
+    FormWorkSpace.h \
+    UserIdleEventFilter.h
 
 
 LIBS += \
@@ -56,5 +60,6 @@ FORMS += \
     FormUpdateSync.ui \
     FormImage.ui \
     DialogName.ui \
-    FormSchedule.ui
+    FormSchedule.ui \
+    FormWorkSpace.ui
 

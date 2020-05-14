@@ -19,7 +19,7 @@ public:
   QByteArray Data;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE
   {
     const Files& vs = static_cast<const Files&>(other);
     return DbItemT<qint64>::Equals(other) && ObjectId == vs.ObjectId && Name == vs.Name && MimeType == vs.MimeType && Data == vs.Data;

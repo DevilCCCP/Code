@@ -10,7 +10,8 @@ class FormTableTime;
 
 class FormTableTime: public QWidget
 {
-  Ui::FormTableTime* ui;
+  Ui::FormTableTime*  ui;
+  const bool          mHasTime;
 
   QDateTime           mFrom;
   QDateTime           mTo;
@@ -20,7 +21,7 @@ class FormTableTime: public QWidget
   Q_OBJECT
 
 public:
-  explicit FormTableTime(QWidget* parent = 0);
+  explicit FormTableTime(bool _HasTime, QWidget* parent = 0);
   ~FormTableTime();
 
 public:

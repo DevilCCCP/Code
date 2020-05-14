@@ -14,7 +14,20 @@
 void Puzzle::SetName(const QString& _SourceName)
 {
   mSourceName = _SourceName;
-  mViewName = QFileInfo(mSourceName).fileName();
+  mViewName   = QFileInfo(mSourceName).fileName();
+}
+
+QString Puzzle::StarsText()
+{
+  switch (mStars) {
+  case 0: return "0 звёзд";
+  case 1: return "1 звезда";
+  case 2: return "2 звезды";
+  case 3: return "3 звезды";
+  case 4: return "4 звезды";
+  case 5: return "5 звёзд";
+  }
+  return "X звёзд";
 }
 
 void Puzzle::New(int width, int height)
@@ -25,6 +38,16 @@ void Puzzle::New(int width, int height)
   mTable.resize(mWidth * mHeight);
   mTable.fill(Cell());
   ClearUndo();
+}
+
+void Puzzle::Reset()
+{
+  for (int i = 0; i < mProp.size(); i++) {
+    mProp[i].Used = false;
+  }
+  for (int i = 0; i < mWidth * mHeight; i++) {
+    mTable[i].Clear();
+  }
 }
 
 bool Puzzle::IsBlank()
@@ -43,6 +66,7 @@ bool Puzzle::IsBlank()
 void Puzzle::Clear()
 {
   MakeUndo();
+
   for (int i = 0; i < mProp.size(); i++) {
     mProp[i].Used = false;
   }
@@ -52,6 +76,15 @@ void Puzzle::Clear()
   for (int i = 0; i < mWidth; i++) {
     mDigitsMarkHorz[i].fill(0);
     mDigitsMarkVert[i].fill(0);
+  }
+}
+
+void Puzzle::ClearPropMark()
+{
+  for (int i = 0; i < mWidth * mHeight; i++) {
+    if (mTable[i].IsMarkProp()) {
+      mTable[i].SetMark(0, 0);
+    }
   }
 }
 
@@ -141,6 +174,11 @@ int Puzzle::Count() const
     }
   }
   return count;
+}
+
+int Puzzle::Size() const
+{
+  return mWidth * mHeight;
 }
 
 void Puzzle::SetEditing(const EditingS& _Editing)
@@ -241,13 +279,35 @@ int Puzzle::GetAutoPropLevel()
   return level;
 }
 
-void Puzzle::SolveTest(bool isAi)
+bool Puzzle::SolveTest(bool isAi)
 {
-  if (qGameState->getState() > GameState::eBadSolve) {
-    return;
+  bool realSolved = false;
+  if (!CalcSolve(realSolved)) {
+    return false;
   }
 
-  bool realSolved = true;
+  if (qGameState->getState() > GameState::eBadSolve) {
+    return realSolved;
+  }
+
+  if (isAi) {
+    qGameState->StateChange(GameState::eAiSolve);
+  } else if (!mDigits) {
+    if (realSolved) {
+      qGameState->StateChange(GameState::eManSolve);
+    } else {
+      qGameState->StateChange(GameState::eBadSolve);
+    }
+  } else {
+    qGameState->StateChange(GameState::eUnknownSolve);
+  }
+
+  return realSolved;
+}
+
+bool Puzzle::CalcSolve(bool& realSolved)
+{
+  realSolved = true;
   for (int j = 0; j < mHeight; j++) {
     int currentI = 0;
     int count = -1;
@@ -264,7 +324,7 @@ void Puzzle::SolveTest(bool isAi)
       } else {
         if (count > 0) {
           if (mDigitsHorz[currentI++][j] != count) {
-            return;
+            return false;
           }
           count = -1;
         }
@@ -272,11 +332,11 @@ void Puzzle::SolveTest(bool isAi)
     }
     if (count > 0) {
       if (mDigitsHorz[currentI++][j] != count) {
-        return;
+        return false;
       }
     }
     if (mDigitsHorz[currentI][j] > 0) {
-      return;
+      return false;
     }
   }
 
@@ -293,7 +353,7 @@ void Puzzle::SolveTest(bool isAi)
       } else {
         if (count > 0) {
           if (mDigitsVert[i][currentJ++] != count) {
-            return;
+            return false;
           }
           count = -1;
         }
@@ -301,25 +361,14 @@ void Puzzle::SolveTest(bool isAi)
     }
     if (count > 0) {
       if (mDigitsVert[i][currentJ++] != count) {
-        return;
+        return false;
       }
     }
     if (mDigitsVert[i][currentJ] > 0) {
-      return;
+      return false;
     }
   }
-
-  if (isAi) {
-    qGameState->StateChange(GameState::eAiSolve);
-  } else if (!mDigits) {
-    if (realSolved) {
-      qGameState->StateChange(GameState::eManSolve);
-    } else {
-      qGameState->StateChange(GameState::eBadSolve);
-    }
-  } else {
-    qGameState->StateChange(GameState::eUnknownSolve);
-  }
+  return true;
 }
 
 void Puzzle::SetDigit(Qt::Orientation type, const QPoint& p1, const QPoint& p2, int value)
@@ -452,6 +501,33 @@ void Puzzle::Resize(const QRect& realRect)
     mDigitsMarkHorz[i].resize(mHeight);
     mDigitsVert[i].resize(mHeight);
     mDigitsMarkVert[i].resize(mHeight);
+  }
+}
+
+void Puzzle::ToByteArray(QByteArray& data)
+{
+  for (int j = 0; j < mHeight; j++) {
+    for (int i = 0; i < mWidth; i++) {
+      char b = 0;
+      mTable[i + j * mWidth].Save(b);
+      data.append(b);
+    }
+  }
+}
+
+void Puzzle::FromByteArray(const QByteArray& data)
+{
+  if (data.size() != mWidth * mHeight) {
+    return;
+  }
+
+  int l = 0;
+  for (int j = 0; j < mHeight; j++) {
+    for (int i = 0; i < mWidth; i++) {
+      char b = data.at(l);
+      mTable[i + j * mWidth].Load(b);
+      l++;
+    }
   }
 }
 
@@ -667,7 +743,7 @@ bool Puzzle::SaveYpp()
   StorePropotion storeProp[3];
   for (int i = 0; i < mProp.size(); i++) {
     if (mProp[i].Used) {
-      char ch;
+      char ch = 0;
       mProp[i].Cell1.Save(ch);
       storeProp[i].Q = (int)(uchar)ch;
       storeProp[i].I = mProp[i].Pos.x();
@@ -919,6 +995,9 @@ void Puzzle::TryCompact()
     realRect.setBottom(realRect.bottom() - 1);
   }
 
+  if (realRect.left() >= realRect.right() || realRect.top() >= realRect.bottom()) {
+    realRect = QRect(0, 0, 1, 1);
+  }
   if (realRect != fullRect) {
     Resize(realRect);
   }

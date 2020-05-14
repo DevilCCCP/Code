@@ -12,7 +12,7 @@ public:
   int Id;
 
 public:
-  /*new*/virtual bool Equals(const TableItem& other) { return Id == other.Id && Id != 0; }
+  /*new*/virtual bool Equals(const TableItem& other) const { return Id == other.Id && Id != 0; }
 
 public:
   TableItem()
@@ -30,7 +30,7 @@ public:
   qint64 Id;
 
 public:
-  /*new*/virtual bool Equals(const TableItemB& other) { return Id == other.Id && Id != 0; }
+  /*new*/virtual bool Equals(const TableItemB& other) const { return Id == other.Id && Id != 0; }
 
 public:
   TableItemB()

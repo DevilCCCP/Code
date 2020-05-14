@@ -21,7 +21,7 @@ public:
   QString Color;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
 
 public:
   ObjectStateValuesItem() { }
@@ -82,7 +82,7 @@ public:
   int       ChangeSec;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
 
 public:
   ObjectStateItem() { }

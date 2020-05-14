@@ -117,6 +117,7 @@ SudoPreSvc="${SudoPre} /usr/sbin/service ${ProjAbbr}_"
 printf "${SudoPreSvc}srvd *\n${SudoPreSvc}upd *\n${SudoPreSvc}instd start\n${SudoPre} /bin/fuser -k /opt/${ProjAbbr}*\n" > ${PackageDir}/etc/sudoers.d/${ProjAbbr} || Fail
 if [[ $HasCluster ]]; then
   printf "${SudoPreSvc}srvd postgresql restart\n" > ${PackageDir}/etc/sudoers.d/${ProjAbbr}_postgres || Fail
+  chmod 0440 ${PackageDir}/etc/sudoers.d/${ProjAbbr}_postgres || Fail
 fi
 chmod 0440 ${PackageDir}/etc/sudoers.d/${ProjAbbr} || Fail
 Ok

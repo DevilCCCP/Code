@@ -364,10 +364,10 @@
      <normaloff>:/Icons/Link.png</normaloff>:/Icons/Link.png</iconset>
    </property>
    <property name="text">
-    <string>Export to .scv file</string>
+    <string>Export to .csv file</string>
    </property>
    <property name="toolTip">
-    <string>Export to .scv file</string>
+    <string>Export to .csv file</string>
    </property>
   </action>
   <action name="actionImport">
@@ -376,15 +376,18 @@
      <normaloff>:/Icons/Unlink.png</normaloff>:/Icons/Unlink.png</iconset>
    </property>
    <property name="text">
-    <string>Import from .scv file</string>
+    <string>Import from .csv file</string>
+   </property>
+   <property name="iconText">
+    <string>Import from .csv file</string>
    </property>
    <property name="toolTip">
-    <string>Import from .scv file</string>
+    <string>Import from .csv file</string>
    </property>
   </action>
   <action name="actionReload">
    <property name="icon">
-    <iconset resource="DbUi.qrc">
+    <iconset resource="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc">
      <normaloff>:/Icons/Refresh.png</normaloff>:/Icons/Refresh.png</iconset>
    </property>
    <property name="text">
@@ -405,7 +408,9 @@
   <tabstop>treeViewTable</tabstop>
  </tabstops>
  <resources>
+  <include location="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc"/>
   <include location="DbUi.qrc"/>
+  <include location="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc"/>
  </resources>
  <connections/>
 </ui>

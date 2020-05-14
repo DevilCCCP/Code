@@ -26,7 +26,8 @@ struct TableSchema
       eEqualKey,
       eEqual,
       eEqText,
-      eTimeRange
+      eTimeRange,
+      eDateRange
     };
     EEqualType  EqualType;
     QString     Name;
@@ -154,7 +155,7 @@ public:
     int headersCount = mModel->columnCount();
     if (header.size() != headersCount) {
       if (info) {
-        *info = QString("Format of file is wrong. Expecting %1 columns, found %2").arg(headersCount).arg(header.size());
+        *info = QString(QObject::tr("Format of file is wrong. Expecting %1 columns, found %2")).arg(headersCount).arg(header.size());
       }
       return false;
     }
@@ -175,7 +176,7 @@ public:
       }
       if (index < 0) {
         if (info) {
-          *info = QString("Format of file is wrong. Column '%1' not identify").arg(head);
+          *info = QString(QObject::tr("Format of file is wrong. Column '%1' not identify")).arg(head);
         }
         return false;
       }
@@ -190,12 +191,10 @@ public:
       }
       if (line.size() != columnMap.size()) {
         if (info) {
-          *info = QString("Format record %1 (zero based) is wrong"
-                          " columns count not equal cells count at this record"
-                          " (columns: %2, cells: %3).\nRecord:\n")
+          *info = QString(QObject::tr("Format record %1 (zero based) is wrong columns count not equal cells count at this record (columns: %2, cells: %3).\nRecord:\n"))
               .arg(total).arg(columnMap.size()).arg(line.size()) + line.join(";");
           if (total > 0) {
-            *info += QString("\n\nImport %1 entries").arg(total);
+            *info += QString(QObject::tr("\n\nImport %1 entries")).arg(total);
           }
         }
         return false;
@@ -207,9 +206,9 @@ public:
       }
       if (!ImportItem(items)) {
         if (info) {
-          *info = QString("Import record %1 (zero based) fail.\nRecord:\n").arg(total) + line.join(";");
+          *info = QString(QObject::tr("Import record %1 (zero based) fail.\nRecord:\n")).arg(total) + line.join(";");
           if (total > 0) {
-            *info += QString("\n\nImport %1 entries").arg(total);
+            *info += QString(QObject::tr("\n\nImport %1 entries")).arg(total);
           }
         }
         return false;
@@ -218,7 +217,7 @@ public:
     }
 
     if (info) {
-      *info = QString("Import %1 entries").arg(total);
+      *info = QString(QObject::tr("Import %1 entries")).arg(total);
     }
     return true;
   }

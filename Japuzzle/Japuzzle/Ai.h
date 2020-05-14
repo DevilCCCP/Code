@@ -1,6 +1,8 @@
 #pragma once
 
+#include <QElapsedTimer>
 #include <QVector>
+#include <QMap>
 #include <QObject>
 #include <QPoint>
 
@@ -29,8 +31,23 @@ class Ai: public QObject
 
   Puzzle*              mCurrentPuzzle;
   int                  mCurrentLevel;
-  int                  mCurrentPuzzleSolved;
   int                  mPuzzleSolved;
+  int                  mPropCommited;
+  int                  mSolveResult;
+  volatile bool        mStop;
+
+  struct Prop {
+    int Value;
+    int Miss;
+
+    int EffectiveValue() { return Miss > 0? qMax(1, Value / Miss): Value; }
+    Prop(): Value(0), Miss(0) { }
+  };
+  Puzzle*              mPropPuzzle;
+  QVector<Prop>        mPropMap;
+  QList<Prop*>         mPropValueList;
+  int                  mPropValueSum;
+  QElapsedTimer        mPropTimer;
 
   Q_OBJECT
 
@@ -45,8 +62,8 @@ public:
   bool Test(Puzzle* puzzle);
   bool Hint(Puzzle* puzzle, int level, bool& hasSolve);
 
-  void Solve(Puzzle* puzzle);
-  bool SolveResult();
+  void Solve(Puzzle* puzzle, int level, int maxProp);
+  void Stars(Puzzle* puzzle);
 
 private:
   void CalcDigitsSimple(const Cells& line, const QVector<int>& digits, QVector<int>& colors);
@@ -61,11 +78,20 @@ private:
 
   int HintCalcCellPrice(int i, int j, bool isYes);
 
-  bool PuzzleSolve();
-  bool PuzzleSolveProp();
+  int SolveDoAll();
+  void SolvePrepareProp();
+  void SolveUpdatePropInfo();
+  void SolveCreateProp();
+  bool SolveDoProp();
+  int SolveAllLines();
 
 signals:
-  void SolveChanged(int count);
+  void SolveChanged(int solved, int prop);
+  void SolveDone(int result, int prop);
+  void SolveInfo(QByteArray data);
+
+public slots:
+  void StopSolve();
 
 public:
   Ai();

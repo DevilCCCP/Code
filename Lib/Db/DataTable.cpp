@@ -5,7 +5,7 @@
 #include "DataTable.h"
 
 
-bool DataItem::Equals(const DbItemT<qint64>& other)
+bool DataItem::Equals(const DbItemT<qint64>& other) const
 {
   if (const DataItem* otherItem = dynamic_cast<const DataItem*>(&other)) {
     QByteArray data1;

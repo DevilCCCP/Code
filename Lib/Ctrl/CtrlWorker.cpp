@@ -86,7 +86,7 @@ void CtrlWorker::SayFail(const QString& reason)
       LOG_WARNING_ONCE(QString("Can't enter fail state, fail time not specified"));
       return;
     }
-    Log.Warning(QString("Fail state entered (reason: '%1')").arg(reason));
+    Log.Warning(QString("Fail state entered (reason: '%1', limit: %2)").arg(reason).arg(FormatTime(mFailStateDeadMs)));
     mFailState = true;
     mFailTimer.start();
   }

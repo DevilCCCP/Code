@@ -17,7 +17,7 @@ public:
   bool       CameraLoaded;
 
 public:
-  /*override */virtual bool Equals(const DbItem& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItem& other) const Q_DECL_OVERRIDE
   {
     const MonitorLayouts& vs = static_cast<const MonitorLayouts&>(other);
     return DbItem::Equals(other) && Monitor == vs.Monitor && Place == vs.Place;// && Flag == vs.Flag;

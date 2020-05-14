@@ -40,6 +40,7 @@ public:
   bool GetObjectSettings(int objectId, QList<ObjectSettingsS>& settings, bool useCache = false);
   bool GetObjectSettings(QString key, QString value, QList<ObjectSettingsS>& settings);
   bool GetObjectSettings(int objectId, QString key, QString value, QList<ObjectSettingsS>& settings);
+  bool DeleteObjectSettings(int objectId, const QString& pattern);
 
 private:
   void UpdateSettings(QList<ObjectSettingsS>& settings);

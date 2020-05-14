@@ -31,6 +31,8 @@ MainWindow::MainWindow(QWidget* parent)
   , mCore(new Core()), mDecoration(new Decoration()), mEditing(new Editing()), mGameState(new GameState())
   , mFormCalcPopup(new FormCalcPopup()), mFileDialog(new QFileDialog(this)), mAutoSaveTimer(new QTimer(this))
   , mNormalState(Qt::WindowMaximized), mCentralY(-1), mPreviewMove(0), mLoadDone(false), mClosing(false)
+  , mSolveDialog(new DialogSolve(this)), mLastSolveFail(false)
+  , mStarYes(":/Icons/Star Yellow.png"), mStarNo(":/Icons/Star Gray.png")
 {
   ui->setupUi(this);
 
@@ -83,6 +85,9 @@ MainWindow::MainWindow(QWidget* parent)
 
   QTimer::singleShot(500, this, &MainWindow::OnInit);
 
+  InitSolveAi();
+  InitStarsAi();
+  ShowStars();
   OnUpdateHasUndo();
   OnUpdateHasRedo();
 
@@ -116,6 +121,8 @@ MainWindow::MainWindow(QWidget* parent)
   connect(qGameState, &GameState::StateChanged, this, &MainWindow::OnGameStateChanged);
   connect(qGameState, &GameState::SolvedChanged, this, &MainWindow::OnGameSoledChanged);
   connect(this, &MainWindow::PostLoginTest, this, &MainWindow::OnLoadPuzzleTest, Qt::QueuedConnection);
+
+  connect(ui->previewWidget, &PreviewWidget::MoveToLocation, this, &MainWindow::OnMoveToLocation);
 }
 
 MainWindow::~MainWindow()
@@ -184,8 +191,41 @@ void MainWindow::Error(const QString& text)
   QMessageBox::warning(this, qCore->getProgramName(), text);
 }
 
+void MainWindow::InitSolveAi()
+{
+  mSolveAi.reset(new Ai());
+  mSolvePuzzle.reset(new Puzzle());
+  mSolveWatcher = new QFutureWatcher<void>(this);
+
+  connect(mSolveWatcher, &QFutureWatcher<void>::started, this, &MainWindow::OnSolveStarted);
+  connect(mSolveWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::OnSolveFinished);
+  connect(mSolveAi.data(), &Ai::SolveDone, this, &MainWindow::OnSolveDone);
+  connect(mSolveAi.data(), &Ai::SolveInfo, this, &MainWindow::OnSolveInfo);
+
+  connect(mSolveDialog, &DialogSolve::StartSolve, this, &MainWindow::StartSolve);
+  connect(mSolveDialog, &DialogSolve::StopSolve, mSolveAi.data(), &Ai::StopSolve);
+  connect(mSolveAi.data(), &Ai::SolveChanged, mSolveDialog, &DialogSolve::OnSolveChanged);
+}
+
+void MainWindow::InitStarsAi()
+{
+  mStarsAi.reset(new Ai());
+  mStarsPuzzle.reset(new Puzzle());
+  mStarsWatcher = new QFutureWatcher<void>(this);
+
+  connect(mStarsWatcher, &QFutureWatcher<void>::started, this, &MainWindow::OnStarsStarted);
+  connect(mStarsWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::OnStarsFinished);
+  mStarsInProgress = false;
+  mLoadNextPuzzle = false;
+}
+
 void MainWindow::LoadPuzzle()
 {
+  if (mStarsInProgress) {
+    mLoadNextPuzzle = true;
+    return;
+  }
+
   mLoadDone = false;
   DrawBack();
   UpdateTitle();
@@ -194,6 +234,10 @@ void MainWindow::LoadPuzzle()
     int mode = qPuzzle->GetAutoPropLevel();
     mEditing->ModeChange((Editing::EMode)mode);
     SetMode(mode, true);
+
+    if (qAccount->getAutoCalcStars() && qPuzzle->Stars() == 0) {
+      CalcPuzzleStars();
+    }
   }
   mLoadDone = true;
   UpdateSettings();
@@ -201,6 +245,8 @@ void MainWindow::LoadPuzzle()
   if (qGameState->getState() >= GameState::eUnknownSolve) {
     emit PostLoginTest();
   }
+
+  ShowStars();
 }
 
 void MainWindow::UpdateSettings()
@@ -255,6 +301,52 @@ void MainWindow::Draw()
   PlaceWidgets();
 }
 
+void MainWindow::ShowStars()
+{
+  int stars = qPuzzle? qPuzzle->Stars(): 0;
+  ui->toolButtonCalcStars->setVisible(stars == 0);
+  ui->labelStar1->setPixmap(stars >= 1? mStarYes: mStarNo);
+  ui->labelStar2->setPixmap(stars >= 2? mStarYes: mStarNo);
+  ui->labelStar3->setPixmap(stars >= 3? mStarYes: mStarNo);
+  ui->labelStar4->setPixmap(stars >= 4? mStarYes: mStarNo);
+  ui->labelStar5->setPixmap(stars >= 5? mStarYes: mStarNo);
+}
+
+void MainWindow::CalcVisibleRect()
+{
+  int y1 = 0;
+  if (ui->digitsWidgetTop->height() > ui->tableWidget->y()) {
+    y1 = (ui->digitsWidgetTop->height() - ui->tableWidget->y() + qDecoration->getCellHeight() - 1) / qDecoration->getCellHeight();
+  } else {
+    y1 = qMax(0, (ui->scrollAreaMain->verticalScrollBar()->value() - ui->tableWidget->y() + qDecoration->getCellHeight() - 1) / qDecoration->getCellHeight());
+  }
+
+  int y2 = qPuzzle->getHeight() - 1;
+  if (ui->digitsWidgetBottom->y() < ui->tableWidget->y() + ui->tableWidget->height()) {
+    y2 = (qPuzzle->getHeight() - 1) - (ui->tableWidget->y() + ui->tableWidget->height() - ui->digitsWidgetBottom->y() + qDecoration->getCellHeight() - 1) / qDecoration->getCellHeight();
+  } else {
+    int visibleHeight = ui->scrollAreaWidgetContents->height() - ui->scrollAreaMain->verticalScrollBar()->maximum();
+    y2 = qBound(0, (ui->scrollAreaMain->verticalScrollBar()->value() + visibleHeight - ui->tableWidget->y()) / qDecoration->getCellHeight(), qPuzzle->getHeight() - 1);
+  }
+
+  int x1 = 0;
+  if (ui->digitsWidgetLeft->width() > ui->tableWidget->x()) {
+    x1 = (ui->digitsWidgetLeft->width() - ui->tableWidget->x() + qDecoration->getCellWidth() - 1) / qDecoration->getCellWidth();
+  } else {
+    x1 = qMax(0, (ui->scrollAreaMain->horizontalScrollBar()->value() - ui->tableWidget->x() + qDecoration->getCellWidth() - 1) / qDecoration->getCellWidth());
+  }
+
+  int x2 = qPuzzle->getWidth() - 1;
+  if (ui->digitsWidgetRight->x() < ui->tableWidget->x() + ui->tableWidget->width()) {
+    x2 = (qPuzzle->getWidth() - 1) - (ui->tableWidget->x() + ui->tableWidget->width() - ui->digitsWidgetRight->x() + qDecoration->getCellWidth() - 1) / qDecoration->getCellWidth();
+  } else {
+    int visibleWidth = ui->scrollAreaWidgetContents->width() - ui->scrollAreaMain->horizontalScrollBar()->maximum();
+    x2 = qBound(0, (ui->scrollAreaMain->horizontalScrollBar()->value() + visibleWidth - ui->tableWidget->x()) / qDecoration->getCellWidth(), qPuzzle->getWidth() - 1);
+  }
+
+  ui->previewWidget->SetLocation(QRect(QPoint(x1, y1), QPoint(x2 - 1, y2 - 1)));
+}
+
 void MainWindow::Update()
 {
   ui->tableWidget->update();
@@ -297,13 +389,6 @@ void MainWindow::PlaceWidgets()
 
   OnVScrollChanged(ui->scrollAreaMain->verticalScrollBar()->value());
   OnHScrollChanged(ui->scrollAreaMain->horizontalScrollBar()->value());
-//  if (true) {
-//    ui->digitsWidgetLeft->move(0, ui->digitsWidgetTop->height());
-//    ui->digitsWidgetTop->move(ui->digitsWidgetLeft->width(), 0);
-//    ui->tableWidget->move(ui->digitsWidgetLeft->width(), ui->digitsWidgetTop->height());
-//    ui->digitsWidgetRight->move(ui->digitsWidgetLeft->width() + ui->tableWidget->width(), ui->digitsWidgetTop->height());
-//    ui->digitsWidgetBottom->move(ui->digitsWidgetLeft->width(), ui->digitsWidgetTop->height() + ui->tableWidget->height());
-  //  }
 }
 
 void MainWindow::SetMode(int mode, bool checked)
@@ -324,6 +409,19 @@ void MainWindow::SetMode(int mode, bool checked)
     qEditing->ModeChange(Editing::eModeNormal);
     qEditing->setCurrentPropLevel(0);
   }
+}
+
+void MainWindow::CalcPuzzleStars()
+{
+  mStarsInProgress = true;
+  qCore->Info(QString("Вычисляется сложность рисунка"));
+
+  mStarsSourcePuzzle = qPuzzle;
+  mStarsSourcePuzzle->Reset();
+  mStarsPuzzle->Copy(*mStarsSourcePuzzle);
+  mStarsFilename = qPuzzle->getSourceName();
+  auto feature = QtConcurrent::run(mStarsAi.data(), &Ai::Stars, mStarsPuzzle.data());
+  mStarsWatcher->setFuture(feature);
 }
 
 void MainWindow::OnInit()
@@ -396,6 +494,8 @@ void MainWindow::OnHScrollChanged(int value)
   }
   ui->digitsWidgetLeft->move(0, ui->digitsWidgetTop->getHeight());
   ui->digitsWidgetRight->move(ui->digitsWidgetLeft->getWidth() + ui->tableWidget->getWidth() + ui->digitsWidgetRight->getWidth() - ui->digitsWidgetRight->width(), ui->digitsWidgetTop->getHeight());
+
+  CalcVisibleRect();
 }
 
 void MainWindow::OnVScrollChanged(int value)
@@ -419,6 +519,8 @@ void MainWindow::OnVScrollChanged(int value)
   }
   ui->digitsWidgetTop->move(ui->digitsWidgetLeft->getWidth(), 0);
   ui->digitsWidgetBottom->move(ui->digitsWidgetLeft->getWidth(), ui->digitsWidgetTop->getHeight() + ui->tableWidget->getHeight() + ui->digitsWidgetBottom->getHeight() - ui->digitsWidgetBottom->height());
+
+  CalcVisibleRect();
 }
 
 void MainWindow::OnHScrollRangeChanged(int min, int max)
@@ -490,32 +592,83 @@ void MainWindow::OnGameStateChanged()
 
 void MainWindow::OnGameSoledChanged()
 {
+  mSolveDialog->hide();
+
   if (qAccount->getShowGameStateDialog()) {
     on_toolButtonState_clicked();
   }
 }
 
-void MainWindow::OnSolveChanged(int count)
+void MainWindow::StartSolve(int maxProp)
 {
-  mSolveDialog->ChangeCount(count, qPuzzle->getWidth() * qPuzzle->getHeight());
+  auto feature = QtConcurrent::run(mSolveAi.data(), &Ai::Solve, mSolvePuzzle.data(), qEditing->getCurrentPropLevel(), maxProp);
+  mSolveWatcher->setFuture(feature);
+}
+
+void MainWindow::OnSolveInfo(QByteArray data)
+{
+  qPuzzle->FromByteArray(data);
+  Update();
+}
+
+void MainWindow::OnSolveDone(int result, int prop)
+{
+  if (result > 0) {
+    qCore->Info(QString("Сборка закончила работу (предположения: %1)").arg(prop));
+  } else if (result == 0) {
+    if (prop > 0) {
+      qCore->Info(QString("Сборка не помогла, возможно решение не однозначно (предположения: %1)").arg(prop));
+    } else {
+      qCore->Info("Сборка не помогла, используйте предположения");
+    }
+    if (qAccount->getAutoOpenPropEx()) {
+      on_actionSolveEx_triggered();
+    }
+  } else {
+    qCore->Info("В картинке найдены ошибки");
+  }
+}
+
+void MainWindow::OnSolveStarted()
+{
+  foreach (QWidgetB* w, mAllWidgets) {
+    w->setEnabled(false);
+  }
 }
 
 void MainWindow::OnSolveFinished()
 {
-  mSolveDialog->close();
-  mSolveDialog->deleteLater();
-  mSolveDialog = nullptr;
-
   foreach (QWidgetB* w, mAllWidgets) {
     w->setEnabled(true);
   }
+
   qPuzzle->Apply(*mSolvePuzzle);
+  qPuzzle->ClearPropMark();
   Update();
-  qPuzzle->SolveTest(true);
-  if (mSolveAi->SolveResult()) {
-    qCore->Info("Сборка закончила работу");
+
+  if (qPuzzle->SolveTest(true)) {
+    mSolveDialog->hide();
+  }
+}
+
+void MainWindow::OnStarsStarted()
+{
+}
+
+void MainWindow::OnStarsFinished()
+{
+  qCore->Info(QString("Подсчёт сложности завершён, результат: %1").arg(mStarsPuzzle->StarsText()));
+  mStarsInProgress = false;
+
+  if (!mLoadNextPuzzle) {
+    mStarsSourcePuzzle->SetStars(mStarsPuzzle->Stars());
+    mStarsSourcePuzzle->Save(mStarsFilename);
+    qPuzzle->SetStars(mStarsPuzzle->Stars());
+    qPuzzle->Save(qAccount->getLastPuzzle());
+    ShowStars();
   } else {
-    qCore->Info("В картинке найдены ошибки");
+    mLoadNextPuzzle = false;
+    LoadPuzzle();
   }
 }
 
@@ -523,6 +676,20 @@ void MainWindow::OnPuzzleChanged()
 {
   mDecoration->SetPuzzle(mCore->getPuzzle());
   mCore->getPuzzle()->SetEditing(mEditing);
+}
+
+void MainWindow::OnMoveToLocation(int i, int j)
+{
+  if (!qPuzzle) {
+    return;
+  }
+
+  int visibleWidth = ui->scrollAreaWidgetContents->width() - ui->scrollAreaMain->horizontalScrollBar()->maximum();
+  int visibleHeight = ui->scrollAreaWidgetContents->height() - ui->scrollAreaMain->verticalScrollBar()->maximum();
+  int posX = qBound(0, i * ui->scrollAreaWidgetContents->width() / qPuzzle->getWidth() - visibleWidth/2, ui->scrollAreaMain->horizontalScrollBar()->maximum());
+  int posY = qBound(0, j * ui->scrollAreaWidgetContents->height() / qPuzzle->getHeight() - visibleHeight/2, ui->scrollAreaMain->verticalScrollBar()->maximum());
+  ui->scrollAreaMain->horizontalScrollBar()->setValue(posX);
+  ui->scrollAreaMain->verticalScrollBar()->setValue(posY);
 }
 
 void MainWindow::on_actionExit_triggered()
@@ -727,29 +894,32 @@ void MainWindow::on_actionTest_triggered()
 
 void MainWindow::on_actionSolve_triggered()
 {
-  if (!mSolveAi) {
-    mSolveAi.reset(new Ai());
-    mSolvePuzzle.reset(new Puzzle());
-    mSolveWatcher = new QFutureWatcher<void>(this);
-
-    connect(mSolveWatcher, &QFutureWatcher<void>::finished, this, &MainWindow::OnSolveFinished);
-    connect(mSolveAi.data(), &Ai::SolveChanged, this, &MainWindow::OnSolveChanged);
+  if (qPuzzle->Count() == qPuzzle->Size()) {
+    qCore->Info("Картинка заполнена, сборка не требуется");
+    return;
   }
 
   mSolvePuzzle->Copy(*qPuzzle);
-  auto feature = QtConcurrent::run(mSolveAi.data(), &Ai::Solve, mSolvePuzzle.data());
-  mSolveWatcher->setFuture(feature);
+  StartSolve(0);
+}
 
-  mSolveDialog = new DialogSolve(this);
-  mSolveDialog->ChangeCount(qPuzzle->Count(), qPuzzle->getWidth() * qPuzzle->getHeight());
-  mSolveDialog->show();
-  foreach (QWidgetB* w, mAllWidgets) {
-    w->setEnabled(false);
+void MainWindow::on_actionSolveEx_triggered()
+{
+  if (qPuzzle->Count() == qPuzzle->Size()) {
+    qCore->Info("Картинка заполнена, сборка не требуется");
+    return;
   }
+
+  mSolvePuzzle->Copy(*qPuzzle);
+  mSolveDialog->Init(qAccount.data(), mSolvePuzzle.data());
+  mSolveDialog->show();
 }
 
 void MainWindow::on_actionList_triggered()
 {
+  if (qAccount) {
+    qAccount->UpdatePuzzleList();
+  }
   DialogList dialogList;
   dialogList.exec();
   if (dialogList.IsRestarted()) {
@@ -760,4 +930,18 @@ void MainWindow::on_actionList_triggered()
 void MainWindow::on_actionCreator_triggered()
 {
   mCreatorMainWindow->show();
+}
+
+void MainWindow::on_toolButtonCalcStars_clicked()
+{
+  if (!qPuzzle) {
+    return;
+  }
+
+  if (mStarsInProgress) {
+    Warning("Подсчёт сложности уже запущен");
+    return;
+  }
+
+  CalcPuzzleStars();
 }

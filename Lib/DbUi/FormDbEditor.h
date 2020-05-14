@@ -60,6 +60,7 @@ private:
   void AddUnlinkMultiAction(DbTreeSchema* schema);
   void AddAction(QAction* action, DbTreeSchema* schema, OnTriggeredAction onTriggered);
 
+  bool UpdateItem(DbTreeSchema* schema, DbItemBS& item);
   void CreateActions();
   void CreateRootItem(DbTreeSchema* schema);
   void CreateChildItems(DbTreeSchema* schema);

@@ -11,7 +11,7 @@ protected:
   Overseer* GetOverseer();
 
 public:
-  Imp(int _WorkPeriodMs, bool _AutoWorkCalc = true, bool _Critical = false);
+  Imp(int _WorkPeriodMs, bool _AutoWorkCalc = true, bool _Critical = true);
   /*override */virtual ~Imp() { }
 };
 

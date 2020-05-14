@@ -234,4 +234,3 @@ EditWidget::EditWidget(QWidget* parent)
   , mCurrentSet(true)
 {
 }
-

@@ -52,6 +52,10 @@ class FormTable: public QWidget
   QString              mQuery;
   bool                 mMainCondIsCustom;
 
+  PROPERTY_GET(int,    LoadedCount)
+  PROPERTY_GET(bool,   HasCurrent)
+  PROPERTY_GET(bool,   HasSelection)
+
   Q_OBJECT
 
 public:
@@ -64,6 +68,7 @@ public:
   void SetReadOnly();
   void SetViewMode();
   void SetLimit(int limit);
+  void SetSingleSelection(bool single);
   int CurrentItem();
 
   void AddToControls(QWidget* widget);
@@ -77,6 +82,7 @@ public:
   void AddSeek(const QString& column, const QString& text);
 
   const QString& GetQuery() const { return mQuery; }
+  void GetSelected(QList<int>& indexList);
 
 private:
   void InitFilterOne(const CondCtrl& condCtrl, bool main);

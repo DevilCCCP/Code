@@ -17,7 +17,7 @@ public:
   int        VstypeId;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<int>& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<int>& other) const Q_DECL_OVERRIDE
   {
     const VaStat& vs = static_cast<const VaStat&>(other);
     return DbItemT<int>::Equals(other) && ObjectId == vs.ObjectId && VstypeId == vs.VstypeId;

@@ -4,7 +4,7 @@
 #include "ClassT.h"
 
 
-bool ClassT::Equals(const DbItemT<TypeT>& other)
+bool ClassT::Equals(const DbItemT<TypeT>& other) const
 {
   const ClassT& vs = static_cast<const ClassT&>(other);
   return DbItemT<TypeT>::Equals(other)EQUALITY;

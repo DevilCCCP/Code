@@ -5,7 +5,7 @@
 #include "ObjectType.h"
 
 
-bool ObjectItem::Equals(const TableItem& other)
+bool ObjectItem::Equals(const TableItem& other) const
 {
   const ObjectItem& other_ = dynamic_cast<const ObjectItem&>(other);
   return Id == other_.Id && Name == other_.Name && Descr == other_.Descr

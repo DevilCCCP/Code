@@ -61,6 +61,8 @@ void TableWidget::paintEvent(QPaintEvent* event)
         painter.drawImage(QRect(x, y, mCellWidth, mCellHeight), qStyle->getYes().value(cell.MarkLevel()));
       } else if (cell.IsMarkNo()) {
         painter.drawImage(QRect(x, y, mCellWidth, mCellHeight), qStyle->getNo().value(cell.MarkLevel()));
+      } else if (cell.IsMarkProp()) {
+        painter.drawImage(QRect(x, y, mCellWidth, mCellHeight), qStyle->getProp());
       } else {
         painter.drawImage(QRect(x, y, mCellWidth, mCellHeight), qStyle->getNull());
       }
@@ -70,6 +72,20 @@ void TableWidget::paintEvent(QPaintEvent* event)
 
 void TableWidget::mouseMoveEvent(QMouseEvent* event)
 {
+  if (!isEnabled()) {
+    if (HasSpot()) {
+      UpdateCells(mSpotPos, mSpotPos);
+      mSpotMark = 0;
+      qDecoration->CursorChange(Decoration::eCursorArrow);
+    }
+
+    if (mShowCalcWindow) {
+      mShowCalcWindow = false;
+      emit HideCalcWindow();
+    }
+    return;
+  }
+
   bool showCalcWindow = false;
   QPoint lastPos = mCurrentPos;
   if (TranslateCell(event->x(), event->y())) {
@@ -142,7 +158,14 @@ void TableWidget::mousePressEvent(QMouseEvent* event)
       mShowCalcWindow = false;
       emit HideCalcWindow();
     }
-  } else if (TranslateCell(event->x(), event->y())) {
+    return;
+  }
+
+  if (!isEnabled()) {
+    return;
+  }
+
+  if (TranslateCell(event->x(), event->y())) {
     if (qEditing->getMode() == Editing::eModeErase) {
       if (event->button() == Qt::LeftButton || event->button() == Qt::RightButton) {
         qPuzzle->Value(mCurrentPos).Clear();

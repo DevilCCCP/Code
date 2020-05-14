@@ -6,11 +6,14 @@
 #include "ui_FormTableTime.h"
 
 
-FormTableTime::FormTableTime(QWidget* parent)
-  : QWidget(parent), ui(new Ui::FormTableTime)
+FormTableTime::FormTableTime(bool _HasTime, QWidget* parent)
+  : QWidget(parent), ui(new Ui::FormTableTime), mHasTime(_HasTime)
   , mFrom(QDateTime::currentDateTimeUtc()), mTo(QDateTime::currentDateTimeUtc()), mManual(false)
 {
   ui->setupUi(this);
+
+  ui->dateTimeEditFrom->setDisplayFormat(mHasTime? "d MMM yyyy hh:mm": "d MMM yyyy");
+  ui->dateTimeEditTo->setDisplayFormat(mHasTime? "d MMM yyyy hh:mm": "d MMM yyyy");
 
   QList<QByteArray> ids = QTimeZone::availableTimeZoneIds();
   foreach (QByteArray id, ids) {

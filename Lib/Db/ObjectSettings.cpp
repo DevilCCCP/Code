@@ -101,6 +101,13 @@ bool ObjectSettingsTable::GetObjectSettings(int objectId, QString key, QString v
   return true;
 }
 
+bool ObjectSettingsTable::DeleteObjectSettings(int objectId, const QString& pattern)
+{
+  auto q = mDb.MakeQuery();
+  q->prepare(QString(Delete()) + QString(" WHERE _object = %1 AND key ILIKE '%2'").arg(objectId).arg(pattern));
+  return mDb.ExecuteNonQuery(q);
+}
+
 void ObjectSettingsTable::UpdateSettings(QList<ObjectSettingsS> &settings)
 {
   settings.clear();

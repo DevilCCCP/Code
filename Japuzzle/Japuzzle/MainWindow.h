@@ -51,6 +51,17 @@ class MainWindow: public MainWindow2
   PuzzleS                mSolvePuzzle;
   DialogSolve*           mSolveDialog;
   QFutureWatcher<void>*  mSolveWatcher;
+  bool                   mLastSolveFail;
+
+  AiS                    mStarsAi;
+  PuzzleS                mStarsSourcePuzzle;
+  PuzzleS                mStarsPuzzle;
+  QString                mStarsFilename;
+  QFutureWatcher<void>*  mStarsWatcher;
+  bool                   mStarsInProgress;
+  bool                   mLoadNextPuzzle;
+  QPixmap                mStarYes;
+  QPixmap                mStarNo;
 
   Q_OBJECT
 
@@ -69,15 +80,20 @@ public:
   void Error(const QString& text);
 
 private:
+  void InitSolveAi();
+  void InitStarsAi();
   void LoadPuzzle();
   void UpdateSettings();
   void DrawBack();
   void Draw();
+  void ShowStars();
+  void CalcVisibleRect();
   void Update();
   void UpdateTitle();
   void UpdateZoom();
   void PlaceWidgets();
   void SetMode(int mode, bool checked);
+  void CalcPuzzleStars();
 
 private:
   void OnInit();
@@ -96,10 +112,17 @@ private:
   void OnGameStateChanged();
   void OnGameSoledChanged();
 
-  void OnSolveChanged(int count);
+  void StartSolve(int maxProp);
+  void OnSolveInfo(QByteArray data);
+  void OnSolveDone(int result, int prop);
+  void OnSolveStarted();
   void OnSolveFinished();
+  void OnStarsStarted();
+  void OnStarsFinished();
 
   void OnPuzzleChanged();
+
+  void OnMoveToLocation(int i, int j);
 
 signals:
   void PostLoginTest();
@@ -127,6 +150,8 @@ private slots:
   void on_actionHint_triggered();
   void on_actionTest_triggered();
   void on_actionSolve_triggered();
+  void on_actionSolveEx_triggered();
   void on_actionList_triggered();
   void on_actionCreator_triggered();
+  void on_toolButtonCalcStars_clicked();
 };

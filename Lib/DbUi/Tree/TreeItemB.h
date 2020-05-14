@@ -24,6 +24,7 @@ public:
   void SetMultiLinkId(const qint64& _MultiLinkId) { mMultiLinkId = _MultiLinkId; }
   qint64 MultiLinkId() const { return mMultiLinkId; }
   const DbItemBS& Item() const { return mItem; }
+  void SetItem(const DbItemBS& item) { mItem = item; }
   DbTreeSchema* Schema() const { return mDbTreeSchema; }
   void SetEnabled(bool _Enabled) { mEnabled = _Enabled; }
   bool IsEnabled() { return mEnabled; }

@@ -1,3 +1,5 @@
+#include <QDateTime>
+
 #include "Ai.h"
 #include "Core.h"
 #include "Puzzle.h"
@@ -6,6 +8,7 @@
 
 
 Ai* Ai::mSelf = nullptr;
+const int kPropUpdatePeriodMs = 500;
 
 void Ai::CalcAllDigits(Puzzle* puzzle)
 {
@@ -244,35 +247,91 @@ bool Ai::Hint(Puzzle* puzzle, int level, bool& hasSolve)
   return true;
 }
 
-void Ai::Solve(Puzzle* puzzle)
+void Ai::Solve(Puzzle* puzzle, int level, int maxProp)
 {
-  Puzzle tempPuzzle;
   mCurrentPuzzle = puzzle;
-  mCurrentLevel  = 0;
+  mCurrentLevel  = level;
+  mPuzzleSolved  = mCurrentPuzzle->Count();
+  mPropCommited  = 0;
+  mStop          = false;
 
-  mPuzzleSolved = mCurrentPuzzle->Count();
-  int totalCount = mCurrentPuzzle->getWidth() * mCurrentPuzzle->getHeight();
-  while (PuzzleSolve()) {
-    if (!mCurrentPuzzleSolved) {
-      tempPuzzle.Copy(*puzzle);
-      mCurrentPuzzle = &tempPuzzle;
-      if (!PuzzleSolveProp()) {
-        return;
+  SolveDoAll();
+  emit SolveChanged(mPuzzleSolved, mPropCommited);
+
+  if (mSolveResult == 0 && maxProp > 0) {
+    SolvePrepareProp();
+    for (; mPropCommited < maxProp; mPropCommited++) {
+      if (!SolveDoProp() || mStop) {
+        break;
       }
-    }
-    mPuzzleSolved += mCurrentPuzzleSolved;
-    if (mPuzzleSolved >= totalCount) {
-      return;
-    }
+      emit SolveChanged(mPuzzleSolved, mPropCommited);
 
-    emit SolveChanged(mPuzzleSolved);
+      SolveUpdatePropInfo();
+    }
   }
-  mPuzzleSolved = -1;
+
+  QByteArray solveInfo;
+  mCurrentPuzzle->ToByteArray(solveInfo);
+  emit SolveInfo(solveInfo);
+
+  emit SolveDone(mSolveResult, mPropCommited);
 }
 
-bool Ai::SolveResult()
+void Ai::Stars(Puzzle* puzzle)
 {
-  return mPuzzleSolved >= 0;
+  const int kIgnoreCellCount = 8;
+  const int kEasyDigitsPercent = 20;
+  const int kPropMax3 = 2;
+  const int kPropMax4 = 20;
+
+  mCurrentPuzzle = puzzle;
+  mCurrentLevel  = 0;
+  mPuzzleSolved  = mCurrentPuzzle->Count();
+  mPropCommited  = 0;
+  mStop          = false;
+
+  SolveDoAll();
+  int totalCells = mCurrentPuzzle->Size();
+
+  if (mPuzzleSolved >= totalCells - kIgnoreCellCount) {
+    int digitsCount = 0;
+    for (int j = 0; j < mCurrentPuzzle->getHeight(); j++) {
+      for (int i = 0; i < mCurrentPuzzle->getWidth(); i++) {
+        if (mCurrentPuzzle->mDigitsHorz[i][j] > 0) {
+          digitsCount++;
+        } else {
+          break;
+        }
+      }
+    }
+    for (int i = 0; i < mCurrentPuzzle->getWidth(); i++) {
+      for (int j = 0; j < mCurrentPuzzle->getHeight(); j++) {
+        if (mCurrentPuzzle->mDigitsVert[i][j] > 0) {
+          digitsCount++;
+        } else {
+          break;
+        }
+      }
+    }
+
+    puzzle->SetStars(digitsCount > totalCells * kEasyDigitsPercent/100? 2: 1);
+    return;
+  }
+
+  SolvePrepareProp();
+  for (; mPropCommited <= kPropMax4; mPropCommited++) {
+    if (!SolveDoProp() || mStop) {
+      break;
+    }
+  }
+
+  if (mPropCommited <= kPropMax3) {
+    puzzle->SetStars(3);
+  } else if (mPropCommited <= kPropMax4) {
+    puzzle->SetStars(4);
+  } else {
+    puzzle->SetStars(5);
+  }
 }
 
 void Ai::CalcDigitsSimple(const Cells& line, const QVector<int>& digits, QVector<int>& colors)
@@ -685,9 +744,166 @@ int Ai::HintCalcCellPrice(int i, int j, bool isYes)
   return price;
 }
 
-bool Ai::PuzzleSolve()
+int Ai::SolveDoAll()
 {
-  mCurrentPuzzleSolved = 0;
+  mSolveResult = 0;
+  int totalCount = mCurrentPuzzle->Size();
+
+  forever {
+    int solved = SolveAllLines();
+    if (mStop || solved == 0) {
+      break;
+    } else if (solved < 0) {
+      mSolveResult = -1;
+      break;
+    }
+
+    mSolveResult = 1;
+    mPuzzleSolved += solved;
+
+    if (mPuzzleSolved >= totalCount) {
+      return mSolveResult;
+    }
+  }
+  return mSolveResult;
+}
+
+void Ai::SolvePrepareProp()
+{
+  mPropTimer.start();
+  qsrand(QDateTime::currentMSecsSinceEpoch());
+
+  SolveCreateProp();
+}
+
+void Ai::SolveUpdatePropInfo()
+{
+  if (mPropTimer.elapsed() < kPropUpdatePeriodMs) {
+    return;
+  }
+
+  QByteArray solveInfo;
+  mPropPuzzle->ToByteArray(solveInfo);
+  emit SolveInfo(solveInfo);
+
+  mPropTimer.restart();
+}
+
+void Ai::SolveCreateProp()
+{
+  mPropMap.resize(mCurrentPuzzle->Size());
+  mPropValueList.clear();
+  mPropValueSum = 0;
+
+  for (int j = 0; j < mCurrentPuzzle->getHeight(); j++) {
+    for (int i = 0; i < mCurrentPuzzle->getWidth(); i++) {
+      Prop* prop = &mPropMap[j*mCurrentPuzzle->getWidth() + i];
+      if (mCurrentPuzzle->At(i, j).HasMark()) {
+        continue;
+      }
+
+      prop->Value = 0;
+      if (j < 3) {
+        prop->Value = (3 - j) * qMax(1, prop->Value) * 5;
+      } else if (j > mCurrentPuzzle->getHeight() - 4) {
+        prop->Value = (j - (mCurrentPuzzle->getHeight() - 4)) * qMax(1, prop->Value) * 5;
+      }
+      if (i < 3) {
+        prop->Value = (3 - i) * qMax(1, prop->Value) * 5;
+      } else if (i > mCurrentPuzzle->getWidth() - 4) {
+        prop->Value = (i - (mCurrentPuzzle->getWidth() - 4)) * qMax(1, prop->Value) * 5;
+      }
+
+      if (j > 0 && mCurrentPuzzle->At(i, j-1).HasMark()) {
+        prop->Value = (mCurrentPuzzle->At(i, j-1).IsMarkYes()? 2: 1) * qMax(1, prop->Value) * 5;
+      }
+      if (j < mCurrentPuzzle->getHeight() - 1 && mCurrentPuzzle->At(i, j+1).HasMark()) {
+        prop->Value = (mCurrentPuzzle->At(i, j+1).IsMarkYes()? 2: 1) * qMax(1, prop->Value) * 5;
+      }
+      if (i > 0 && mCurrentPuzzle->At(i-1, j).HasMark()) {
+        prop->Value = (mCurrentPuzzle->At(i-1, j).IsMarkYes()? 2: 1) * qMax(1, prop->Value) * 5;
+      }
+      if (i < mCurrentPuzzle->getWidth() - 1 && mCurrentPuzzle->At(i+1, j).HasMark()) {
+        prop->Value = (mCurrentPuzzle->At(i+1, j).IsMarkYes()? 2: 1) * qMax(1, prop->Value) * 5;
+      }
+
+      if (prop->Value > 0) {
+        mPropValueList.append(prop);
+        mPropValueSum += prop->EffectiveValue();
+      }
+    }
+  }
+}
+
+bool Ai::SolveDoProp()
+{
+  int currentPuzzleSolved = mPuzzleSolved;
+  if (mPropValueList.isEmpty()) {
+    return false;
+  }
+
+  int iProp = -1;
+  int jProp = -1;
+  int valSel = qrand() % mPropValueSum;
+  for (auto itr = mPropValueList.begin(); itr != mPropValueList.end(); itr++) {
+    Prop* prop = *itr;
+    int curVal = prop->EffectiveValue();
+    if (valSel < curVal) {
+      int indProp = prop - mPropMap.data();
+      iProp = indProp % mCurrentPuzzle->getWidth();
+      jProp = indProp / mCurrentPuzzle->getWidth();
+      mPropValueList.erase(itr);
+      mPropValueSum -= curVal;
+      break;
+    }
+    valSel -= curVal;
+  }
+
+  if (iProp < 0 || jProp < 0 || jProp >= mCurrentPuzzle->getHeight()) {
+    return false;
+  }
+
+  mPropPuzzle = mCurrentPuzzle;
+  Puzzle tempPuzzle;
+  mCurrentPuzzle = &tempPuzzle;
+
+  mPropPuzzle->Value(iProp, jProp).SetProp();
+  bool ok = false;
+  if (!ok) {
+    mCurrentPuzzle->Copy(*mPropPuzzle);
+    mCurrentPuzzle->Value(iProp, jProp).SetMark(1, mCurrentLevel);
+    if (SolveDoAll() < 0) {
+      mPropPuzzle->Value(iProp, jProp).SetMark(-1, mCurrentLevel);
+      ok = true;
+    }
+  }
+
+  if (!ok) {
+    mCurrentPuzzle->Copy(*mPropPuzzle);
+    mCurrentPuzzle->Value(iProp, jProp).SetMark(-1, mCurrentLevel);
+    if (SolveDoAll() < 0) {
+      mPropPuzzle->Value(iProp, jProp).SetMark(1, mCurrentLevel);
+      ok = true;
+    }
+  }
+
+  mCurrentPuzzle = mPropPuzzle;
+  mPuzzleSolved = currentPuzzleSolved;
+
+  if (ok) {
+    SolveDoAll();
+    SolveCreateProp();
+  } else {
+    mPropMap[jProp*mCurrentPuzzle->getWidth() + iProp].Miss++;
+    mSolveResult = 0;
+  }
+
+  return ok || !mPropValueList.isEmpty();
+}
+
+int Ai::SolveAllLines()
+{
+  int solved = 0;
   Cells line(mCurrentPuzzle->getWidth());
   QVector<int> digits(mCurrentPuzzle->getWidth());
   for (int j = 0; j < mCurrentPuzzle->getHeight(); j++) {
@@ -697,13 +913,13 @@ bool Ai::PuzzleSolve()
     }
 
     if (!LineSolve(line, digits)) {
-      return false;
+      return -1;
     }
 
     for (int i = 0; i < mCurrentPuzzle->getWidth(); i++) {
       if (!mCurrentPuzzle->Value(i, j).HasMark() && line[i].HasMark()) {
         mCurrentPuzzle->Value(i, j) = line[i];
-        mCurrentPuzzleSolved++;
+        solved++;
       }
     }
   }
@@ -717,24 +933,23 @@ bool Ai::PuzzleSolve()
     }
 
     if (!LineSolve(line, digits)) {
-      return false;
+      return -1;
     }
 
     for (int j = 0; j < mCurrentPuzzle->getHeight(); j++) {
       if (!mCurrentPuzzle->Value(i, j).HasMark() && line[j].HasMark()) {
         mCurrentPuzzle->Value(i, j) = line[j];
-        mCurrentPuzzleSolved++;
+        solved++;
       }
     }
   }
 
-  return true;
+  return solved;
 }
 
-bool Ai::PuzzleSolveProp()
+void Ai::StopSolve()
 {
-  int y = 1;
-  return false;
+  mStop = true;
 }
 
 

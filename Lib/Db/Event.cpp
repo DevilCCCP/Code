@@ -3,7 +3,7 @@
 #include <Lib/Log/Log.h>
 
 
-bool EventType::Equals(const TableItem& other)
+bool EventType::Equals(const TableItem& other) const
 {
   const EventType& other_ = dynamic_cast<const EventType&>(other);
   return Id == other_.Id && Name == other_.Name && Descr == other_.Descr && Icon == other_.Icon;

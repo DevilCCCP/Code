@@ -22,7 +22,7 @@
 
 const int kWorkPeriodMs = 500;
 const int kWorkFailMs = 2 * 60 * 1000;
-const int kRequestTimeoutMs = 15000;
+const int kRequestTimeoutMs = 15 * 1000;
 const int kEventLogPerIteration = 40;
 const int kLogPerIteration = 40;
 const int kKeySize = 2048;
@@ -253,20 +253,17 @@ bool UniteAgentA::DoUpdateAll()
 
 bool UniteAgentA::DoUpdateObjects()
 {
-  bool ok = true;
   for (auto itr = mUpdateServers.begin(); itr != mUpdateServers.end(); ) {
     mCurrentObject = *itr;
-    if (DoUpdateObjectsOne()) {
-      itr = mUpdateServers.erase(itr);
-    } else {
-      ok = false;
-      itr++;
+    if (!DoUpdateObjectsOne()) {
+      return false;
     }
+    itr = mUpdateServers.erase(itr);
     if (IsStop()) {
       break;
     }
   }
-  return ok;
+  return true;
 }
 
 bool UniteAgentA::DoUpdateObjectsOne()
@@ -605,19 +602,21 @@ bool UniteAgentA::SendValidate(bool& valid)
   }
 
   int retCode;
-  if (SendRequest("QuerySegment", retCode)) {
-    if (retCode == 200) {
-      valid = true;
-      Log.Info(QString("Segment is valid and ready for updates"));
-      return true;
-    } else if (retCode == 403) {
-      valid = false;
-      Log.Fatal(QString("Segment not valid for update"));
-      return true;
-    }
-
-    Log.Warning(QString("Query fail (code: %1)").arg(retCode));
+  if (!SendRequest("QuerySegment", retCode)) {
+    return false;
   }
+
+  if (retCode == 200) {
+    valid = true;
+    Log.Info(QString("Segment is valid and ready for updates"));
+    return true;
+  } else if (retCode == 403) {
+    valid = false;
+    Log.Fatal(QString("Segment not valid for update"));
+    return true;
+  }
+
+  Log.Warning(QString("Query fail (code: %1)").arg(retCode));
   return false;
 }
 
@@ -630,28 +629,30 @@ bool UniteAgentA::SendQueryObject(bool& needUpdate, bool& needBackUpdate, QByteA
   }
 
   int retCode;
-  if (SendRequest("QueryObject", retCode, &backFile)) {
-    if (retCode == 201) {
-      needUpdate = false;
-//      Log.Info(QString("Server up to date (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
-      return true;
-    } else if (retCode == 202) {
-      needUpdate = true;
-      Log.Info(QString("Server need update (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
-      return true;
-    } else if (retCode == 205) {
-      needUpdate = true;
-      needBackUpdate = true;
-      Log.Info(QString("Server need backward update (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
-      return true;
-    } else if (retCode == 406) {
-      needUpdate = false;
-      Log.Warning(QString("Server not acceptable for update (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
-      return true;
-    }
-
-    Log.Warning(QString("Query object fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
+  if (!SendRequest("QueryObject", retCode, &backFile)) {
+    return false;
   }
+
+  if (retCode == 201) {
+    needUpdate = false;
+    //      Log.Info(QString("Server up to date (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
+    return true;
+  } else if (retCode == 202) {
+    needUpdate = true;
+    Log.Info(QString("Server need update (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
+    return true;
+  } else if (retCode == 205) {
+    needUpdate = true;
+    needBackUpdate = true;
+    Log.Info(QString("Server need backward update (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
+    return true;
+  } else if (retCode == 406) {
+    needUpdate = false;
+    Log.Warning(QString("Server not acceptable for update (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
+    return true;
+  }
+
+  Log.Warning(QString("Query object fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
   return false;
 }
 
@@ -662,37 +663,39 @@ bool UniteAgentA::SendEventLogQuery(bool& needUpdate)
   }
 
   int retCode;
-  if (SendRequest("QueryEvents", retCode)) {
-    if (retCode == 200) {
-      int size = mNetReply->header(QNetworkRequest::ContentLengthHeader).toInt();
-      while (mNetReply->bytesAvailable() < size) {
-        mNetReply->waitForReadyRead(kWorkPeriodMs);
-        if (IsStop()) {
-          return false;
-        }
-      }
+  if (!SendRequest("QueryEvents", retCode)) {
+    return false;
+  }
 
-      QByteArray data = mNetReply->readAll();
-      QJsonParseError err;
-      QJsonDocument doc = QJsonDocument::fromJson(data, &err);
-      if (err.error != QJsonParseError::NoError) {
-        Log.Error(QString("Parse query event log respond json fail (err: '%1')").arg(err.errorString()));
+  if (retCode == 200) {
+    int size = mNetReply->header(QNetworkRequest::ContentLengthHeader).toInt();
+    while (mNetReply->bytesAvailable() < size) {
+      mNetReply->waitForReadyRead(kWorkPeriodMs);
+      if (IsStop()) {
         return false;
       }
-
-      QJsonObject root = doc.object();
-      mTopHostEventId = root.value("TopEvent").toVariant().toLongLong();
-      mTopNextEventId = mTopLocalEventId;
-      if (mTopNextEventId > mTopHostEventId + kEventLogPerIteration) {
-        mTopNextEventId = mTopHostEventId + kEventLogPerIteration;
-      }
-
-      needUpdate = mTopHostEventId < mTopNextEventId;
-      return true;
     }
 
-    Log.Warning(QString("Query event log top id fail (code: %1)").arg(retCode));
+    QByteArray data = mNetReply->readAll();
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &err);
+    if (err.error != QJsonParseError::NoError) {
+      Log.Error(QString("Parse query event log respond json fail (err: '%1')").arg(err.errorString()));
+      return false;
+    }
+
+    QJsonObject root = doc.object();
+    mTopHostEventId = root.value("TopEvent").toVariant().toLongLong();
+    mTopNextEventId = mTopLocalEventId;
+    if (mTopNextEventId > mTopHostEventId + kEventLogPerIteration) {
+      mTopNextEventId = mTopHostEventId + kEventLogPerIteration;
+    }
+
+    needUpdate = mTopHostEventId < mTopNextEventId;
+    return true;
   }
+
+  Log.Warning(QString("Query event log top id fail (code: %1)").arg(retCode));
   return false;
 }
 
@@ -703,35 +706,37 @@ bool UniteAgentA::SendLogQuery(bool& needUpdate)
   }
 
   int retCode;
-  if (SendRequest("QueryLogs", retCode)) {
-    if (retCode == 200) {
-      int size = mNetReply->header(QNetworkRequest::ContentLengthHeader).toInt();
-      while (mNetReply->bytesAvailable() < size) {
-        mNetReply->waitForReadyRead(kWorkPeriodMs);
-        if (IsStop()) {
-          return false;
-        }
-      }
+  if (!SendRequest("QueryLogs", retCode)) {
+    return false;
+  }
 
-      QByteArray data = mNetReply->readAll();
-      QJsonParseError err;
-      QJsonDocument doc = QJsonDocument::fromJson(data, &err);
-      if (err.error != QJsonParseError::NoError) {
-        Log.Error(QString("Parse query log respond json fail (err: '%1')").arg(err.errorString()));
+  if (retCode == 200) {
+    int size = mNetReply->header(QNetworkRequest::ContentLengthHeader).toInt();
+    while (mNetReply->bytesAvailable() < size) {
+      mNetReply->waitForReadyRead(kWorkPeriodMs);
+      if (IsStop()) {
         return false;
       }
-
-      QJsonObject root = doc.object();
-      mTopHostLogId = root.value("TopLog").toVariant().toLongLong();
-      mTopHostLogId = qMax(mTopHostLogId, mBottomLocalLogId);
-      mTopNextLogId = qMin(mTopLocalLogId, mTopHostLogId + kLogPerIteration);
-
-      needUpdate = mTopHostLogId < mTopNextLogId;
-      return true;
     }
 
-    Log.Warning(QString("Query log top id fail (code: %1)").arg(retCode));
+    QByteArray data = mNetReply->readAll();
+    QJsonParseError err;
+    QJsonDocument doc = QJsonDocument::fromJson(data, &err);
+    if (err.error != QJsonParseError::NoError) {
+      Log.Error(QString("Parse query log respond json fail (err: '%1')").arg(err.errorString()));
+      return false;
+    }
+
+    QJsonObject root = doc.object();
+    mTopHostLogId = root.value("TopLog").toVariant().toLongLong();
+    mTopHostLogId = qMax(mTopHostLogId, mBottomLocalLogId);
+    mTopNextLogId = qMin(mTopLocalLogId, mTopHostLogId + kLogPerIteration);
+
+    needUpdate = mTopHostLogId < mTopNextLogId;
+    return true;
   }
+
+  Log.Warning(QString("Query log top id fail (code: %1)").arg(retCode));
   return false;
 }
 
@@ -742,14 +747,16 @@ bool UniteAgentA::SendObjects()
   }
 
   int retCode;
-  if (SendRequest("UpdateObject", retCode)) {
-    if (retCode == 200) {
-      Log.Info(QString("Update server done (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
-      return true;
-    }
-
-    Log.Warning(QString("Update server fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
+  if (!SendRequest("UpdateObject", retCode)) {
+    return false;
   }
+
+  if (retCode == 200) {
+    Log.Info(QString("Update server done (id: %1, name: '%2')").arg(mCurrentObject->Id).arg(mCurrentObject->Name));
+    return true;
+  }
+
+  Log.Warning(QString("Update server fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
   return false;
 }
 
@@ -760,15 +767,17 @@ bool UniteAgentA::SendEvents()
   }
 
   int retCode;
-  if (SendRequest("UpdateEvents", retCode)) {
-    if (retCode == 200) {
-      Log.Info(QString("Update log done (events: %1, log: %2 (%3, %4])")
-               .arg(mEventInfo.size()).arg(mEventLog.size()).arg(mTopHostEventId).arg(mTopNextEventId));
-      return true;
-    }
-
-    Log.Warning(QString("Update events log fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
+  if (!SendRequest("UpdateEvents", retCode)) {
+    return false;
   }
+
+  if (retCode == 200) {
+    Log.Info(QString("Update log done (events: %1, log: %2 (%3, %4])")
+             .arg(mEventInfo.size()).arg(mEventLog.size()).arg(mTopHostEventId).arg(mTopNextEventId));
+    return true;
+  }
+
+  Log.Warning(QString("Update events log fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
   return false;
 }
 
@@ -779,15 +788,17 @@ bool UniteAgentA::SendLogs()
   }
 
   int retCode;
-  if (SendRequest("UpdateLogs", retCode)) {
-    if (retCode == 200) {
-      Log.Info(QString("Update log done (log: %1 (%2, %3])")
-               .arg(mLogList.size()).arg(mTopHostLogId).arg(mTopNextLogId));
-      return true;
-    }
-
-    Log.Warning(QString("Update logs fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
+  if (!SendRequest("UpdateLogs", retCode)) {
+    return false;
   }
+
+  if (retCode == 200) {
+    Log.Info(QString("Update log done (log: %1 (%2, %3])")
+             .arg(mLogList.size()).arg(mTopHostLogId).arg(mTopNextLogId));
+    return true;
+  }
+
+  Log.Warning(QString("Update logs fail (id: %1, name: '%2', code: %3)").arg(mCurrentObject->Id).arg(mCurrentObject->Name).arg(retCode));
   return false;
 }
 
@@ -813,6 +824,12 @@ bool UniteAgentA::SendRequest(const QByteArray& function, int& code, QByteArray*
   if (mUniteInfo->getDebug()) {
     Log.Info(QString("=== Request: ======\n") + url);
   }
+
+  if (mNetReply) {
+    mNetReply->deleteLater();
+    mNetReply = nullptr;
+  }
+
   mNetReply = mNetManager->post(request, mFileData);
   mNetAliveTimer->start(kWorkPeriodMs);
   mNetTimeoutTimer->start(kRequestTimeoutMs);
@@ -842,6 +859,11 @@ bool UniteAgentA::SendRequest(const QByteArray& function, int& code, QByteArray*
   if (file) {
     *file = mNetReply->readAll();
   }
+
+  if (mUniteInfo->getDebug()) {
+    Log.Info(QString("=== Request: ======\n") + url);
+  }
+
   if (mNetworkHasError) {
     Log.Info(QString("Connect to server ok"));
     mNetworkHasError = false;
@@ -880,8 +902,12 @@ UniteAgentA::UniteAgentA(const DbS& _Db, const UniteInfoS& _UniteInfo, const QSt
   , mValidated(false), mNextCheck(0), mHasError(false)
   , mTopHostEventId(0), mTopNextEventId(0), mTopLocalEventId(0)
   , mTopHostLogId(0), mTopNextLogId(0), mTopLocalLogId(0)
-  , mNetManager(nullptr), mEventLoop(nullptr), mNetworkHasError(true), mNetworkError(QNetworkReply::NoError), mNetworkErrorCount(0), mNetworkErrorMessage(1)
+  , mNetManager(nullptr), mEventLoop(nullptr), mNetworkHasError(true), mNetworkError(QNetworkReply::NoError)
+  , mNetworkErrorCount(0), mNetworkErrorMessage(1)
+  , mNetAliveTimer(nullptr), mNetReply(nullptr), mNetTimeoutTimer(nullptr)
 {
+  SetCriticalWarnMs(kRequestTimeoutMs + 1000);
+  SetCriticalFailMs(2 * kRequestTimeoutMs);
   SetFailStateDeadMs(kWorkFailMs);
 
   mFileType = "";

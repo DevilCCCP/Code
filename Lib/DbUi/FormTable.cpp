@@ -67,6 +67,7 @@ FormTable::FormTable(QWidget *parent)
   : QWidget(parent)
   , ui(new Ui::FormTable)
   , mProxyModel(nullptr)
+  , mHasCurrent(false), mHasSelection(false)
 {
   Q_INIT_RESOURCE(DbUi);
 
@@ -158,6 +159,11 @@ void FormTable::SetLimit(int limit)
   ui->spinBoxLimit->setValue(limit);
 }
 
+void FormTable::SetSingleSelection(bool single)
+{
+  ui->treeViewTable->setSelectionMode(single? QTreeView::SingleSelection: QTreeView::ExtendedSelection);
+}
+
 int FormTable::CurrentItem()
 {
   QModelIndex index = ui->treeViewTable->selectionModel()->currentIndex();
@@ -185,8 +191,8 @@ void FormTable::Reload()
 
   ApplyFilters();
 
-  int count = mTableAdapter->LoadQuery(mWhere);
-  ui->spinBoxTotal->setValue(count);
+  mLoadedCount = mTableAdapter->LoadQuery(mWhere);
+  ui->spinBoxTotal->setValue(mLoadedCount);
 
   UpdateCurrent(false);
   UpdateSelection(false);
@@ -238,6 +244,16 @@ void FormTable::AddSeek(const QString& column, const QString& text)
   }
 }
 
+void FormTable::GetSelected(QList<int>& indexList)
+{
+  indexList.clear();
+
+  auto indexes = ui->treeViewTable->selectionModel()->selectedRows();
+  foreach (const QModelIndex& index, indexes) {
+    indexList.append(mProxyModel->mapToSource(index).row());
+  }
+}
+
 void FormTable::InitFilterOne(const CondCtrl& condCtrl, bool main)
 {
   condCtrl.ComboBoxType->setSizePolicy(ui->comboBoxTypeMain->sizePolicy());
@@ -279,19 +295,19 @@ void FormTable::AddNewFilter()
 
 void FormTable::InitMenu()
 {
-  InitAction(ui->toolButtonCreate, ui->actionNew, "Create new %1");
-  InitAction(ui->toolButtonEdit, ui->actionEdit, "Edit current %1");
-  InitAction(ui->toolButtonClone, ui->actionClone, "Clone current %1");
-  InitAction(ui->toolButtonExport, ui->actionExport, "Export currently loaded %1s to .csv file");
-  InitAction(ui->toolButtonImport, ui->actionImport, "Import %1s from .csv file");
+  InitAction(ui->toolButtonCreate, ui->actionNew, tr("Create new %1"));
+  InitAction(ui->toolButtonEdit, ui->actionEdit, tr("Edit current %1"));
+  InitAction(ui->toolButtonClone, ui->actionClone, tr("Clone current %1"));
+  InitAction(ui->toolButtonExport, ui->actionExport, tr("Export currently loaded %1 items to .csv file"));
+  InitAction(ui->toolButtonImport, ui->actionImport, tr("Import %1 items from .csv file"));
   if (mTableAdapter->CanBackup()) {
-    InitAction(ui->toolButtonBackup, ui->actionBackup, "Backup currently loaded %1s to .csv file");
-    InitAction(ui->toolButtonRestore, ui->actionRestore, "Restore %1s from .csv file");
+    InitAction(ui->toolButtonBackup, ui->actionBackup, tr("Backup currently loaded %1 items to .csv file"));
+    InitAction(ui->toolButtonRestore, ui->actionRestore, tr("Restore %1 items from .csv file"));
   } else {
     ui->toolButtonBackup->setVisible(false);
     ui->toolButtonRestore->setVisible(false);
   }
-  InitAction(ui->toolButtonRemove, ui->actionRemove, "Remove selected %1s");
+  InitAction(ui->toolButtonRemove, ui->actionRemove, tr("Remove selected %1 items"));
 
   ui->treeViewTable->setContextMenuPolicy(Qt::ActionsContextMenu);
 }
@@ -327,41 +343,42 @@ void FormTable::InitFilter(TableSchema::TableFilter::EEqualType type, FormTable:
       lineEdit->setText("");
       switch (type) {
       case TableSchema::TableFilter::eLike:
-        lineEdit->setPlaceholderText("Text filter (use wildcards: '%' AND '_')");
+        lineEdit->setPlaceholderText(tr("Text filter (use wildcards: '%' AND '_')"));
         lineEdit->setValidator(nullptr);
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eLikeInside:
-        lineEdit->setPlaceholderText("Text filter (use wildcards: '%' AND '_')");
+        lineEdit->setPlaceholderText(tr("Text filter (use wildcards: '%' AND '_')"));
         lineEdit->setValidator(nullptr);
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eByteArray:
-        lineEdit->setPlaceholderText("Binary data as HEX text (example: 'aaCCdd')");
+        lineEdit->setPlaceholderText(tr("Binary data as HEX text (example: 'aaCCdd')"));
         lineEdit->setValidator(new QRegExpValidator(QRegExp("[0-9A-Fa-f]*"), lineEdit));
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eEqGreater:
-        lineEdit->setPlaceholderText("Integer value (minimum id)");
+        lineEdit->setPlaceholderText(tr("Integer value (minimum id)"));
         lineEdit->setValidator(new QIntValidator(lineEdit));
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eEqual:
-        lineEdit->setPlaceholderText("Integer value");
+        lineEdit->setPlaceholderText(tr("Integer value"));
         lineEdit->setValidator(new QIntValidator(lineEdit));
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eEqualKey:
-        lineEdit->setPlaceholderText("Select from list");
+        lineEdit->setPlaceholderText(tr("Select from list"));
         lineEdit->setValidator(nullptr);
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eEqText:
-        lineEdit->setPlaceholderText("Text value");
+        lineEdit->setPlaceholderText(tr("Text value"));
         lineEdit->setValidator(nullptr);
         lineEdit->setEnabled(true);
         break;
       case TableSchema::TableFilter::eTimeRange:
+      case TableSchema::TableFilter::eDateRange:
         break;
       }
     }
@@ -369,9 +386,20 @@ void FormTable::InitFilter(TableSchema::TableFilter::EEqualType type, FormTable:
 
   case TableSchema::TableFilter::eTimeRange:
     if (!dynamic_cast<FormTableTime*>(selCond->EditWidget)) {
-      FormTableTime* formTableTime = new FormTableTime(this);
+      FormTableTime* formTableTime = new FormTableTime(true, this);
 
       selCond->ReplaceEdit(formTableTime);
+    }
+    if (FormTableTime* formTableTime = dynamic_cast<FormTableTime*>(selCond->EditWidget)) {
+      formTableTime->Clear();
+    }
+    break;
+
+  case TableSchema::TableFilter::eDateRange:
+    if (!dynamic_cast<FormTableTime*>(selCond->EditWidget)) {
+      FormTableTime* formTableDate = new FormTableTime(false, this);
+
+      selCond->ReplaceEdit(formTableDate);
     }
     if (FormTableTime* formTableTime = dynamic_cast<FormTableTime*>(selCond->EditWidget)) {
       formTableTime->Clear();
@@ -397,17 +425,21 @@ void FormTable::ChangeCondition(FormTable::CondCtrl* selCond, int index)
 
 void FormTable::UpdateCurrent(bool hasCurrent)
 {
-  ui->actionEdit->setEnabled(hasCurrent);
-  ui->actionClone->setEnabled(hasCurrent);
+  mHasCurrent = hasCurrent;
 
-  emit OnChangeCurrent(hasCurrent);
+  ui->actionEdit->setEnabled(mHasCurrent);
+  ui->actionClone->setEnabled(mHasCurrent);
+
+  emit OnChangeCurrent(mHasCurrent);
 }
 
 void FormTable::UpdateSelection(bool hasSelection)
 {
-  ui->actionRemove->setEnabled(hasSelection);
+  mHasSelection = hasSelection;
 
-  emit OnChangeSelection(hasSelection);
+  ui->actionRemove->setEnabled(mHasSelection);
+
+  emit OnChangeSelection(mHasSelection);
 }
 
 void FormTable::ApplyFilters()
@@ -449,6 +481,7 @@ void FormTable::ApplyFilters()
         whereOne = QString("%1 = %2").arg(filter.Column).arg(ToSql(text));
         break;
       case TableSchema::TableFilter::eTimeRange:
+      case TableSchema::TableFilter::eDateRange:
         break;
       }
     } else if (FormTableTime* formTableTime = dynamic_cast<FormTableTime*>(cond.EditWidget)) {
@@ -479,7 +512,7 @@ void FormTable::ApplyFilters()
 
 void FormTable::Db2Csv(bool backup)
 {
-  QString filename = QFileDialog::getSaveFileName(this, QString(), QString(), "Csv format (*.csv)");
+  QString filename = QFileDialog::getSaveFileName(this, QString(), QString(), tr("Csv format (*.csv)"));
   if (filename.isEmpty()) {
     return;
   }
@@ -492,20 +525,19 @@ void FormTable::Db2Csv(bool backup)
   }
 
   if (!ok) {
-    QString actionText = QString(backup? "Backup": "Export");
-    if (file.error() != QFileDevice::NoError) {
-      QMessageBox::warning(this, QString("%1 %2s").arg(actionText).arg(mTableAdapter->GetTableSchema()->Name.toLower())
-                           , QString("Write file fail (%1)").arg(file.errorString()));
-    } else {
-      QMessageBox::warning(this, QString("%1 %2s").arg(actionText).arg(mTableAdapter->GetTableSchema()->Name.toLower())
-                           , QString("Write file fail"));
-    }
+    QString actionText = QString(tr("%1 %2 items"))
+        .arg(backup? tr("Backup"): tr("Export")).arg(mTableAdapter->GetTableSchema()->Name.toLower());
+    QString errorText = (file.error() != QFileDevice::NoError)
+        ? QString(tr("Write file fail (%1)")).arg(file.errorString())
+        : QString(tr("Write file fail"));
+
+    QMessageBox::warning(this, actionText, errorText);
   }
 }
 
 void FormTable::Csv2Db(bool backup)
 {
-  QString filename = QFileDialog::getOpenFileName(this, QString(), QString(), "Csv format (*.csv);;Text files (*.txt)");
+  QString filename = QFileDialog::getOpenFileName(this, QString(), QString(), tr("Csv format (*.csv);;Text files (*.txt)"));
   if (filename.isEmpty()) {
     return;
   }
@@ -518,19 +550,19 @@ void FormTable::Csv2Db(bool backup)
     ok = backup? mTableAdapter->Restore(&reader): mTableAdapter->ImportAll(&reader, &info);
   }
 
-  QString actionText = QString(backup? "Restore": "Export");
+  QString actionText = QString(tr("%1 %2 items"))
+      .arg(backup? tr("Restore"): tr("Export")).arg(mTableAdapter->GetTableSchema()->Name.toLower());
+
   if (!ok) {
     if (file.error() != QFileDevice::NoError) {
-      QMessageBox::warning(this, QString("%1 %2s").arg(actionText).arg(mTableAdapter->GetTableSchema()->Name.toLower())
-                           , QString("%2 file fail (%1)").arg(file.errorString()).arg(backup? "Write": "Read"));
+      QMessageBox::warning(this, actionText, QString(tr("%2 file fail (%1)")).arg(file.errorString()).arg(backup? tr("Write"): tr("Read")));
     } else if (!info.isEmpty()) {
-      QMessageBox::warning(this, QString("%1 %2s").arg(actionText).arg(mTableAdapter->GetTableSchema()->Name.toLower()), info);
+      QMessageBox::warning(this, actionText, info);
     } else {
-      QMessageBox::warning(this, QString("%1 %2s").arg(actionText).arg(mTableAdapter->GetTableSchema()->Name.toLower())
-                           , backup? QString("Restore fail"): QString("Backup fail"));
+      QMessageBox::warning(this, actionText, backup? QString(tr("Restore fail")): QString(tr("Backup fail")));
     }
   } else if (!info.isEmpty()) {
-    QMessageBox::information(this, QString("%1 %2s").arg(actionText).arg(mTableAdapter->GetTableSchema()->Name.toLower()), info);
+    QMessageBox::information(this, actionText, info);
   }
   Reload();
 }
@@ -747,7 +779,8 @@ void FormTable::on_actionEdit_triggered()
     emit OnEditItem(mProxyModel->mapToSource(index).row());
   } else {
     QString name = mTableAdapter->GetTableSchema()->Name.toLower();
-    QMessageBox::warning(parentWidget(), "Edit " + name, "Set current " + name + " to edit it");
+    QString actionText = QString(tr("Edit %1")).arg(name);
+    QMessageBox::warning(parentWidget(), actionText, QString(tr("Set current %1 to edit it")).arg(name));
   }
 }
 
@@ -755,15 +788,16 @@ void FormTable::on_actionRemove_triggered()
 {
   QModelIndexList list = ui->treeViewTable->selectionModel()->selectedRows();
   if (list.isEmpty()) {
-    QMessageBox::warning(parentWidget(), "Remove " + mTableAdapter->GetTableSchema()->Name.toLower()
-                         , "Select " + mTableAdapter->GetTableSchema()->Name.toLower() + "(s) to remove");
+    QMessageBox::warning(parentWidget(), QString(tr("Remove %1")).arg(mTableAdapter->GetTableSchema()->Name.toLower())
+                         , QString(tr("Select %1 items to remove")).arg(mTableAdapter->GetTableSchema()->Name.toLower()));
     return;
   }
 
+  QString actionText = QString(tr("Remove %1")).arg(mTableAdapter->GetTableSchema()->Name.toLower());
   if (list.size() > 0) {
     QMessageBox mb(parentWidget());
-    mb.setWindowTitle("Remove " + mTableAdapter->GetTableSchema()->Name.toLower());
-    mb.setText(QString("Remove %1 ").arg(list.size()) + mTableAdapter->GetTableSchema()->Name.toLower() + "(s)");
+    mb.setWindowTitle(actionText);
+    mb.setText(QString(tr("Removed %1 items")).arg(list.size()));
     mb.setStandardButtons(QMessageBox::Yes | QMessageBox::No | QMessageBox::Cancel);
     mb.setDefaultButton(QMessageBox::No);
     auto res = mb.exec();
@@ -775,7 +809,7 @@ void FormTable::on_actionRemove_triggered()
   auto indexes = ui->treeViewTable->selectionModel()->selectedRows();
   foreach (const QModelIndex& index, indexes) {
     if (!mTableAdapter->Delete(mProxyModel->mapToSource(index).row())) {
-      QMessageBox::warning(parentWidget(), "Remove " + mTableAdapter->GetTableSchema()->Name.toLower(), "Remove fail");
+      QMessageBox::warning(parentWidget(), actionText, tr("Remove fail"));
       break;
     }
   }
@@ -788,14 +822,15 @@ void FormTable::on_actionRemove_triggered()
 void FormTable::on_actionClone_triggered()
 {
   QModelIndex index = ui->treeViewTable->currentIndex();
+  QString actionText = QString(tr("Clone %1")).arg(mTableAdapter->GetTableSchema()->Name.toLower());
   if (!index.isValid()) {
-    QMessageBox::warning(parentWidget(), "Clone " + mTableAdapter->GetTableSchema()->Name.toLower()
-                         , "Set current " + mTableAdapter->GetTableSchema()->Name.toLower() + " to clone it");
+    QMessageBox::warning(parentWidget(), actionText
+                         , QString(tr("Set current %1 to clone it")).arg(mTableAdapter->GetTableSchema()->Name.toLower()));
     return;
   }
 
   if (!mTableAdapter->Clone(mProxyModel->mapToSource(index).row())) {
-    QMessageBox::warning(parentWidget(), "Clone " + mTableAdapter->GetTableSchema()->Name.toLower(), "Clone fail");
+    QMessageBox::warning(parentWidget(), actionText, tr("Clone fail"));
     return;
   }
   Reload();

@@ -25,6 +25,10 @@ for file in $BinDir/${ProjAbbr}_*.exe; do
   echo X ${file##*/}>>$PackInfo
 done
 
+for file in $BinDir/*.sh; do
+  echo E ${file##*/}>>$PackInfo
+done
+
 if [ -d $PackScript ]; then
 echo 'D Scripts'>>$PackInfo
 if [ ! -d $BinDir/Scripts ]; then

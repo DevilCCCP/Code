@@ -18,7 +18,7 @@ public:
   QString    Descr;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<int>& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<int>& other) const Q_DECL_OVERRIDE
   {
     const VaStatType& vs = static_cast<const VaStatType&>(other);
     return DbItemT<int>::Equals(other) && Abbr == vs.Abbr && Name == vs.Name && Descr == vs.Descr;

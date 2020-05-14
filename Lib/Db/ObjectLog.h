@@ -24,7 +24,7 @@ public:
   int        LongestWork;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE;
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE;
 
   /*override */virtual qint64 Key(int index) const Q_DECL_OVERRIDE;
   /*override */virtual void SetKey(int index, qint64 id) Q_DECL_OVERRIDE;

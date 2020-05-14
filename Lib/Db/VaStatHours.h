@@ -18,7 +18,7 @@ public:
   QDateTime  Hour;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE
   {
     const VaStatHours& vs = static_cast<const VaStatHours&>(other);
     return DbItemT<qint64>::Equals(other) && VstatId == vs.VstatId && FimageId == vs.FimageId && Hour == vs.Hour;

@@ -20,7 +20,7 @@ protected:
   /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
 
 public:
-  ImpD(const Db& _Db, int _WorkPeriodMs, bool _AutoWorkCalc = true);
+  ImpD(const Db& _Db, int _WorkPeriodMs, bool _AutoWorkCalc = true, bool _Critical = true);
   /*override */virtual ~ImpD() { }
 };
 

@@ -4,7 +4,7 @@
 #include "ObjectLog.h"
 
 
-bool ObjectLog::Equals(const DbItemT<qint64>& other)
+bool ObjectLog::Equals(const DbItemT<qint64>& other) const
 {
   const ObjectLog& vs = static_cast<const ObjectLog&>(other);
   return DbItemT<qint64>::Equals(other) && ObjectId == vs.ObjectId && PeriodStart == vs.PeriodStart && PeriodEnd == vs.PeriodEnd && ThreadName == vs.ThreadName && WorkName == vs.WorkName && TotalTime == vs.TotalTime && Circles == vs.Circles && WorkTime == vs.WorkTime && LongestWork == vs.LongestWork;

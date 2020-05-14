@@ -80,7 +80,10 @@ public:
   }
 
 protected:
-  /*new */virtual QString Text(int row, int column) const = 0;
+  /*new */virtual QString Text(int row, int column) const
+  {
+    return mItems.at(row)->Text(column);
+  }
 
   /*new */virtual bool SetText(int row, int column, const QString& text)
   {
@@ -164,4 +167,9 @@ public:
     : QAbstractTableModel(parent)
     , mIcon(SmallIcon(_IconName))
   { }
+
+  DbTableModel(QObject *parent = 0)
+    : QAbstractTableModel(parent)
+  {
+  }
 };

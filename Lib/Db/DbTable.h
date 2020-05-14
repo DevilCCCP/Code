@@ -25,6 +25,7 @@ public:
   /*new */virtual bool SetText(int column, const QString& text) { Q_UNUSED(column); Q_UNUSED(text); return false; }
   /*new */virtual QVariant Data(int column) const { Q_UNUSED(column); return QVariant(); }
   /*new */virtual bool SetData(int column, const QVariant& data) { Q_UNUSED(column); Q_UNUSED(data); return false; }
+  /*new */virtual bool IsDataReadOnly(int column) { Q_UNUSED(column); return false; }
 
 protected:
   static QString TextFromData(const QByteArray& data)
@@ -46,7 +47,7 @@ public:
   IntT Id;
 
 public:
-  /*new */virtual bool Equals(const DbItemT<IntT>& other) { return Id == other.Id && Id != 0; }
+  /*new */virtual bool Equals(const DbItemT<IntT>& other) const { return Id == other.Id && Id != 0; }
 
 public:
   DbItemT(): Id(0) { }

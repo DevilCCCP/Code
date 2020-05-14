@@ -11,6 +11,7 @@ class Cell
     eMarkNone,
     eMarkYes,
     eMarkNo,
+    eMarkProp,
   };
 
   bool  mReal;
@@ -32,18 +33,26 @@ class Cell
     eStoreMarkNo2  = 3,
     eStoreMarkYes3 = 7,
     eStoreMarkNo3  = 4,
+    eStoreMarkProp = 9,
   };
 
 public:
   bool IsMarkYes() const { return mMark == eMarkYes; }
   bool IsMarkNo() const { return mMark == eMarkNo; }
-  bool HasMark() const { return mMark != eMarkNone; }
+  bool IsMarkProp() const { return mMark == eMarkProp; }
+  bool HasMark() const { return mMark != eMarkNone && mMark != eMarkProp; }
   int MarkLevel() const { return mMarkLevel; }
   bool Real() const { return mReal; }
 
   void SetReal(bool value)
   {
     mReal = value;
+  }
+
+  void SetProp()
+  {
+    mMark      = eMarkProp;
+    mMarkLevel = 0;
   }
 
   void SetMark(int mark, int level)
@@ -81,6 +90,7 @@ public:
     case eStoreMarkNo2 : mMark = eMarkNo; mMarkLevel = 2; break;
     case eStoreMarkYes3: mMark = eMarkYes; mMarkLevel = 3; break;
     case eStoreMarkNo3 : mMark = eMarkNo; mMarkLevel = 3; break;
+    case eStoreMarkProp: mMark = eMarkProp; mMarkLevel = 0; break;
     default: mMark = eMarkNone; mMarkLevel = 0; return false;
     }
     return true;
@@ -111,6 +121,9 @@ public:
       case 3: hiPart = eStoreMarkNo3; break;
       default: return false;
       }
+      break;
+    case eMarkProp:
+      hiPart = eStoreMarkProp;
       break;
     default: return false;
     }

@@ -41,9 +41,10 @@ bool Account::Load(const AccountInfo& info, const QString& path)
   QSettings accountSettings(userFilename, QSettings::IniFormat);
   mPreviewSize    = accountSettings.value("PreviewSize", 1).toInt();
 
-  mStyleIndex     = accountSettings.value("StyleIndex", 0).toInt();
-  mLastPuzzle     = accountSettings.value("LastPuzzle", QString()).toString();
-  mCurrentPuzzle  = accountSettings.value("CurrentPuzzle", -1).toInt();
+  mStyleIndex            = accountSettings.value("StyleIndex", 0).toInt();
+  mLastPuzzle            = accountSettings.value("LastPuzzle", QString()).toString();
+  mCurrentPuzzleDir      = accountSettings.value("CurrentPuzzleDir", -1).toInt();
+  mCurrentPuzzleFilename = accountSettings.value("CurrentPuzzleFilename", QString()).toString();
 
   mDigitStyle     = (EDigitStyle)accountSettings.value("DigitStyle", eDigitAuto).toInt();
   mDigitHighlight = accountSettings.value("DigitHighlight", true).toBool();
@@ -51,6 +52,8 @@ bool Account::Load(const AccountInfo& info, const QString& path)
   mCalcWindow     = (ECalcWindow)accountSettings.value("CalcWindow", eCalcWindowSimple).toInt();
   mAutoSavePeriod = accountSettings.value("AutoSavePeriod", 30*1000).toInt();
   mUndoStackLimit = accountSettings.value("UndoStackLimit", 64).toInt();
+  mAutoOpenPropEx = accountSettings.value("AutoOpenPropEx", true).toBool();
+  mAutoCalcStars  = accountSettings.value("AutoCalcStars", true).toBool();
 
   mShowGameStateDialog = accountSettings.value("ShowGameStateDialog", true).toBool();
   mPuzzleDirList.clear();
@@ -70,8 +73,6 @@ bool Account::Load(const AccountInfo& info, const QString& path)
 
   mWaitCount = 0;
   mDoneCount = 0;
-  QVector<QSet<QString> > dirPuzzlesList;
-  dirPuzzlesList.resize(mPuzzleDirList.size());
   accountSettings.beginGroup(QString("Puzzle"));
   for (int i = 0; ; i++) {
     accountSettings.beginGroup(QString::number(i));
@@ -88,42 +89,13 @@ bool Account::Load(const AccountInfo& info, const QString& path)
     if (info.Filename.isEmpty()) {
       break;
     }
-    if (info.DirIndex >= 0 && info.DirIndex < dirPuzzlesList.size()) {
-      dirPuzzlesList[info.DirIndex].insert(info.Filename);
+    if (info.DirIndex >= 0 && info.DirIndex < mPuzzleDirList.size()) {
       mPuzzleInfoList.append(info);
     }
   }
   accountSettings.endGroup();
 
-  for (int dirInd = 0; dirInd < dirPuzzlesList.size(); dirInd++) {
-    const QString& dirPath = mPuzzleDirList.at(dirInd);
-    QSet<QString>& dirPuzzles = dirPuzzlesList[dirInd];
-    QDirIterator itr(dirPath);
-    while (itr.hasNext()) {
-      QFileInfo fileInfo(itr.next());
-      if (!fileInfo.isFile()) {
-        continue;
-      }
-      QString filename = fileInfo.fileName();
-      if (!dirPuzzles.remove(filename)) {
-        PuzzleInfo info;
-        info.Filename = filename;
-        info.DirIndex = dirInd;
-        info.Type     = eWait;
-        mWaitCount++;
-        mPuzzleInfoList.append(info);
-      }
-    }
-    foreach (const QString& filename, dirPuzzles) {
-      for (int i = 0; i < mPuzzleInfoList.size(); i++) {
-        const PuzzleInfo& info = mPuzzleInfoList.at(i);
-        if (info.DirIndex == dirInd && info.Filename == filename) {
-          mPuzzleInfoList.removeAt(i);
-          break;
-        }
-      }
-    }
-  }
+  UpdatePuzzleList();
   GetCurrentPuzzleFilename();
   return true;
 }
@@ -136,7 +108,8 @@ bool Account::Save()
 
   accountSettings.setValue("StyleIndex",    mStyleIndex);
   accountSettings.setValue("LastPuzzle",    mLastPuzzle);
-  accountSettings.setValue("CurrentPuzzle", mCurrentPuzzle);
+  accountSettings.setValue("CurrentPuzzleDir", mCurrentPuzzleDir);
+  accountSettings.setValue("CurrentPuzzleFilename", mCurrentPuzzleFilename);
 
   accountSettings.setValue("DigitStyle", (int)mDigitStyle);
   accountSettings.setValue("DigitHighlight", mDigitHighlight);
@@ -144,6 +117,8 @@ bool Account::Save()
   accountSettings.setValue("CalcWindow", (int)mCalcWindow);
   accountSettings.setValue("AutoSavePeriod", mAutoSavePeriod);
   accountSettings.setValue("UndoStackLimit", mUndoStackLimit);
+  accountSettings.setValue("AutoOpenPropEx", mAutoOpenPropEx);
+  accountSettings.setValue("AutoCalcStars", mAutoCalcStars);
 
   accountSettings.setValue("ShowGameStateDialog", mShowGameStateDialog);
 
@@ -175,6 +150,55 @@ bool Account::PrepareTemp()
   }
 
   return true;
+}
+
+void Account::UpdatePuzzleList()
+{
+  bool haveChanges = false;
+  QVector<QSet<QString> > dirPuzzlesList;
+  dirPuzzlesList.resize(mPuzzleDirList.size());
+  for (const PuzzleInfo& info: mPuzzleInfoList) {
+    if (info.DirIndex >= 0 && info.DirIndex < dirPuzzlesList.size()) {
+      dirPuzzlesList[info.DirIndex].insert(info.Filename);
+    }
+  }
+
+  for (int dirInd = 0; dirInd < dirPuzzlesList.size(); dirInd++) {
+    const QString& dirPath = mPuzzleDirList.at(dirInd);
+    QSet<QString>& dirPuzzles = dirPuzzlesList[dirInd];
+    QDirIterator itr(dirPath);
+    while (itr.hasNext()) {
+      QFileInfo fileInfo(itr.next());
+      if (!fileInfo.isFile()) {
+        continue;
+      }
+      QString filename = fileInfo.fileName();
+      if (!dirPuzzles.remove(filename)) {
+        PuzzleInfo info;
+        info.Filename = filename;
+        info.DirIndex = dirInd;
+        info.Type     = eWait;
+        mWaitCount++;
+        mPuzzleInfoList.prepend(info);
+        haveChanges = true;
+      }
+    }
+
+    foreach (const QString& filename, dirPuzzles) {
+      for (int i = 0; i < mPuzzleInfoList.size(); i++) {
+        const PuzzleInfo& info = mPuzzleInfoList.at(i);
+        if (info.DirIndex == dirInd && info.Filename == filename) {
+          mPuzzleInfoList.removeAt(i);
+          haveChanges = true;
+          break;
+        }
+      }
+    }
+  }
+
+  if (haveChanges) {
+    Save();
+  }
 }
 
 bool Account::HaveLastPuzzle()
@@ -216,28 +240,25 @@ bool Account::TakeCurrentPuzzle()
 
 bool Account::SelectNextPuzzle()
 {
-  ++mCurrentPuzzle;
-  for (; mCurrentPuzzle < mPuzzleInfoList.size(); ++mCurrentPuzzle) {
-    if (mPuzzleInfoList.at(mCurrentPuzzle).Type == eWait) {
+  for (int i = 0; i < mPuzzleInfoList.size(); ++i) {
+    if (mPuzzleInfoList.at(i).Type == eWait) {
+      mCurrentPuzzleDir = mPuzzleInfoList.at(i).DirIndex;
+      mCurrentPuzzleFilename = mPuzzleInfoList.at(i).Filename;
       return true;
     }
   }
 
-  for (mCurrentPuzzle = 0; mCurrentPuzzle < mPuzzleInfoList.size(); ++mCurrentPuzzle) {
-    if (mPuzzleInfoList.at(mCurrentPuzzle).Type == eWait) {
-      return true;
-    }
-  }
-
-  for (mCurrentPuzzle = 0; mCurrentPuzzle < mPuzzleInfoList.size(); ++mCurrentPuzzle) {
-    PuzzleInfo* info = &mPuzzleInfoList[mCurrentPuzzle];
+  for (int i = 0; i < mPuzzleInfoList.size(); ++i) {
+    PuzzleInfo* info = &mPuzzleInfoList[i];
     if (info->Type == eDone) {
       info->Type = eWait;
     }
   }
 
-  for (mCurrentPuzzle = 0; mCurrentPuzzle < mPuzzleInfoList.size(); ++mCurrentPuzzle) {
-    if (mPuzzleInfoList.at(mCurrentPuzzle).Type == eWait) {
+  for (int i = 0; i < mPuzzleInfoList.size(); ++i) {
+    if (mPuzzleInfoList.at(i).Type == eWait) {
+      mCurrentPuzzleDir = mPuzzleInfoList.at(i).DirIndex;
+      mCurrentPuzzleFilename = mPuzzleInfoList.at(i).Filename;
       return true;
     }
   }
@@ -246,16 +267,30 @@ bool Account::SelectNextPuzzle()
 
 bool Account::CloseCurrentPuzzle(Account::EPuzzleType type)
 {
-  if (PuzzleChangeStateTo(mCurrentPuzzle, type)) {
+  int index = -1;
+  if (FindPuzzle(mCurrentPuzzleDir, mCurrentPuzzleFilename, index) && PuzzleChangeStateTo(index, type)) {
     return Save();
   }
   return true;
 }
 
+bool Account::FindPuzzle(int dirIndex, const QString& fileName, int& index)
+{
+  for (int i = 0; i < mPuzzleInfoList.size(); i++) {
+    if (mPuzzleInfoList.at(i).DirIndex == dirIndex && mPuzzleInfoList.at(i).Filename == fileName) {
+      index = i;
+      return true;
+    }
+  }
+
+  index = -1;
+  return false;
+}
+
 bool Account::PuzzleChangeStateTo(int index, Account::EPuzzleType type)
 {
   if (index >= 0 && index < mPuzzleInfoList.size()) {
-    switch (mPuzzleInfoList[mCurrentPuzzle].Type) {
+    switch (mPuzzleInfoList[index].Type) {
     case eWait: mWaitCount--; break;
     case eDone: mDoneCount--; break;
     default: break;
@@ -273,7 +308,8 @@ bool Account::PuzzleChangeStateTo(int index, Account::EPuzzleType type)
 
 bool Account::RestartPuzzles()
 {
-  mCurrentPuzzle = -1;
+  mCurrentPuzzleDir = -1;
+  mCurrentPuzzleFilename.clear();
   if (!SelectNextPuzzle()) {
     qCore->Warning("Ошибка выбора следующего рисунка");
     return false;
@@ -304,16 +340,12 @@ const char* Account::TypeToString(Account::EPuzzleType type)
 
 bool Account::GetCurrentPuzzleFilename()
 {
-  mCurrentPuzzleFilename.clear();
-  if (mCurrentPuzzle >= 0 && mCurrentPuzzle < mPuzzleInfoList.size()) {
-    const PuzzleInfo& info = mPuzzleInfoList.at(mCurrentPuzzle);
-    int dirIndex = info.DirIndex;
-    if (dirIndex >= 0 && dirIndex < mPuzzleDirList.size()) {
-      QDir dir(mPuzzleDirList.at(dirIndex));
-      if (dir.exists(info.Filename)) {
-        mCurrentPuzzleFilename = dir.filePath(info.Filename);
-        return true;
-      }
+  mCurrentPuzzlePath.clear();
+  if (mCurrentPuzzleDir >= 0 && mCurrentPuzzleDir < mPuzzleDirList.size()) {
+    QDir dir(mPuzzleDirList.at(mCurrentPuzzleDir));
+    if (dir.exists(mCurrentPuzzleFilename)) {
+      mCurrentPuzzlePath = dir.absoluteFilePath(mCurrentPuzzleFilename);
+      return true;
     }
   }
   return false;
@@ -360,8 +392,9 @@ bool Account::GenerateTempPuzzleFilename()
 
 Account::Account()
   : mStyleIndex(0)
-  , mCurrentPuzzle(-1)
-  , mDigitHighlight(true), mCompactDigits(4), mDigitStyle(eDigitAuto), mCalcWindow(eCalcWindowSimple), mAutoSavePeriod(30*1000), mUndoStackLimit(64)
+  , mCurrentPuzzleDir(-1)
+  , mDigitHighlight(true), mCompactDigits(4), mDigitStyle(eDigitAuto), mCalcWindow(eCalcWindowSimple)
+  , mAutoSavePeriod(30*1000), mUndoStackLimit(64), mAutoOpenPropEx(true), mAutoCalcStars(true)
   , mShowGameStateDialog(true)
 {
 }

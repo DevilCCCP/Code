@@ -147,7 +147,7 @@ bool Core::LoadAutoPuzzle()
 
   mTempFile = false;
   SetPuzzle(puzzle);
-  mPuzzle->SetName(mAccount->getCurrentPuzzleFilename());
+  mPuzzle->SetName(mAccount->getCurrentPuzzlePath());
 
   qAi->CalcAllDigits(mPuzzle.data());
 
@@ -177,7 +177,7 @@ bool Core::TakeCurrentPuzzle()
 {
   for (int i = 0; i < 10; i++) {
     PuzzleS puzzle(new Puzzle());
-    if (puzzle->Load(mAccount->getCurrentPuzzleFilename())) {
+    if (puzzle->Load(mAccount->getCurrentPuzzlePath())) {
       mTempFile = false;
       SetPuzzle(puzzle);
       mPuzzle->Clear();

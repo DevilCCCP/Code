@@ -24,8 +24,8 @@ bool ImpD::DoInit()
 }
 
 
-ImpD::ImpD(const Db& _Db, int _WorkPeriodMs, bool _AutoWorkCalc)
-  : Imp(_WorkPeriodMs, _AutoWorkCalc)
+ImpD::ImpD(const Db& _Db, int _WorkPeriodMs, bool _AutoWorkCalc, bool _Critical)
+  : Imp(_WorkPeriodMs, _AutoWorkCalc, _Critical)
   , mDb(_Db)
 {
   mDb.MoveToThread(this);

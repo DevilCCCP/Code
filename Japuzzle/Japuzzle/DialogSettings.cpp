@@ -70,6 +70,11 @@ void DialogSettings::Load(Account* account)
   } else {
     ui->radioButtonCalcWindowNo->setChecked(true);
   }
+  if (account->getAutoCalcStars()) {
+    ui->radioButtonCalcStarsAuto->setChecked(true);
+  } else {
+    ui->radioButtonCalcStarsManual->setChecked(true);
+  }
 
   ui->spinBoxUndoLimit->setValue(account->getUndoStackLimit());
   ui->doubleSpinBoxAutoSave->setValue(account->getAutoSavePeriod() / 60000.0);
@@ -113,6 +118,11 @@ void DialogSettings::Save(Account* account)
     account->mCalcWindow = Account::eCalcWindowSimple;
   } else {
     account->mCalcWindow = Account::eCalcWindowNone;
+  }
+  if (ui->radioButtonCalcStarsAuto->isChecked()) {
+    account->mAutoCalcStars = true;
+  } else {
+    account->mAutoCalcStars = false;
   }
 
   account->mUndoStackLimit = ui->spinBoxUndoLimit->value();
@@ -205,4 +215,9 @@ void DialogSettings::on_comboBoxLevelProfile_currentIndexChanged(int index)
   case eLevelCustom:
     break;
   }
+}
+
+void DialogSettings::on_toolButtonCalcStars_clicked()
+{
+  AutoInfo();
 }

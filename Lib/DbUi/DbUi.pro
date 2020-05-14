@@ -64,7 +64,8 @@ SOURCES += \
     StatisticsLoader.cpp \
     FormTableEditAdapterB.cpp \
     FormObjectLog.cpp \
-    ObjectLogWidget.cpp
+    ObjectLogWidget.cpp \
+    ColumnEdit/ColumnEditSwitch.cpp
 
 
 HEADERS += \
@@ -131,7 +132,9 @@ HEADERS += \
     TableEditSchema.h \
     FormObjectLog.h \
     ObjectLogWidget.h \
-    LogSchema.h
+    LogSchema.h \
+    DbTableAutoModel.h \
+    ColumnEdit/ColumnEditSwitch.h
 
 FORMS += \
     Admin/FormScript.ui \

@@ -54,8 +54,9 @@ private:
 
   PROPERTY_GET(QString,           LastPuzzle)
   PROPERTY_GET(QString,           TempPuzzle)
-  PROPERTY_GET(int,               CurrentPuzzle)
+  PROPERTY_GET(int,               CurrentPuzzleDir)
   PROPERTY_GET(QString,           CurrentPuzzleFilename)
+  PROPERTY_GET(QString,           CurrentPuzzlePath)
   PROPERTY_GET(int,               WaitCount)
   PROPERTY_GET(int,               DoneCount)
 
@@ -65,6 +66,8 @@ private:
   PROPERTY_GET(ECalcWindow,       CalcWindow)
   PROPERTY_GET(int,               AutoSavePeriod)
   PROPERTY_GET(int,               UndoStackLimit)
+  PROPERTY_GET(bool,              AutoOpenPropEx)
+  PROPERTY_GET(bool,              AutoCalcStars)
 
   PROPERTY_GET(bool,              ShowGameStateDialog)
   ;
@@ -74,6 +77,7 @@ public:
   bool Load(const AccountInfo& info, const QString& path);
   bool Save();
   bool PrepareTemp();
+  void UpdatePuzzleList();
 
   bool HaveLastPuzzle();
   bool TakeNextPuzzle(EPuzzleType type = eDone);
@@ -81,6 +85,7 @@ public:
   bool SelectNextPuzzle();
   bool CloseCurrentPuzzle(EPuzzleType type);
 
+  bool FindPuzzle(int dirIndex, const QString& fileName, int& index);
   bool PuzzleChangeStateTo(int index, EPuzzleType type);
   bool RestartPuzzles();
 
@@ -98,4 +103,5 @@ public:
 
   friend class DialogSettings;
   friend class DialogGameState;
+  friend class DialogSolve;
 };

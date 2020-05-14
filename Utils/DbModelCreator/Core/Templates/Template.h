@@ -15,7 +15,7 @@ class ClassT: public DbItemT<TypeT>
 public:
 DECLARE
 public:
-  /*override */virtual bool Equals(const DbItemT<TypeT>& other) Q_DECL_OVERRIDE;
+  /*override */virtual bool Equals(const DbItemT<TypeT>& other) const Q_DECL_OVERRIDE;
 
   /*override */virtual qint64 Key(int index) const Q_DECL_OVERRIDE;
   /*override */virtual void SetKey(int index, qint64 id) Q_DECL_OVERRIDE;

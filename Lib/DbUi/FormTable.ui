@@ -152,7 +152,7 @@
         <string>...</string>
        </property>
        <property name="icon">
-        <iconset resource="DbUi.qrc">
+        <iconset resource="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc">
          <normaloff>:/Icons/Refresh.png</normaloff>:/Icons/Refresh.png</iconset>
        </property>
        <property name="autoRaise">
@@ -330,7 +330,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="../Ui/Ui.qrc">
+              <iconset resource="DbUi.qrc">
                <normaloff>:/Icons/Link.png</normaloff>:/Icons/Link.png</iconset>
              </property>
              <property name="autoRaise">
@@ -344,7 +344,7 @@
               <string>...</string>
              </property>
              <property name="icon">
-              <iconset resource="../Ui/Ui.qrc">
+              <iconset resource="DbUi.qrc">
                <normaloff>:/Icons/Unlink.png</normaloff>:/Icons/Unlink.png</iconset>
              </property>
              <property name="autoRaise">
@@ -546,31 +546,31 @@
   </action>
   <action name="actionExport">
    <property name="icon">
-    <iconset resource="../Ui/Ui.qrc">
+    <iconset resource="DbUi.qrc">
      <normaloff>:/Icons/Link.png</normaloff>:/Icons/Link.png</iconset>
    </property>
    <property name="text">
-    <string>Export to .scv file</string>
+    <string>Export to .csv file</string>
    </property>
    <property name="toolTip">
-    <string>Export to .scv file</string>
+    <string>Export to .csv file</string>
    </property>
   </action>
   <action name="actionImport">
    <property name="icon">
-    <iconset resource="../Ui/Ui.qrc">
+    <iconset resource="DbUi.qrc">
      <normaloff>:/Icons/Unlink.png</normaloff>:/Icons/Unlink.png</iconset>
    </property>
    <property name="text">
-    <string>Import from .scv file</string>
+    <string>Import from .csv file</string>
    </property>
    <property name="toolTip">
-    <string>Import from .scv file</string>
+    <string>Import from .csv file</string>
    </property>
   </action>
   <action name="actionReload">
    <property name="icon">
-    <iconset resource="DbUi.qrc">
+    <iconset resource="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc">
      <normaloff>:/Icons/Refresh.png</normaloff>:/Icons/Refresh.png</iconset>
    </property>
    <property name="text">
@@ -586,10 +586,10 @@
      <normaloff>:/Icons/Db2Csv.png</normaloff>:/Icons/Db2Csv.png</iconset>
    </property>
    <property name="text">
-    <string>Backup to .scv file</string>
+    <string>Backup to .csv file</string>
    </property>
    <property name="toolTip">
-    <string>Backup to .scv file</string>
+    <string>Backup to .csv file</string>
    </property>
   </action>
   <action name="actionRestore">
@@ -598,10 +598,10 @@
      <normaloff>:/Icons/Csv2Db.png</normaloff>:/Icons/Csv2Db.png</iconset>
    </property>
    <property name="text">
-    <string>Restore from .scv file</string>
+    <string>Restore from .csv file</string>
    </property>
    <property name="toolTip">
-    <string>Restore from .scv file</string>
+    <string>Restore from .csv file</string>
    </property>
   </action>
  </widget>
@@ -622,8 +622,9 @@
   <tabstop>treeViewTable</tabstop>
  </tabstops>
  <resources>
-  <include location="../Ui/Ui.qrc"/>
+  <include location="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc"/>
   <include location="DbUi.qrc"/>
+  <include location="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc"/>
  </resources>
  <connections/>
 </ui>

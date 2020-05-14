@@ -18,7 +18,7 @@ public:
   QDateTime  Day;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE
   {
     const VaStatDays& vs = static_cast<const VaStatDays&>(other);
     return DbItemT<qint64>::Equals(other) && VstatId == vs.VstatId && FimageId == vs.FimageId && Day == vs.Day;

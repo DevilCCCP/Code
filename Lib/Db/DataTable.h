@@ -12,7 +12,7 @@ class QDataStream;
 class DataItem: public DbItemT<qint64>
 {
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE;
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE;
 
   /*new */virtual void Serialize(QDataStream* stream) const = 0;
   /*new */virtual void Deserialize(QDataStream* stream) = 0;

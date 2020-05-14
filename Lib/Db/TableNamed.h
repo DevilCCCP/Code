@@ -12,7 +12,7 @@ public:
   QString Descr;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
 
   NamedItem();
   NamedItem(int _Id, const QString& _Name, const QString& _Descr);

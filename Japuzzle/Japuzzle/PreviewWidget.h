@@ -7,13 +7,15 @@
 class PreviewWidget: public QWidget
 {
   QPixmap mBackground;
-  QPixmap mPreview;
+  QRect   mFullRect;
   QRect   mLocation;
 
   Q_OBJECT
 
 protected:
   /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+
+  /*override */virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 public:
   void Setup();
@@ -23,7 +25,11 @@ public:
 
 private:
   void DrawPreview();
-  void DrawLocation();
+  void DrawPicture(QPainter* painter);
+  void DrawLocation(QPainter* painter);
+
+signals:
+  void MoveToLocation(int i, int j);
 
 public:
   PreviewWidget(QWidget* parent = 0);
