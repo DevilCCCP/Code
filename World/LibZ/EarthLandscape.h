@@ -1,0 +1,4 @@
+#ifndef EARTHLANDSCAPE_H
+#define EARTHLANDSCAPE_H
+
+#endif // EARTHLANDSCAPE_H
