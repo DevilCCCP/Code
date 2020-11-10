@@ -23,6 +23,7 @@ class MainWindow2: public QMainWindow
 
 public:
   MainWindow2(QWidget* parent = 0);
+  ~MainWindow2() = default;
 
 protected:
   QSettings* GetSettings() { return mSettings; }

@@ -15,6 +15,8 @@ class PreviewWidget: public QWidget
 protected:
   /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
+  /*override */virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+
   /*override */virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
 
 public:

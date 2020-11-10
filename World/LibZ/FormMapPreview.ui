@@ -1,21 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <author/>
- <comment/>
- <exportmacro/>
  <class>FormMapPreview</class>
- <widget name="FormMapPreview" class="QWidget">
+ <widget class="QWidget" name="FormMapPreview">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>674</width>
+    <height>502</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="0,1,0,0">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QProgressBar" name="progressBarStage">
+       <property name="value">
+        <number>24</number>
+       </property>
+       <property name="format">
+        <string>Стадия %v/%m</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QLabel" name="labelStage">
+       <property name="text">
+        <string>&lt;Название стадии&gt;</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="FormEarth" name="formEarth" native="true"/>
+   </item>
+   <item>
+    <widget class="QProgressBar" name="progressBarStageProgress">
+     <property name="value">
+      <number>24</number>
+     </property>
+     <property name="format">
+      <string>Выполнение %p%</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonGenerate">
+       <property name="text">
+        <string>Выполнить</string>
+       </property>
+       <property name="icon">
+        <iconset resource="LibZ.qrc">
+         <normaloff>:/Icons/Ai.png</normaloff>:/Icons/Ai.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonCancel">
+       <property name="text">
+        <string>Отмена</string>
+       </property>
+       <property name="icon">
+        <iconset resource="LibZ.qrc">
+         <normaloff>:/Icons/Halt.png</normaloff>:/Icons/Halt.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonBack">
+       <property name="text">
+        <string>Назад</string>
+       </property>
+       <property name="icon">
+        <iconset resource="LibZ.qrc">
+         <normaloff>:/Icons/Back.png</normaloff>:/Icons/Back.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonForward">
+       <property name="text">
+        <string>Вперёд</string>
+       </property>
+       <property name="icon">
+        <iconset resource="LibZ.qrc">
+         <normaloff>:/Icons/Forward.png</normaloff>:/Icons/Forward.png</iconset>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="pushButtonDone">
+       <property name="text">
+        <string>Готово</string>
+       </property>
+       <property name="icon">
+        <iconset resource="../../Lib/CoreUi/Ui.qrc">
+         <normaloff>:/Icons/Green.png</normaloff>:/Icons/Green.png</iconset>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
  </widget>
- <pixmapfunction/>
+ <customwidgets>
+  <customwidget>
+   <class>FormEarth</class>
+   <extends>QWidget</extends>
+   <header>FormEarth.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="../../Lib/CoreUi/Ui.qrc"/>
+  <include location="LibZ.qrc"/>
+ </resources>
  <connections/>
 </ui>

@@ -280,6 +280,7 @@ void CreatorMainWindow::on_actionOpen_triggered()
     return;
   }
 
+  mPuzzle->Reset();
   mFilename = filePath;
   mFileDialog->setDirectory(QFileInfo(mFilename).absoluteDir());
   ApplyNewPuzzle();

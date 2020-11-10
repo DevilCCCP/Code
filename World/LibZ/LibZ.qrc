@@ -1,0 +1,16 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Icons/World.png</file>
+        <file>Icons/Back.png</file>
+        <file>Icons/Forward.png</file>
+        <file>Icons/Ai.png</file>
+        <file>Icons/Halt.png</file>
+        <file>Icons/ZoomIn.png</file>
+        <file>Icons/ZoomNone.png</file>
+        <file>Icons/ZoomOut.png</file>
+        <file>Icons/RotateDown.png</file>
+        <file>Icons/RotateLeft.png</file>
+        <file>Icons/RotateRight.png</file>
+        <file>Icons/RotateUp.png</file>
+    </qresource>
+</RCC>

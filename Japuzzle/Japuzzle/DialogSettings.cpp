@@ -27,7 +27,7 @@ DialogSettings::DialogSettings(QWidget* parent)
   ui->formSectionAdvanced->SetShow(false);
 
   ui->comboBoxLevelProfile->setModel(new QStringListModel(kProfileLevelList, this));
-  on_comboBoxLevelProfile_currentIndexChanged(0);
+  on_comboBoxLevelProfile_currentIndexChanged(eLevelNormal);
 }
 
 DialogSettings::~DialogSettings()
@@ -78,6 +78,8 @@ void DialogSettings::Load(Account* account)
 
   ui->spinBoxUndoLimit->setValue(account->getUndoStackLimit());
   ui->doubleSpinBoxAutoSave->setValue(account->getAutoSavePeriod() / 60000.0);
+  QSignalBlocker block(ui->comboBoxLevelProfile);
+  ui->comboBoxLevelProfile->setCurrentIndex(eLevelCustom);
 }
 
 void DialogSettings::Save(Account* account)

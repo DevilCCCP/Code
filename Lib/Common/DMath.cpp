@@ -1,16 +1,9 @@
-#pragma once
-
-#include <QPointF>
 #include <QtMath>
 
+#include "DMath.h"
 
-inline qreal qSquare(const QPointF& r)
-{
-  return r.x() * r.x() + r.y() * r.y();
-}
 
-/// Returns t when intersect, -1 if not
-inline qreal qIntersectA(const QPointF& a1, const QPointF& a2, const QPointF& b1, const QPointF& b2)
+qreal IntersectA(const QPointF& a1, const QPointF& a2, const QPointF& b1, const QPointF& b2)
 {
   QPointF v1 = a2 - a1;
   QPointF v2 = b2 - b1;
@@ -53,19 +46,6 @@ inline qreal qIntersectA(const QPointF& a1, const QPointF& a2, const QPointF& b1
       }
       return qMin(t1, t2);
     }
-  }
-  return num / denum;
-}
-
-/// Returns t when intersect, -1 if not
-inline qreal qIntersectB(const QPointF& a1, const QPointF& a2, const QPointF& b1, const QPointF& b2)
-{
-  QPointF v1 = a2 - a1;
-  QPointF v2 = b2 - b1;
-  qreal num = a1.y() * v1.x() - a1.x() * v1.y() + b1.x() * v1.y() - b1.y() * v1.x();
-  qreal denum = v1.x() * v2.y() - v2.x() * v1.y();
-  if (denum == 0) {
-    return -1000000.0;
   }
   return num / denum;
 }

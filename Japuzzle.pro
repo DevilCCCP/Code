@@ -1,4 +1,6 @@
-system($$QMAKE_COPY_FILE $$PWD/Japuzzle/Local.pri $$OUT_PWD/Local.pri)
+SRC_LOCAL=$$shell_path($$PWD/Japuzzle/Local.pri)
+DST_LOCAL=$$shell_path($$OUT_PWD/Local.pri)
+system($$QMAKE_COPY_FILE $$SRC_LOCAL $$DST_LOCAL)
 
 TEMPLATE = subdirs
 

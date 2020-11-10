@@ -391,8 +391,8 @@ bool Account::GenerateTempPuzzleFilename()
 
 
 Account::Account()
-  : mStyleIndex(0)
-  , mCurrentPuzzleDir(-1)
+  : mStyleIndex(0), mPreviewSize(2)
+  , mCurrentPuzzleDir(-1), mWaitCount(0), mDoneCount(0)
   , mDigitHighlight(true), mCompactDigits(4), mDigitStyle(eDigitAuto), mCalcWindow(eCalcWindowSimple)
   , mAutoSavePeriod(30*1000), mUndoStackLimit(64), mAutoOpenPropEx(true), mAutoCalcStars(true)
   , mShowGameStateDialog(true)

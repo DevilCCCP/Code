@@ -17,6 +17,11 @@ void PreviewWidget::paintEvent(QPaintEvent* event)
   painter.drawPixmap(rect, mBackground);
 }
 
+void PreviewWidget::resizeEvent(QResizeEvent* event)
+{
+  QWidget::resizeEvent(event);
+}
+
 void PreviewWidget::mousePressEvent(QMouseEvent* event)
 {
   if (!qPuzzle) {

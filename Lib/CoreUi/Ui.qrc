@@ -15,5 +15,6 @@
         <file>Icons/Folder.png</file>
         <file>Icons/Add.png</file>
         <file>Icons/Remove.png</file>
+        <file>Icons/Green.png</file>
     </qresource>
 </RCC>

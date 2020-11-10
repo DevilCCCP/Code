@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>745</width>
-    <height>374</height>
+    <height>413</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -57,17 +57,26 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QLineEdit" name="lineEditRegExp">
-         <property name="text">
-          <string>/</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="1">
         <widget class="QLineEdit" name="lineEditValue">
          <property name="text">
           <string>_</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QComboBox" name="comboBoxRegExp">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
+         <property name="editable">
+          <bool>true</bool>
+         </property>
+         <property name="currentText">
+          <string>/</string>
          </property>
         </widget>
        </item>
@@ -307,6 +316,23 @@
   </action>
  </widget>
  <layoutdefault spacing="6" margin="11"/>
+ <tabstops>
+  <tabstop>lineEditDirectory</tabstop>
+  <tabstop>toolButtonBrowse</tabstop>
+  <tabstop>checkBoxRename</tabstop>
+  <tabstop>comboBoxRegExp</tabstop>
+  <tabstop>lineEditValue</tabstop>
+  <tabstop>checkBoxNumbers</tabstop>
+  <tabstop>spinBoxFirstNumber</tabstop>
+  <tabstop>checkBoxSecondNumber</tabstop>
+  <tabstop>spinBoxSecondNumber</tabstop>
+  <tabstop>checkBoxSwap</tabstop>
+  <tabstop>checkBoxResizeNumber</tabstop>
+  <tabstop>spinBoxNumberResize</tabstop>
+  <tabstop>checkBoxExit</tabstop>
+  <tabstop>pushButtonHalt</tabstop>
+  <tabstop>pushButtonStart</tabstop>
+ </tabstops>
  <resources>
   <include location="RenameDir.qrc"/>
  </resources>

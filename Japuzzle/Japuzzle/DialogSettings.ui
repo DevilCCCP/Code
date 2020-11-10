@@ -108,6 +108,75 @@
         </layout>
        </widget>
       </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_9">
+        <property name="text">
+         <string>Определение звёзд</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="QWidget" name="widget_6" native="true">
+        <layout class="QHBoxLayout" name="horizontalLayout_10">
+         <property name="leftMargin">
+          <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QRadioButton" name="radioButtonCalcStarsAuto">
+           <property name="text">
+            <string>Автоматически</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QRadioButton" name="radioButtonCalcStarsManual">
+           <property name="text">
+            <string>Вручную</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QToolButton" name="toolButtonCalcStars">
+           <property name="toolTip">
+            <string>Автоматическое определение сложности рисунка (звёзд)</string>
+           </property>
+           <property name="text">
+            <string>info</string>
+           </property>
+           <property name="icon">
+            <iconset resource="Japuzzle.qrc">
+             <normaloff>:/Icons/Info.png</normaloff>:/Icons/Info.png</iconset>
+           </property>
+           <property name="autoRaise">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <spacer name="horizontalSpacer_10">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
@@ -359,10 +428,10 @@
           <widget class="QToolButton" name="toolButtonDigits">
            <property name="toolTip">
             <string>Как будут раскрашиваться цифры:
-- &quot;Умный&quot; алгоритм раскраски
-- &quot;Простой&quot; алгоритм
-- Раскраска цифр &quot;вручную&quot;
-Яркий цвет - цифра не закрыта, блёклый - закрыта, красный - ошибка
+- &quot;Умный&quot; алгоритм раскраски: отмечаются цифры и ошибки в любом месте
+- &quot;Простой&quot; алгоритм: отмечаются цифры и ошибки только с краёв
+- Раскраска цифр &quot;вручную&quot;: пользователь сам отмечает цифры
+Яркий цвет - цифра не отгадана, блёклый - отгадана, красный - ошибка
 </string>
            </property>
            <property name="text">
@@ -459,75 +528,6 @@
          </item>
          <item>
           <spacer name="horizontalSpacer_6">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>40</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-        </layout>
-       </widget>
-      </item>
-      <item row="5" column="0">
-       <widget class="QLabel" name="label_9">
-        <property name="text">
-         <string>Сложность рисунка</string>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QWidget" name="widget_6" native="true">
-        <layout class="QHBoxLayout" name="horizontalLayout_10">
-         <property name="leftMargin">
-          <number>0</number>
-         </property>
-         <property name="topMargin">
-          <number>0</number>
-         </property>
-         <property name="rightMargin">
-          <number>0</number>
-         </property>
-         <property name="bottomMargin">
-          <number>0</number>
-         </property>
-         <item>
-          <widget class="QRadioButton" name="radioButtonCalcStarsAuto">
-           <property name="text">
-            <string>Автоматически</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QRadioButton" name="radioButtonCalcStarsManual">
-           <property name="text">
-            <string>Вручную</string>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <widget class="QToolButton" name="toolButtonCalcStars">
-           <property name="toolTip">
-            <string>Автоматическое определение сложности рисунка (звёзд)</string>
-           </property>
-           <property name="text">
-            <string>info</string>
-           </property>
-           <property name="icon">
-            <iconset resource="Japuzzle.qrc">
-             <normaloff>:/Icons/Info.png</normaloff>:/Icons/Info.png</iconset>
-           </property>
-           <property name="autoRaise">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item>
-          <spacer name="horizontalSpacer_10">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
            </property>

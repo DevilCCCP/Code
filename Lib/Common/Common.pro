@@ -26,7 +26,8 @@ HEADERS += \
     DirCopy.h \
     AutoLang.h \
     FilesPackage.h \
-    HwId.h
+    HwId.h \
+    DMath.h
 
 SOURCES += \
     FpsCalc.cpp \
@@ -49,5 +50,6 @@ SOURCES += \
     DirCopy.cpp \
     AutoLang.cpp \
     FilesPackage.cpp \
-    HwId.cpp
+    HwId.cpp \
+    DMath.cpp
 
