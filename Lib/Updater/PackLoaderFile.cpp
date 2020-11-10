@@ -39,6 +39,11 @@ bool PackLoaderFile::LoadFile(const QString& path, QByteArray& data)
   return file.error() == QFileDevice::NoError;
 }
 
+void PackLoaderFile::SetCtrl(CtrlWorker* ctrl)
+{
+  Q_UNUSED(ctrl);
+}
+
 void PackLoaderFile::Abort()
 {
 }

@@ -33,10 +33,14 @@ public:
 
   void SetTimePeriod(const QDateTime& startTime, int periodSecs);
   void SetObjectsList(const QList<ObjectItemS>& objectList);
+  void MoveTime(const QDateTime& toTime);
   void Update();
 
 private slots:
   void on_dateTimeEditFrom_dateTimeChanged(const QDateTime& dateTime);
   void on_dateTimeEditTo_dateTimeChanged(const QDateTime& dateTime);
   void on_comboBoxTimePeriod_editTextChanged(const QString& value);
+  void on_actionBackward_triggered();
+  void on_actionForward_triggered();
+  void on_actionCurrent_triggered();
 };

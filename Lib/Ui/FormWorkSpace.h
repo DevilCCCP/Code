@@ -35,9 +35,17 @@ public:
 
 public:
   void SetMenu(QMenu* _Menu);
+  int CurrentWorkSpace() const;
+  void SetCurrentWorkSpace(int index);
 
 public:
   void AddWorkSpace(QWidget* widget, const QString& name, const QString& descr);
+
+private:
+  void SwitchWorkSpace(int index, bool checked);
+
+signals:
+  void WorkSpaceSwitched(int oldIndex, int newIndex);
 
 private:
   void OnWorkActionToggled(bool checked);

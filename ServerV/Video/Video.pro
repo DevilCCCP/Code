@@ -5,9 +5,7 @@
 QT += sql network core gui
 
 win32 {
- greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
- }
+ QT += widgets
 }
 
 contains(INCLUDE_LIB, Media) {

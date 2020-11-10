@@ -170,7 +170,7 @@ int FormTable::CurrentItem()
   if (index.isValid()) {
     return mProxyModel->mapToSource(index).row();
   }
-  return 0;
+  return -1;
 }
 
 void FormTable::AddToControls(QWidget* widget)

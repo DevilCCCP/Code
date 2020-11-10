@@ -7,6 +7,7 @@
 
 bool ImpD::DoInit()
 {
+  mDb.Connect();
   DbSettings settings(mDb);
   if (!settings.Open(QString::number(GetOverseer()->Id()))) {
     Log.Fatal("Can't get module settings");

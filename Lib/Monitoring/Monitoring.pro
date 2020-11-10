@@ -7,10 +7,7 @@
 }
 
 
-QT += sql gui
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
-}
+QT += sql gui widgets
 
 
 SOURCES += \

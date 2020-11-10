@@ -46,6 +46,11 @@ bool PackLoaderHttp::LoadFile(const QString& path, QByteArray& data)
   return false;
 }
 
+void PackLoaderHttp::SetCtrl(CtrlWorker* ctrl)
+{
+  mHttpUploader->SetCtrl(ctrl);
+}
+
 void PackLoaderHttp::Abort()
 {
   mHttpUploader->Abort();

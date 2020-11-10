@@ -7,8 +7,9 @@
 #include "MainInfo.h"
 
 
-DefineClassS(Db);
 DefineClassS(Overseer);
+DefineClassS(Db);
+DefineClassS(LogPublisher);
 
 // Модуль отвечает за взаимодействие с диспетчером на стороне рабочего модуля
 class Overseer: public CtrlManager
@@ -23,6 +24,7 @@ class Overseer: public CtrlManager
 
   QSharedMemory mMainShmem;
   ProcessInfo*  mProcessInfo;
+  LogPublisherS mLogPublisher;
 
 public:
   int            Id()       const { return mId; }
@@ -51,7 +53,8 @@ public:
 
 private:
   bool OpenShmem();
-  void ChangeStatus(EProcStatus newStatus);
+  bool IsStatusFlag(int flag) { return ((mProcessInfo->CurrentStatus & flag) != 0); }
+  void ChangeStatus(EProcStatus newStatus, bool silent = false);
 
 public:
   static int ParseMainWithDb(const char* _DaemonName, int argc, char *argv[], OverseerS& overseer, DbS& db);

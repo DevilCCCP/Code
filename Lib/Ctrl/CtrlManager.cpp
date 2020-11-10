@@ -99,8 +99,8 @@ int CtrlManager::Run()
         break;
       }
     }
-    mStop = true;
     LogWorkerStats(true);
+    mStop = true;
     lock.unlock();
     FinalReport();
   } else {
@@ -119,6 +119,11 @@ void CtrlManager::Stop()
   QMutexLocker lock(&mMutex);
   mStop = true;
   mStopCondition.wakeAll();
+}
+
+void CtrlManager::SetLogWorker(CtrlWorker* _LogWorker)
+{
+  mLogWorker = _LogWorker;
 }
 
 void CtrlManager::Start()
@@ -175,7 +180,9 @@ void CtrlManager::LogWorkerStats(bool force)
 
   for (auto itr = mWorkers.begin(); itr != mWorkers.end(); itr++) {
     CtrlWorker* worker = itr->data();
-    worker->CollectStats(&statList, &aggregateStatMap);
+    if (worker != mLogWorker) {
+      worker->CollectStats(&statList, &aggregateStatMap);
+    }
   }
 
   foreach (const WorkerStatS& workerStat, mDeadWorkerStatList) {
@@ -350,7 +357,8 @@ void CtrlManager::OnWorkerFinished()
 }
 
 CtrlManager::CtrlManager(bool _Console, int _EndWorkersTimoutMs)
-  : mConsole(_Console), mEndWorkersTimoutMs(_EndWorkersTimoutMs), mStarted(false), mStop(false), mAliveCount(0)
+  : mConsole(_Console), mEndWorkersTimoutMs(_EndWorkersTimoutMs)
+  , mLogWorker(nullptr), mStarted(false), mStop(false), mAliveCount(0)
   , mPublishPeriodMs(kDefaultPublishPeriodMs)
 {
 #ifdef Q_OS_WIN32

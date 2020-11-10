@@ -31,10 +31,11 @@ class ObjectLogWidget: public QWidget
   QColor             mErrorColor;
 
   struct WorkPeriodInfo {
-    QRectF PeriodRect;
-    qreal  Circles;
-    qreal  WorkTime;
-    int    LongestWork;
+    QRectF    PeriodRect;
+    qreal     Circles;
+    qreal     WorkTime;
+    int       LongestWork;
+    QDateTime Timestamp;
   };
   struct WorkInfo {
     QRectF                      WorkRect;
@@ -44,6 +45,8 @@ class ObjectLogWidget: public QWidget
   typedef QMap<qreal, WorkInfo> WorkInfoMap;
   WorkInfoMap         mWorkInfoMap;
   WorkInfo*           mWorkInfo;
+
+  Q_OBJECT
 
 protected:
   /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;

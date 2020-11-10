@@ -2,13 +2,7 @@
   error(Could not find the Common.pri file!)
 }
 
-
-QT += sql network
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
-} else {
-  QT += gui
-}
+QT += sql network gui widgets
 
 
 SOURCES += \

@@ -48,6 +48,14 @@ void FormEditPack::LoadModel()
   mModel->clear();
   mModel->setHorizontalHeaderLabels(QStringList(tr("Name")));
 
+  if (!mFilesPackage->IsValid()) {
+    QStandardItem* rootItem = new QStandardItem(QString("<%1>").arg(mFilesPackage->ErrorString()));
+    mModel->appendRow(rootItem);
+    ui->treeViewPack->setModel(mModel);
+    ui->treeViewPack->expandAll();
+    return;
+  }
+
   QStringList dirList;
   mFilesPackage->GetDirList(dirList);
 

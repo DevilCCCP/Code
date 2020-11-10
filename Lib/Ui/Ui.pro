@@ -3,11 +3,7 @@
 }
 
 
-QT += gui
-
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
-}
+QT += gui widgets
 
 
 SOURCES += \
@@ -26,7 +22,8 @@ SOURCES += \
     FormSchedule.cpp \
     GraphWidget.cpp \
     FormWorkSpace.cpp \
-    UserIdleEventFilter.cpp
+    UserIdleEventFilter.cpp \
+    FuncWidget.cpp
 
 HEADERS += \
     DockWidget2.h \
@@ -44,7 +41,8 @@ HEADERS += \
     FormSchedule.h \
     GraphWidget.h \
     FormWorkSpace.h \
-    UserIdleEventFilter.h
+    UserIdleEventFilter.h \
+    FuncWidget.h
 
 
 LIBS += \

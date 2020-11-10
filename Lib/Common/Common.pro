@@ -27,7 +27,7 @@ HEADERS += \
     AutoLang.h \
     FilesPackage.h \
     HwId.h \
-    DMath.h
+    FormatTr.h
 
 SOURCES += \
     FpsCalc.cpp \
@@ -51,5 +51,10 @@ SOURCES += \
     AutoLang.cpp \
     FilesPackage.cpp \
     HwId.cpp \
-    DMath.cpp
+    FormatTr.cpp
 
+TRANSLATIONS += Common_ru.ts
+#"/usr/lib/qt5/bin/lrelease" '/home/devil/!Code/!Code/Lib/Common/Common.pro'
+
+RESOURCES += \
+    Common.qrc

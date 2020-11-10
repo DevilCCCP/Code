@@ -23,8 +23,8 @@ bool CtrlWorker::Watch()
     if (elapsed > mCriticalFailMs) {
       return false;
     } else if (elapsed > mCriticalWarnMs + mCriticalWarnExtraMs) {
-      Log.Warning(QString("Critical worker not respond (%1)").arg(mCriticalWarnMs + mCriticalWarnExtraMs));
-      mCriticalWarnExtraMs += kCriticalWarnMs;
+      Log.Warning(QString("Critical worker not respond (%1)").arg(FormatTime(mCriticalWarnMs + mCriticalWarnExtraMs)));
+      mCriticalWarnExtraMs += mCriticalWarnMs/2;
     } else if (elapsed < kCriticalWarnMs) {
       mCriticalWarnExtraMs = 0;
     }

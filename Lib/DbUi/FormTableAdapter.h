@@ -63,8 +63,10 @@ public:
   /*new */virtual bool ExportAll(CsvWriter* writer) = 0;
   /*new */virtual bool ImportAll(CsvReader* reader, QString* info = nullptr) = 0;
   /*new */virtual bool CanBackup() { return false; }
-  /*new */virtual bool Backup(CsvWriter* writer) { Q_UNUSED(writer); return false; }
-  /*new */virtual bool Restore(CsvReader* reader) { Q_UNUSED(reader); return false; }
+  /*new */virtual bool Backup(CsvWriter* writer) { Q_UNUSED(writer) return false; }
+  /*new */virtual bool Restore(CsvReader* reader) { Q_UNUSED(reader) return false; }
+
+  /*new */virtual ~FormTableAdapterA() = default;
 };
 
 template <typename IntT, typename DbItemT>

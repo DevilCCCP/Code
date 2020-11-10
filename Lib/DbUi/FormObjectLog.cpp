@@ -1,6 +1,8 @@
 #include <QDateTime>
+#include <QLineEdit>
 #include <QRegExp>
 
+#include <Lib/Common/FormatTr.h>
 #include <Lib/Db/ObjectType.h>
 #include <Lib/Db/ObjectLog.h>
 
@@ -8,21 +10,38 @@
 #include "ui_FormObjectLog.h"
 
 
-const int kDefaultTimePeriodSecs = 24 * 60 * 60;
-
 FormObjectLog::FormObjectLog(QWidget* parent)
   : QWidget(parent), ui(new Ui::FormObjectLog)
   , mDb(nullptr)
 {
+  Q_INIT_RESOURCE(DbUi);
+  Q_INIT_RESOURCE(Ui);
+
+  QTranslator* translator = new QTranslator(this);
+  translator->load(":/Tr/DbUi_ru.qm");
+  QApplication::instance()->installTranslator(translator);
+
+  new FormatTr(this);
+
   ui->setupUi(this);
   setMouseTracking(true);
 
-  mPeriodSecs = kDefaultTimePeriodSecs;
-  mFromTime   = QDateTime::currentDateTime().addSecs(-mPeriodSecs);
-  mToTime     = mFromTime.addSecs(mPeriodSecs);
+  ui->toolButtonMoveLeft->setDefaultAction(ui->actionBackward);
+  ui->toolButtonMoveRight->setDefaultAction(ui->actionForward);
+  ui->toolButtonMoveNow->setDefaultAction(ui->actionCurrent);
 
-  ui->dateTimeEditFrom->setDateTime(mFromTime);
-  ui->dateTimeEditTo->setDateTime(mToTime);
+  this->addAction(ui->actionBackward);
+  this->addAction(ui->actionForward);
+  this->addAction(ui->actionCurrent);
+  this->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+  ui->comboBoxTimePeriod->addItem(tr("12 h"));
+  ui->comboBoxTimePeriod->addItem(tr("24 h"));
+  ui->comboBoxTimePeriod->addItem(tr("2 d"));
+  ui->comboBoxTimePeriod->addItem(tr("7 d"));
+  ui->comboBoxTimePeriod->setCurrentIndex(1);
+
+  MoveTime(QDateTime::currentDateTime());
 }
 
 FormObjectLog::~FormObjectLog()
@@ -53,6 +72,18 @@ void FormObjectLog::SetTimePeriod(const QDateTime& startTime, int periodSecs)
 void FormObjectLog::SetObjectsList(const QList<ObjectItemS>& objectList)
 {
   mObjectList = objectList;
+
+  Update();
+}
+
+void FormObjectLog::MoveTime(const QDateTime& toTime)
+{
+  mToTime = toTime;
+  mFromTime = mToTime.addSecs(-mPeriodSecs);
+  QSignalBlocker b(ui->dateTimeEditFrom);
+  ui->dateTimeEditFrom->setDateTime(mFromTime);
+  QSignalBlocker b2(ui->dateTimeEditTo);
+  ui->dateTimeEditTo->setDateTime(mToTime);
 
   Update();
 }
@@ -92,22 +123,47 @@ void FormObjectLog::on_dateTimeEditTo_dateTimeChanged(const QDateTime& dateTime)
 void FormObjectLog::on_comboBoxTimePeriod_editTextChanged(const QString& value)
 {
   QRegExp valueRegExp("^\\s*(\\d*)\\s*(\\w*)\\s*$");
-  if (valueRegExp.exactMatch(value)) {
+  QString periodText = value.toLower();
+  if (valueRegExp.exactMatch(periodText)) {
     bool ok = false;
-    mPeriodSecs = valueRegExp.cap(1).toInt(&ok);
+    int newPeriodSecs = valueRegExp.cap(1).toInt(&ok);
     if (ok) {
       QString suffix = valueRegExp.cap(2);
-      if (suffix == "m") {
-        mPeriodSecs *= 60;
-      } else if (suffix == "h") {
-        mPeriodSecs *= 60 * 60;
-      } else if (suffix == "d") {
-        mPeriodSecs *= 60 * 60 * 24;
+      if (suffix == "m" || suffix == "м") {
+        newPeriodSecs *= 60;
+      } else if (suffix == "h" || suffix == "ч") {
+        newPeriodSecs *= 60 * 60;
+      } else if (suffix == "d" || suffix == "д") {
+        newPeriodSecs *= 60 * 60 * 24;
       }
 
-      mFromTime = mToTime.addSecs(-mPeriodSecs);
+      if (newPeriodSecs >= 1 * 60 * 60) {
+        mPeriodSecs = newPeriodSecs;
+        mFromTime = mToTime.addSecs(-mPeriodSecs);
+        QSignalBlocker b(ui->dateTimeEditFrom);
+        ui->dateTimeEditFrom->setDateTime(mFromTime);
 
-      ui->dateTimeEditFrom->setDateTime(mFromTime);
+        Update();
+
+        ui->comboBoxTimePeriod->lineEdit()->setStyleSheet("color: rgb(0, 85, 0);");
+        return;
+      }
     }
   }
+  ui->comboBoxTimePeriod->lineEdit()->setStyleSheet("color: rgb(170, 0, 0);");
+}
+
+void FormObjectLog::on_actionBackward_triggered()
+{
+  MoveTime(mToTime.addSecs(-mPeriodSecs));
+}
+
+void FormObjectLog::on_actionForward_triggered()
+{
+  MoveTime(mToTime.addSecs(mPeriodSecs));
+}
+
+void FormObjectLog::on_actionCurrent_triggered()
+{
+  MoveTime(QDateTime::currentDateTime());
 }

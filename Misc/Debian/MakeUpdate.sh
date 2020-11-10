@@ -22,11 +22,17 @@ PackInfo=$BinDir/.info
 mkdir $PackDir
 echo 'D .'>$PackInfo
 for file in $BinDir/${ProjAbbr}_*.exe; do
-  echo X ${file##*/}>>$PackInfo
+  filename=${file##*/}
+  if [ -f ${BinDir}/${filename} ]; then
+    echo X ${filename}>>$PackInfo
+  fi
 done
 
 for file in $BinDir/*.sh; do
-  echo E ${file##*/}>>$PackInfo
+  filename=${file##*/}
+  if [ -f ${BinDir}/${filename} ]; then
+    echo E ${filename}>>$PackInfo
+  fi
 done
 
 if [ -d $PackScript ]; then

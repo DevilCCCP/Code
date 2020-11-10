@@ -122,8 +122,18 @@ bool FilesPackage::UnPackDir(const QString& path)
 
 bool FilesPackage::Load(const QByteArray& data)
 {
+  QByteArray planeData = qUncompress(data);
+  if (planeData.isEmpty()) {
+    mIsValid = false;
+#ifdef LANG_EN
+      mError = QString("Bad compression");
+#else
+      mError = QString("Ошибка архива");
+#endif
+    return false;
+  }
   QJsonParseError err;
-  mDocument = QJsonDocument::fromJson(data, &err);
+  mDocument = QJsonDocument::fromJson(planeData, &err);
   if (err.error != QJsonParseError::NoError) {
     mIsValid = false;
     mError = err.errorString();
@@ -137,7 +147,8 @@ bool FilesPackage::Load(const QByteArray& data)
 
 bool FilesPackage::Save(QByteArray& data)
 {
-  data = mDocument.toJson();
+  QByteArray planeData = mDocument.toJson();
+  data = qCompress(planeData);
   return true;
 }
 

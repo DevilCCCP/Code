@@ -167,6 +167,16 @@ bool ObjectLogTable::TruncHours(int objectId, int hour)
   return getDb().ExecuteNonQuery(q);
 }
 
+bool ObjectLogTable::CleanHours(int objectId, int hour)
+{
+  auto q = getDb().MakeQuery();
+  q->prepare(QString("SELECT object_log_clean_hours(?, ?);"));
+  int index = 0;
+  q->bindValue(index++, objectId);
+  q->bindValue(index++, hour);
+  return getDb().ExecuteNonQuery(q);
+}
+
 
 ObjectLogTable::ObjectLogTable(const Db& _Db)
   : DbTableT<qint64, ObjectLog>(_Db)

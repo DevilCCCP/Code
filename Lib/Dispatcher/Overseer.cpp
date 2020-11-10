@@ -6,13 +6,12 @@
 #include <Lib/Log/Log.h>
 #include <Lib/Ctrl/WorkerStat.h>
 #include <Lib/Db/Db.h>
-#include <Lib/Db/ObjectLog.h>
 
 #include "Overseer.h"
+#include "LogPublisher.h"
 
 
 const int kStartRetryMs = 2000;
-const int kLogTruncHours = 7*24;
 
 void Overseer::Stop()
 {
@@ -23,7 +22,7 @@ bool Overseer::InitReport()
 {
   if (mDetached) {
     return true;
-  } else if (OpenShmem() && (mProcessInfo->CurrentStatus & (eFlagStarting | eFlagLive)) != 0) {
+  } else if (OpenShmem() && IsStatusFlag(eFlagStarting | eFlagLive)) {
     ChangeStatus(eInitialize);
     return true;
   } else {
@@ -36,6 +35,7 @@ bool Overseer::DoReport()
   if (mDetached) {
     return true;
   } else if (mProcessInfo->SayLive()) {
+    ChangeStatus(eLive);
     return true;
   } else {
     Log.Info("Dispatcher order module to stop");
@@ -46,7 +46,7 @@ bool Overseer::DoReport()
 void Overseer::FinalReport()
 {
   if (!mDetached) {
-    if ((mProcessInfo->CurrentStatus & (eFlagLive)) != 0) {
+    if (IsStatusFlag(eFlagLive)) {
       ChangeStatus(eStop);
     }
   }
@@ -68,35 +68,9 @@ bool Overseer::IsPublicStats()
 
 void Overseer::PublishStats(const QDateTime& startTime, const QDateTime& endTime, const QList<WorkerStatS>& statList)
 {
-  Db db;
-  if (!db.OpenDefault()) {
-    LOG_ERROR_ONCE("Open Db for log fail");
-    return;
+  if (mLogPublisher) {
+    mLogPublisher->PushLog(startTime, endTime, statList);
   }
-  if (!db.Connect()) {
-    return;
-  }
-
-  for (auto itr = statList.begin(); itr != statList.end(); itr++) {
-    const WorkerStatS& workerStat = *itr;
-    const QVector<WorkStat>& workStatList = workerStat->WorkStatList();
-    int startIndex = (workStatList.size() == 1)? 0: 1;
-    for (int i = startIndex; i < workStatList.size(); i++) {
-      const WorkStat& workStat = workStatList.at(i);
-      ObjectLogS objectLog(new ObjectLog());
-      objectLog->ObjectId    = Id();
-      objectLog->PeriodStart = startTime;
-      objectLog->PeriodEnd   = endTime;
-      objectLog->ThreadName  = workerStat->Name();
-      objectLog->WorkName    = workStat.Name;
-      objectLog->TotalTime   = workerStat->TotalTimeMs();
-      objectLog->Circles     = workStat.Circles;
-      objectLog->WorkTime    = workStat.WorkNsecs / 1000000;
-      objectLog->LongestWork = workStat.LongestWorkNsecs / 1000000;
-      db.getObjectLogTable()->Insert(objectLog);
-    }
-  }
-  db.getObjectLogTable()->TruncHours(Id(), kLogTruncHours);
 }
 
 void Overseer::Restart()
@@ -164,9 +138,15 @@ bool Overseer::OpenShmem()
   return false;
 }
 
-void Overseer::ChangeStatus(EProcStatus newStatus)
+void Overseer::ChangeStatus(EProcStatus newStatus, bool silent)
 {
-  Log.Info(QString("Process status %1 -> %2").arg(EProcStatus_ToString(mProcessInfo->CurrentStatus), EProcStatus_ToString(newStatus)));
+  if (mProcessInfo->CurrentStatus == newStatus) {
+    return;
+  }
+
+  if (!silent) {
+    Log.Info(QString("Process status %1 -> %2").arg(EProcStatus_ToString(mProcessInfo->CurrentStatus), EProcStatus_ToString(newStatus)));
+  }
   mProcessInfo->CurrentStatus = newStatus;
 }
 
@@ -308,6 +288,17 @@ Overseer::Overseer(const char* _DaemonName, int _Id, bool _Debug, bool _Detached
   , mDaemonName(_DaemonName), mId(_Id), mDebug(_Debug), mParams(_Params), mUri(_Uri), mDetached(_Detached), mQuiet(_Quiet)
   , mProcessInfo(nullptr)
 {
+  if (!mQuiet) {
+    DbS db;
+    db.reset(new Db());
+    if (db->OpenDefault()) {
+      mLogPublisher.reset(new LogPublisher(db));
+      RegisterWorker(mLogPublisher);
+      SetLogWorker(mLogPublisher.data());
+    } else {
+      LOG_ERROR_ONCE("Open Db for log fail");
+    }
+  }
 }
 
 Overseer::~Overseer()

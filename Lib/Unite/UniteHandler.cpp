@@ -3,6 +3,7 @@
 #include <QJsonObject>
 
 #include <Lib/Db/ObjectType.h>
+#include <Lib/Db/StateInformer.h>
 #include <Lib/Db/Event.h>
 #include <Lib/Db/ObjectLog.h>
 #include <Lib/Db/Variables.h>
@@ -270,6 +271,9 @@ bool UniteHandler::QueryObject(const QByteArray& data)
       return true;
     } else if (root.value("rev").toInt() == mCurrentObject->Revision) {
       mUniteInfo->SetUniteStage(mCurrentObject->Id, eQueryObjects);
+      StateInformer stateInformer(mDb);
+      stateInformer.Init(mCurrentObject->Id);
+      stateInformer.SetState(1);
       HttpResult(201, "Created", true);
       return true;
     } else if (root.value("rev").toInt() < mCurrentObject->Revision && root.value("back").toBool()) {
@@ -514,6 +518,7 @@ bool UniteHandler::UpdateLogs(const QByteArray& data)
   }
 
   QMap<int, int> objectsMap;
+  QSet<int> localIdList;
 //  int objectTotal = 0;
 //  int objectTotalBad = 0;
   int logTotal = 0;
@@ -535,8 +540,7 @@ bool UniteHandler::UpdateLogs(const QByteArray& data)
       return false;
     }
     objectsMap[remoteId] = localObjId;
-
-//    localObjId? objectTotal++: objectTotalBad++;
+    localIdList.insert(localObjId);
   }
 
   QJsonValue jsonLog = root.value("Log");
@@ -545,6 +549,7 @@ bool UniteHandler::UpdateLogs(const QByteArray& data)
     return false;
   }
 
+  DbTransactionS transaction = mDb->BeginTransaction();
   QJsonArray jsonLogArray = jsonLog.toArray();
   for (auto itr = jsonLogArray.begin(); itr != jsonLogArray.end(); itr++) {
     const QJsonValue& jsonLog = *itr;
@@ -581,7 +586,8 @@ bool UniteHandler::UpdateLogs(const QByteArray& data)
   }
 
   QString topVarName = QString::fromUtf8(mCurrentUuid) + "-TopLog";
-  if (!mDb->getVariablesTable()->UpdateVariable(mUniteInfo->getServiceId(), topVarName, QString::number(topLog))) {
+  if (!mDb->getVariablesTable()->UpdateVariable(mUniteInfo->getServiceId(), topVarName, QString::number(topLog))
+      || !transaction->Commit()) {
     HttpResult(500, "Internal Server Error", true);
     return true;
   }

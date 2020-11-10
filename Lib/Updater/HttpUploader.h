@@ -18,6 +18,7 @@ class HttpUploader: public QObject
   QEventLoop*             mEventLoop;
   QTimer*                 mTimeoutTimer;
   QMutex                  mMutex;
+  CtrlWorker*             mCtrl;
 
   QByteArray              mServerCert;
   int                     mError;
@@ -31,6 +32,7 @@ public:
 
 public:
   bool UploadFile(const QUrl& url, QByteArray& data, bool full = true);
+  void SetCtrl(CtrlWorker* ctrl);
   void Abort();
 
 private:
@@ -45,6 +47,7 @@ signals:
 
 private slots:
   void OnTimeout();
+  void OnDownloadProgress(qint64 bytesReceived, qint64 bytesTotal);
 #ifndef QT_NO_SSL
   void OnSslErrors(const QList<QSslError>& errors);
 #endif

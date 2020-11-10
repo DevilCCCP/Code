@@ -13,6 +13,7 @@ class FilesPackage
 
 public:
   bool IsValid() const { return mIsValid; }
+  const QString& ErrorString() const { return mError; }
 
 public:
   bool PackDir(const QString& path);

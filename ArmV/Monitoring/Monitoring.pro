@@ -7,10 +7,7 @@
 }
 
 
-QT += sql network core gui
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
-}
+QT += sql network core gui widgets
 
 CONFIG(release, debug|release) {
   CONFIG -= console

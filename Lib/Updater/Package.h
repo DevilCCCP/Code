@@ -9,6 +9,7 @@
 
 
 DefineClassS(PackLoaderA);
+DefineClassS(CtrlWorker);
 DefineClassS(Db);
 DefineClassS(QCryptographicHash);
 
@@ -42,6 +43,7 @@ class Package
   };
 
   PackLoaderAS        mPackLoader;
+  CtrlWorker*         mCtrl;
   QList<PackCommand>  mCommands;
   DbS                 mDb;
 
@@ -56,9 +58,13 @@ class Package
   PROPERTY_GET(QByteArray, Md5Hash)
   ;
 public:
+  void SetCtrl(CtrlWorker* _Ctrl) { mCtrl = _Ctrl; }
+
+public:
   bool Prepare(const QString& sourceBasePath, const QString& destBasePath);
   bool Install(const QString& sourceBasePath, const QString& destBasePath, bool aggressive);
   bool Deploy(const PackLoaderAS& packLoader, const QString& destBasePath);
+
 private:
   bool DeployWithInfo(const QByteArray& info, const QString& destBasePath);
   bool DeployPack(const QString& destBasePath);

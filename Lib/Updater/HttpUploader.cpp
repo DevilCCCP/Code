@@ -4,6 +4,7 @@
 #include <QMutexLocker>
 #include <QFile>
 
+#include <Lib/Ctrl/CtrlWorker.h>
 #include <Lib/Log/Log.h>
 
 #include "HttpUploader.h"
@@ -27,7 +28,7 @@ bool HttpUploader::UploadFile(const QUrl& url, QByteArray& data, bool full)
   request.setRawHeader("Connection", "Close");
   QNetworkReply* reply = mNetManager->get(request);
 
-  connect(reply, &QNetworkReply::downloadProgress, mTimeoutTimer, static_cast<void (QTimer::*)()>(&QTimer::start));
+  connect(reply, &QNetworkReply::downloadProgress, this, &HttpUploader::OnDownloadProgress);
 #ifndef QT_NO_SSL
   connect(reply, &QNetworkReply::sslErrors, this, &HttpUploader::OnSslErrors);
 #endif
@@ -71,6 +72,11 @@ bool HttpUploader::UploadFile(const QUrl& url, QByteArray& data, bool full)
   reply->deleteLater();
 
   return !data.isEmpty();
+}
+
+void HttpUploader::SetCtrl(CtrlWorker* ctrl)
+{
+  mCtrl = ctrl;
 }
 
 void HttpUploader::Abort()
@@ -126,6 +132,19 @@ void HttpUploader::OnTimeout()
   emit DoAbort();
 }
 
+void HttpUploader::OnDownloadProgress(qint64 bytesReceived, qint64 bytesTotal)
+{
+  Q_UNUSED(bytesReceived);
+  Q_UNUSED(bytesTotal);
+
+  if (mCtrl) {
+    if (!mCtrl->WorkStep()) {
+      mEventLoop->quit();
+    }
+  }
+  mTimeoutTimer->start();
+}
+
 #ifndef QT_NO_SSL
 void HttpUploader::OnSslErrors(const QList<QSslError>& errors)
 {
@@ -150,7 +169,7 @@ void HttpUploader::OnSslErrors(const QList<QSslError>& errors)
 
 
 HttpUploader::HttpUploader()
-  : mNetManager(nullptr), mEventLoop(nullptr), mTimeoutTimer(nullptr)
+  : mNetManager(nullptr), mEventLoop(nullptr), mTimeoutTimer(nullptr), mCtrl(nullptr)
   , mError(0), mTimeout(false), mAbort(false)
 {
 }

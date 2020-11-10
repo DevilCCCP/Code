@@ -25,6 +25,7 @@ class CtrlManager
 
   QList<CtrlWorkerS> mWorkers;
   QList<CtrlWorkerS> mGarbageWorkers;
+  CtrlWorker*        mLogWorker;
   QMutex             mMutex; // sync manipulating with workers, mStop and mAliveCount
   QWaitCondition     mStopCondition;
   QElapsedTimer      mLastWatch;
@@ -49,6 +50,9 @@ public:
   int Run();
 
   /*new */virtual void Stop();
+
+protected:
+  void SetLogWorker(CtrlWorker* _LogWorker);
 
 private:
   void Start();

@@ -25,6 +25,18 @@ void FormWorkSpace::SetMenu(QMenu* _Menu)
   }
 }
 
+int FormWorkSpace::CurrentWorkSpace() const
+{
+  return ui->stackedWidgetMain->currentIndex();
+}
+
+void FormWorkSpace::SetCurrentWorkSpace(int index)
+{
+  if (index >= 0 && index < mWorkSpaceInfoList.size() && index != CurrentWorkSpace()) {
+    SwitchWorkSpace(index, true);
+  }
+}
+
 void FormWorkSpace::AddWorkSpace(QWidget* widget, const QString& name, const QString& descr)
 {
   int index = mWorkSpaceInfoList.size();
@@ -45,7 +57,7 @@ void FormWorkSpace::AddWorkSpace(QWidget* widget, const QString& name, const QSt
   }
   connect(workAction, &QAction::toggled, this, &FormWorkSpace::OnWorkActionToggled);
 
-  QToolButton* workButton = new QToolButton(ui->widgetControl);
+  QToolButton* workButton = new QToolButton(ui->frameControl);
   workButton->setObjectName(QString("toolButton") + name);
   workButton->setDefaultAction(workAction);
   workSpaceInfo.Button = workButton;
@@ -58,15 +70,8 @@ void FormWorkSpace::AddWorkSpace(QWidget* widget, const QString& name, const QSt
   }
 }
 
-void FormWorkSpace::OnWorkActionToggled(bool checked)
+void FormWorkSpace::SwitchWorkSpace(int index, bool checked)
 {
-  QAction* workAction = qobject_cast<QAction*>(sender());
-  if (!workAction) {
-    return;
-  }
-
-  int index = workAction->property("Index").toInt();
-
   if (checked) {
     if (mCurrentWorkSpace != index) {
       mLastWorkSpace = mCurrentWorkSpace;
@@ -85,4 +90,18 @@ void FormWorkSpace::OnWorkActionToggled(bool checked)
 
   QSignalBlocker blockStackWidget(ui->stackedWidgetMain);
   ui->stackedWidgetMain->setCurrentIndex(mCurrentWorkSpace);
+
+  emit WorkSpaceSwitched(mLastWorkSpace, mCurrentWorkSpace);
+}
+
+void FormWorkSpace::OnWorkActionToggled(bool checked)
+{
+  QAction* workAction = qobject_cast<QAction*>(sender());
+  if (!workAction) {
+    return;
+  }
+
+  int index = workAction->property("Index").toInt();
+
+  SwitchWorkSpace(index, checked);
 }

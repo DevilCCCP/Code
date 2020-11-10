@@ -140,7 +140,7 @@ bool UpChecker::CheckUpdate()
     mUnreach = true;
   }
 
-  if (mCurrentVersion < mUpVersion) {
+  if (SayWork() && mCurrentVersion < mUpVersion) {
     LoadUpdate();
   }
 
@@ -154,6 +154,7 @@ bool UpChecker::LoadUpdate()
       .arg(mUpVersion.ToFilename()).arg(mPointId);
 
   Package pack;
+  pack.SetCtrl(this);
   if (pack.Deploy(mLoader, downloadDir)) {
     mUpdater->OnUpdateAvailable(mUpVersion, downloadDir, pack.getInstallerPath());
   }

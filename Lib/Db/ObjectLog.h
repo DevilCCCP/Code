@@ -56,6 +56,7 @@ public:
 
 public:
   bool TruncHours(int objectId, int hour);
+  bool CleanHours(int objectId, int hour);
 
 public:
   ObjectLogTable(const Db& _Db);

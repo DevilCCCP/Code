@@ -3,11 +3,7 @@
 }
 
 
-QT += sql gui concurrent
-
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
-}
+QT += sql gui concurrent widgets
 
 
 SOURCES += \

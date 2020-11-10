@@ -3,11 +3,7 @@
 }
 
 
-QT += sql network
-
-greaterThan(QT_MAJOR_VERSION, 4) {
-    QT += concurrent
-}
+QT += sql network concurrent
 
 SOURCES += \
     MainInfo.cpp \
@@ -22,7 +18,9 @@ SOURCES += \
     SettingMLoader.cpp \
     ModuleLoaderO.cpp \
     ImpD.cpp \
-    JobImp.cpp
+    JobImp.cpp \
+    LogPublisher.cpp \
+    LogCleaner.cpp
 
 HEADERS += \
     MainInfo.h \
@@ -42,7 +40,9 @@ HEADERS += \
     ModuleDb.h \
     OverseerThread.h \
     ImpD.h \
-    JobImp.h
+    JobImp.h \
+    LogPublisher.h \
+    LogCleaner.h
 
 win32 {
 SOURCES += \

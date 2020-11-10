@@ -21,8 +21,10 @@
   UseDbTableOne(ObjectState) \
   UseDbTableOne(ObjectStateValues) \
   UseDbTableOne(ObjectStateHours) \
+  UseDbTableOne(ObjectState2) \
   \
   UseDbTableOne(ObjectLog) \
+  UseDbTableOne(ObjectLogInfo) \
   \
   UseDbTableOne(Files) \
   \

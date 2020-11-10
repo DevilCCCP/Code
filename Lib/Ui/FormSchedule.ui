@@ -45,7 +45,7 @@
        <item>
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Грануляция</string>
+          <string>Гранулярность</string>
          </property>
         </widget>
        </item>

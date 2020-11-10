@@ -34,7 +34,9 @@ SOURCES += \
     ObjectStateHours.cpp \
     DataTable.cpp \
     DbTransaction.cpp \
-    ObjectLog.cpp
+    ObjectLog.cpp \
+    ObjectLogInfo.cpp \
+    ObjectState2.cpp
 
 HEADERS += \
     Db.h \
@@ -69,7 +71,9 @@ HEADERS += \
     DbDef.h \
     DbTransaction.h \
     DbInline.h \
-    ObjectLog.h
+    ObjectLog.h \
+    ObjectLogInfo.h \
+    ObjectState2.h
 
 
 LIBS += \

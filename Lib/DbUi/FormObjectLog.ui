@@ -39,7 +39,7 @@
    <item>
     <widget class="QLabel" name="labelError">
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;Ошибка чтения из БД&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;Read DB fail&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
     </widget>
    </item>
@@ -64,6 +64,27 @@
      </item>
      <item>
       <widget class="QDateTimeEdit" name="dateTimeEditTo"/>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonMoveLeft">
+       <property name="text">
+        <string>Previous</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonMoveRight">
+       <property name="text">
+        <string>Next</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QToolButton" name="toolButtonMoveNow">
+       <property name="text">
+        <string>Current</string>
+       </property>
+      </widget>
      </item>
      <item>
       <spacer name="horizontalSpacer">
@@ -91,6 +112,42 @@
     </layout>
    </item>
   </layout>
+  <action name="actionBackward">
+   <property name="icon">
+    <iconset resource="../Ui/Ui.qrc">
+     <normaloff>:/Icons/Backward.png</normaloff>:/Icons/Backward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Previous</string>
+   </property>
+   <property name="toolTip">
+    <string>Previous period</string>
+   </property>
+  </action>
+  <action name="actionForward">
+   <property name="icon">
+    <iconset resource="../Ui/Ui.qrc">
+     <normaloff>:/Icons/Forward.png</normaloff>:/Icons/Forward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Next</string>
+   </property>
+   <property name="toolTip">
+    <string>Next period</string>
+   </property>
+  </action>
+  <action name="actionCurrent">
+   <property name="icon">
+    <iconset resource="../Ui/Ui.qrc">
+     <normaloff>:/Icons/DoNow.png</normaloff>:/Icons/DoNow.png</iconset>
+   </property>
+   <property name="text">
+    <string>Current</string>
+   </property>
+   <property name="toolTip">
+    <string>Current period</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -100,6 +157,8 @@
    <container>1</container>
   </customwidget>
  </customwidgets>
- <resources/>
+ <resources>
+  <include location="../Ui/Ui.qrc"/>
+ </resources>
  <connections/>
 </ui>

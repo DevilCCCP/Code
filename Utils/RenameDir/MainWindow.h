@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QMainWindow>
-#include <QSettings>
 
 #include "RenameWorker.h"
 
@@ -13,9 +12,6 @@ class MainWindow;
 class MainWindow: public QMainWindow
 {
   Ui::MainWindow* ui;
-
-  QSettings*      mSettings;
-  QStringList     mRegExpRecentList;
 
   RenameWorker*   mRenameWorker;
 
@@ -36,5 +32,4 @@ private slots:
   void on_checkBoxSecondNumber_toggled(bool checked);
   void on_pushButtonStart_clicked();
   void on_checkBoxResizeNumber_toggled(bool checked);
-  void on_comboBoxRegExp_currentIndexChanged(const QString& text);
 };

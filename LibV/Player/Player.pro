@@ -3,10 +3,7 @@
 }
 
 
-QT += sql network gui
-greaterThan(QT_MAJOR_VERSION, 4) {
-  QT += widgets
-}
+QT += sql network gui widgets
 
 
 SOURCES += \

@@ -4,7 +4,7 @@
 #include <QMouseEvent>
 #include <QToolTip>
 
-#include <Lib/Common/Format.h>
+#include <Lib/Common/FormatTr.h>
 #include <Lib/Db/ObjectType.h>
 #include <Lib/Db/ObjectLog.h>
 
@@ -80,10 +80,11 @@ void ObjectLogWidget::mouseMoveEvent(QMouseEvent* event)
       if (itrPeriod != workInfo.PeriodInfo.end()) {
         const WorkPeriodInfo& workPeriodInfo = itrPeriod.value();
         if (point.x() > workPeriodInfo.PeriodRect.left()) {
-          QString info = QString("Circles: %1 p/s, Proc: %2%").arg(workPeriodInfo.Circles, 0, 'f', 1).arg(workPeriodInfo.WorkTime, 0, 'f', 2);
+          QString info = tr("Circles: %1 p/s, Proc: %2%").arg(workPeriodInfo.Circles, 0, 'f', 1).arg(workPeriodInfo.WorkTime, 0, 'f', 2);
           if (workPeriodInfo.LongestWork > 100) {
-            info.append(QString(", Long work: %1").arg(FormatTime(workPeriodInfo.LongestWork)));
+            info.append(tr(", Long work: %1").arg(FormatTr::FormatTimeTr(workPeriodInfo.LongestWork)));
           }
+          info.append(tr("\nTime: %1").arg(workPeriodInfo.Timestamp.toString("dd MMM hh:mm:ss")));
           QToolTip::showText(mapToGlobal(point.toPoint()), info, this, workInfo.WorkRect.toRect(), 60*1000);
           return;
         }
@@ -274,6 +275,7 @@ void ObjectLogWidget::PaintWork(QPainter* painter, LogPeriod* logPeriod)
     workPeriodInfo.Circles = valueCircles;
     workPeriodInfo.WorkTime = valueWorkTime;
     workPeriodInfo.LongestWork = valueLongestWork;
+    workPeriodInfo.Timestamp = log->PeriodStart;
     mWorkInfo->PeriodInfo[right] = workPeriodInfo;
 
     if (log->PeriodStart > startTime) {
@@ -291,9 +293,9 @@ void ObjectLogWidget::PaintWork(QPainter* painter, LogPeriod* logPeriod)
   }
 
   painter->setPen(QPen(QBrush(mTextColor), kPenWidth));
-  QString maxText(QString("%1p/s %2").arg(maxCircles, 0, 'f', 1).arg(maxWorkTime, 0, 'f', 2));
+  QString maxText(tr("%1p/s %2").arg(maxCircles, 0, 'f', 1).arg(maxWorkTime, 0, 'f', 2));
   if (maxLongestWork > 100) {
-    maxText.append(QString(" (%1)").arg(FormatTime(maxLongestWork)));
+    maxText.append(QString(" (%1)").arg(FormatTr::FormatTimeTr(maxLongestWork)));
   }
   painter->drawText(mWorkRect, Qt::AlignRight | Qt::AlignTop, maxText);
 //  painter->drawText(mWorkRect, Qt::AlignRight | Qt::AlignBottom, QString("%1p/s %2").arg(maxCircles, 0, 'f', 2));

@@ -1,3 +1,4 @@
+#include <QObject>
 #include <QStringList>
 
 #include "Format.h"
@@ -243,4 +244,3 @@ QString FormatTimeRu(qint64 ms, int prec)
     return QString("%1 мс").arg(ms);
   }
 }
-

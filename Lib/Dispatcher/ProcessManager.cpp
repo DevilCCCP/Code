@@ -27,10 +27,10 @@ const int kProcessCrushCounterClearMs = 15*60000;
 
 const int kProcessStartMs = 60000;
 const int kProcessInitMs = 120000;
-const int kProcessLiveMs = 10000;
+const int kProcessLiveMs = 30000;
 const int kProcessMiningMs = 60000;
 const int kProcessStopMs = 5000;
-const int kProcessWarnLiveMs = 3000;
+const int kProcessWarnLiveMs = 5000;
 const int kProcessWarnMiningMs = 30000;
 
 bool ProcessManager::DoInit()
@@ -458,7 +458,7 @@ bool ProcessManager::WatchProcessTimeout(int timeoutRestartMs, int timeoutWarnin
     mManageModule->Process->kill();
 #endif
     PostProcessRestart(true);
-  } else if (mManagedTime - mManageProcess->LastAliveMs > timeoutWarningMs) {
+  } else if (!mManageModule->TimeoutWarned && (mManagedTime - mManageProcess->LastAliveMs > timeoutWarningMs)) {
     Log.Info(QString("Process is silent (id: %1)").arg(mManageProcess->Id));
     mManageModule->TimeoutWarned = true;
   }

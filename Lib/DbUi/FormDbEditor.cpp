@@ -669,6 +669,7 @@ void FormDbEditor::OnLinkTriggered()
 void FormDbEditor::OnRemoveTriggered()
 {
   ClearWarning();
+
   if (DbTreeSchema* schema = GetActionSchema()) {
     RemoveItems(schema);
   }
@@ -677,6 +678,7 @@ void FormDbEditor::OnRemoveTriggered()
 void FormDbEditor::OnUnlinkTriggered()
 {
   ClearWarning();
+
   if (DbTreeSchema* schema = GetActionSchema()) {
     UnlinkItems(schema);
   }
@@ -685,6 +687,7 @@ void FormDbEditor::OnUnlinkTriggered()
 void FormDbEditor::OnUnlinkMultiTriggered()
 {
   ClearWarning();
+
   if (DbTreeSchema* schema = GetActionSchema()) {
     UnlinkMultiItems(schema);
   }
@@ -692,10 +695,14 @@ void FormDbEditor::OnUnlinkMultiTriggered()
 
 void FormDbEditor::on_actionReload_triggered()
 {
+  ClearWarning();
+
   Reload();
 }
 
 void FormDbEditor::on_pushButtonSave_clicked()
 {
+  ClearWarning();
+
   SaveEdit();
 }

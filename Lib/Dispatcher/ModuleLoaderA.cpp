@@ -12,8 +12,6 @@ bool ModuleLoaderA::DoCircle()
 {
   if (!UpdateModules() && !mPendingUpdate) {
     return true;
-  } else if (IsStop()) {
-    return false;
   }
 
   QMutexLocker lock(&mProcessManager->GetMainShmemMutex());

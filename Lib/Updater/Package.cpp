@@ -97,6 +97,7 @@ bool Package::Deploy(const PackLoaderAS& packLoader, const QString& destBasePath
   mInstallerPath.clear();
 
   mPackLoader = packLoader;
+  mPackLoader->SetCtrl(mCtrl);
   QByteArray ver;
   if (!mPackLoader->LoadVer(ver) || !mPackVersion.LoadFromString(QString::fromLatin1(ver))) {
     return false;
@@ -534,7 +535,8 @@ QString Package::ModeToString()
 
 
 Package::Package()
-  : mPackingMode(eModeIllegal)
+  : mCtrl(nullptr)
+  , mPackingMode(eModeIllegal)
 {
 }
 

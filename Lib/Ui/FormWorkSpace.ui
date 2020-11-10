@@ -14,6 +14,9 @@
    <string>Form</string>
   </property>
   <layout class="QHBoxLayout" name="horizontalLayout">
+   <property name="spacing">
+    <number>0</number>
+   </property>
    <property name="leftMargin">
     <number>0</number>
    </property>
@@ -27,7 +30,13 @@
     <number>0</number>
    </property>
    <item>
-    <widget class="QWidget" name="widgetControl" native="true">
+    <widget class="QFrame" name="frameControl">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
      <layout class="QVBoxLayout" name="verticalLayoutToolButtons">
       <property name="leftMargin">
        <number>0</number>
@@ -58,10 +67,25 @@
     </widget>
    </item>
    <item>
+    <widget class="QLabel" name="label">
+     <property name="text">
+      <string/>
+     </property>
+     <property name="pixmap">
+      <pixmap resource="Ui.qrc">:/separetorV</pixmap>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+   <item>
     <widget class="QStackedWidget" name="stackedWidgetMain"/>
    </item>
   </layout>
  </widget>
- <resources/>
+ <resources>
+  <include location="Ui.qrc"/>
+ </resources>
  <connections/>
 </ui>

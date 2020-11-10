@@ -34,7 +34,7 @@ void FormSchedule::SetScheduleInfo(const QStringList& _Info, int _TimePrecisionS
   mTimePrecisionSec = _TimePrecisionSec;
 
   ui->timeEditPrecision->setMinimumTime(QTime::fromMSecsSinceStartOfDay(mTimePrecisionSec * 1000));
-  ui->timeEditPrecision->setMaximumTime(QTime::fromMSecsSinceStartOfDay(1 * 60 * 60 * 1000));
+  ui->timeEditPrecision->setMaximumTime(QTime::fromMSecsSinceStartOfDay(2 * 60 * 60 * 1000));
   ui->timeEditPrecision->setTime(QTime::fromMSecsSinceStartOfDay(mTimePrecisionSec * 1000));
   mInfoColorList.clear();
 
