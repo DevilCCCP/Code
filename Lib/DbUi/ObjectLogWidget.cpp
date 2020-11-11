@@ -215,6 +215,9 @@ void ObjectLogWidget::PaintWork(QPainter* painter, LogPeriod* logPeriod)
   qreal maxWorkTime = 0.5;
   int   maxLongestWork = 50;
   foreach (const ObjectLogS& log, *logPeriod) {
+    if (log->TotalTime <= 0) {
+      continue;
+    }
     qreal k = 1.0 / log->TotalTime;
     maxCircles = qMax(maxCircles, 1000*k*log->Circles);
     maxWorkTime = qMax(maxWorkTime, 100*k*log->WorkTime);
@@ -236,6 +239,9 @@ void ObjectLogWidget::PaintWork(QPainter* painter, LogPeriod* logPeriod)
   QDateTime nextTime = firstTime > mFromTime.addSecs(kLogWidthSecs)? mFromTime: logPeriod->first()->PeriodEnd;
   qint64 timeLength = mFromTime.msecsTo(mToTime);
   foreach (const ObjectLogS& log, *logPeriod) {
+    if (log->TotalTime <= 0) {
+      continue;
+    }
     if (log->PeriodStart > nextTime) {
       qint64 timeLeft = mFromTime.msecsTo(nextTime);
       qint64 timeRight = mFromTime.msecsTo(log->PeriodStart);
