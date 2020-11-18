@@ -22,6 +22,11 @@ class RenameWorker: public QThread
   PROPERTY_GET_SET(int,     ResizeNumbers)
   PROPERTY_GET_SET(bool,    SwapNumbers)
 
+  PROPERTY_GET_SET(bool,    ImageResize)
+  PROPERTY_GET_SET(int,     ImageWidth)
+  PROPERTY_GET_SET(int,     ImageHeight)
+  PROPERTY_GET_SET(int,     ImageQuality)
+
   volatile bool             mStop;
   QVector<QString>          mFileList;
   int                       mProgress;
@@ -44,6 +49,7 @@ private:
   void DoRename();
   void DoNumbers();
   void DoNumbersAssign(int number, int size, int& index);
+  void DoImageResize();
 
 public slots:
   void Start();

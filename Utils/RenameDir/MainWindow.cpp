@@ -94,6 +94,11 @@ void MainWindow::on_pushButtonStart_clicked()
   mRenameWorker->setResizeNumbers(ui->checkBoxResizeNumber->isChecked()? ui->spinBoxNumberResize->value(): 0);
   mRenameWorker->setSwapNumbers(ui->checkBoxSwap->isChecked());
 
+  mRenameWorker->setImageResize(ui->checkBoxImageResize->isChecked());
+  mRenameWorker->setImageWidth(ui->spinBoxImageWidth->value());
+  mRenameWorker->setImageHeight(ui->spinBoxImageHeight->value());
+  mRenameWorker->setImageQuality(ui->spinBoxImageQuality->value());
+
   connect(mRenameWorker, &RenameWorker::finished, this, &MainWindow::OnWorkFinished);
   connect(mRenameWorker, &RenameWorker::Progress, this, &MainWindow::OnWorkProgress);
 

@@ -1,5 +1,6 @@
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QProcess>
 
 #include "RenameWorker.h"
 
@@ -59,6 +60,9 @@ void RenameWorker::DoFile()
   }
   if (mRename) {
     DoRename();
+  }
+  if (mImageResize) {
+    DoImageResize();
   }
   mBaseDir.rename(mCurrentFilePath, mNewFilePath);
 }
@@ -141,6 +145,13 @@ void RenameWorker::DoNumbersAssign(int number, int size, int& index)
       index = size + number;
     }
   }
+}
+
+void RenameWorker::DoImageResize()
+{
+  QString convert = QString("convert %1 -resize %2x%3 -quality %4 > %1")
+      .arg(mCurrentFilePath).arg(mImageWidth).arg(mImageHeight).arg(mImageQuality).arg(mCurrentFilePath);
+  QProcess::execute(convert);
 }
 
 void RenameWorker::Start()
