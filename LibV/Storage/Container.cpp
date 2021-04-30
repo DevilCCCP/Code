@@ -20,7 +20,7 @@ bool Container::Connect(int unitId)
     mOpenMode = eNone;
     return false;
   }
-  int64 size = mFile.size();
+  qint64 size = mFile.size();
   return size >= mCellSize * mCapacity;
 }
 
@@ -43,7 +43,7 @@ bool Container::Create()
     Log.Error(QString("Storage '%1' resize fail (error: %2)").arg(mPath).arg(mFile.errorString()));
     return false;
   }
-  int64 size = mFile.size();
+  qint64 size = mFile.size();
   if (size < mCellSize * mCapacity) {
     Log.Error(QString("File has wrong size (sz: %1, req: %2)").arg(FormatBytes(size)).arg(FormatBytes((qint64)mCellSize * mCapacity)));
   }

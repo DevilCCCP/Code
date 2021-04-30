@@ -7,6 +7,13 @@
 #include <Lib/Common/Version.h>
 
 
+enum UpdateStage {
+  eUpdateNot,
+  eUpdateError,
+  eUpdateOk,
+  eUpdateDownload
+};
+
 DefineClassS(UpChecker);
 DefineClassS(PackLoaderA);
 DefineClassS(Updater);
@@ -24,6 +31,10 @@ class UpChecker: public Imp
   QElapsedTimer mCheckTimer;
   bool          mUnreach;
   bool          mError;
+  int           mState;
+
+  Version       mUpVersionExt;
+  Version       mCurrentVersionExt;
 
   PackLoaderAS  mLoader;
 
@@ -44,6 +55,8 @@ private:
   bool ReloadPointInfo(const ObjectItemS& item);
   bool CheckUpdate();
   bool LoadUpdate();
+
+  void UpdateState(int newState);
 
 public:
   explicit UpChecker(Updater* _Updater, const ObjectItemS& _PointItem);

@@ -24,9 +24,8 @@ FORMS += \
 
 
 DEPEND_LIBS = \
-    Ui \
     LibZ \
-    Common
+    Ui
 
 !include($$PRI_DIR/DependenciesCore.pri) {
   error(Could not find the Dependencies.pri file!)

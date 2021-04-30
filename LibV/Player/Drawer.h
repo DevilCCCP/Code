@@ -78,7 +78,7 @@ public:
 class DevicePlayer
 {
 public:
-  /*new */virtual void SetFrame(FrameS& frame) = 0;
+  /*new */virtual void SetFrame(const FrameS& frame) = 0;
 
 public:
   DevicePlayer() { }

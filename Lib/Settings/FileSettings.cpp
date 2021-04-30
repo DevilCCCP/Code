@@ -83,7 +83,12 @@ QVariant FileSettings::GetValue(const QString &key, const QVariant &defaultValue
     QVariant value = mQSettings->value(key);
     if (value == QVariant()) {
       value = defaultValue;
-      if (!IsSilent()) {
+      if (IsAutoCreate()) {
+        SetValue(key, value);
+        if (!IsSilent()) {
+          Log.Info(QString("Created setting '%1' = '%2'").arg(key).arg(value.toString()));
+        }
+      } else if (!IsSilent()) {
         Log.Warning(QString("Use default setting '%1' = '%2'").arg(key).arg(value.toString()));
       }
     } else {
@@ -102,7 +107,7 @@ void FileSettings::SetValue(const QString &key, const QVariant &value)
 {
   if (mQSettings) {
     if (!IsSilent()) {
-      Log.Trace(QString("Set '%1' = '%2'").arg(key).arg(value.toString()));
+      Log.Info(QString("Set '%1' = '%2'").arg(key).arg(value.toString()));
     }
     return mQSettings->setValue(key, value);
   }

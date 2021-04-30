@@ -31,6 +31,7 @@ class PropertyForm: public QWidget
   bool                       mStandartIdItem;
   bool                       mStandartNameItem;
   bool                       mStandartDescrItem;
+  bool                       mStandartUuidItem;
   bool                       mUnlockEdit;
 
   QBrush                     mBrushNormal;

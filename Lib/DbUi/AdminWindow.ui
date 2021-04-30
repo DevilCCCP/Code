@@ -59,13 +59,34 @@
          </property>
          <widget class="QWidget" name="tabSystem">
           <attribute name="icon">
-           <iconset resource="../../Ls/ArmZ/AdminUi/Admin.qrc">
+           <iconset resource="../../Nex/ArmZ/AdminUi/Admin.qrc">
             <normaloff>:/ObjTree/Icons/System.png</normaloff>:/ObjTree/Icons/System.png</iconset>
           </attribute>
           <attribute name="title">
            <string>Система</string>
           </attribute>
-          <layout class="QVBoxLayout" name="verticalLayout_2">
+          <layout class="QVBoxLayout" name="verticalLayout_2" stretch="0,1">
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_2">
+             <item>
+              <widget class="QLineEdit" name="lineEditFind"/>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButtonFind">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QToolButton" name="toolButtonFindClose">
+               <property name="text">
+                <string>...</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </item>
            <item>
             <widget class="QSplitter" name="splitterMain">
              <property name="orientation">
@@ -135,7 +156,7 @@
          </widget>
          <widget class="QWidget" name="tabScript">
           <attribute name="icon">
-           <iconset resource="../../Ls/ArmZ/AdminUi/Admin.qrc">
+           <iconset resource="../../Nex/ArmZ/AdminUi/Admin.qrc">
             <normaloff>:/ObjTree/Icons/Script.png</normaloff>:/ObjTree/Icons/Script.png</iconset>
           </attribute>
           <attribute name="title">
@@ -279,6 +300,30 @@
     </layout>
    </widget>
   </widget>
+  <action name="actionFind">
+   <property name="icon">
+    <iconset resource="DbUi.qrc">
+     <normaloff>:/Icons/Filter.png</normaloff>:/Icons/Filter.png</iconset>
+   </property>
+   <property name="text">
+    <string>Фильтр объектов</string>
+   </property>
+   <property name="toolTip">
+    <string>Фильтр объектов</string>
+   </property>
+  </action>
+  <action name="actionFindClose">
+   <property name="icon">
+    <iconset resource="../Ui/Ui.qrc">
+     <normaloff>:/Icons/Backward.png</normaloff>:/Icons/Backward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Очистить фильтр</string>
+   </property>
+   <property name="toolTip">
+    <string>Очистить фильтр</string>
+   </property>
+  </action>
   <zorder>dockWidgetProperties</zorder>
   <zorder>dockWidgetTools</zorder>
  </widget>
@@ -298,8 +343,9 @@
  </customwidgets>
  <resources>
   <include location="DbUi.qrc"/>
-  <include location="../../Ls/ArmZ/AdminUi/Admin.qrc"/>
-  <include location="../../Ls/ArmZ/AdminUi/Admin.qrc"/>
+  <include location="../../Nex/ArmZ/AdminUi/Admin.qrc"/>
+  <include location="../Ui/Ui.qrc"/>
+  <include location="../../Nex/ArmZ/AdminUi/Admin.qrc"/>
  </resources>
  <connections/>
 </ui>

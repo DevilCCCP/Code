@@ -48,6 +48,7 @@ class AdminWindow: public MainWindow2
 
   QWidget*            mCurrentWidget;
   QWidget*            mCurrentObjWidget;
+  QString             mFilter;
 
   Q_OBJECT
 
@@ -99,6 +100,8 @@ private:
   void InitTools();
   void InitProperties();
 
+  void UpdateFilter();
+
   void OnSysTreeCurrentChanged(const QModelIndex& selected, const QModelIndex& deselected);
   void OnPropertyNameEdited();
 
@@ -106,5 +109,8 @@ private slots:
   void on_tabWidgetMain_currentChanged(int index);
   void on_listViewConnections_activated(const QModelIndex& index);
   void on_labelConnectionChange_linkActivated(const QString&);
+  void on_actionFind_triggered();
+  void on_actionFindClose_triggered();
+  void on_lineEditFind_returnPressed();
 };
 

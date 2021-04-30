@@ -1,0 +1,9 @@
+[Unit]
+Description=Batch downloader schedule
+
+[Timer]
+OnBootSec=1min
+OnUnitActiveSec=4h
+
+[Install]
+WantedBy=timers.target

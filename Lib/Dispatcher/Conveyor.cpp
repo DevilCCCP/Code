@@ -7,7 +7,7 @@
 
 
 const int kStuckTimeout = 2000;
-const int kWorkPeriodMs = 2000;
+const int kWorkPeriodMs = 20;
 const int kFramesPerCircleLimit = 20;
 const int kFrameOverflowCount = 200;
 

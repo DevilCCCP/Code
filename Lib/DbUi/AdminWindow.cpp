@@ -42,6 +42,13 @@ AdminWindow::AdminWindow(Db& _Db, UpInfo* _UpInfo, const CtrlManagerS& _Manager,
 
   ui->setupUi(this);
 
+  ui->toolButtonFind->setDefaultAction(ui->actionFind);
+  ui->toolButtonFindClose->setDefaultAction(ui->actionFindClose);
+  ui->treeViewSystemTree->addAction(ui->actionFind);
+  ui->treeViewSystemTree->addAction(ui->actionFindClose);
+  ui->treeViewSystemTree->setContextMenuPolicy(Qt::ActionsContextMenu);
+  ui->actionFindClose->setEnabled(true);
+
   ui->splitterMain->setSizes(QList<int>() << 1 << 500);
   QPalette p = ui->splitterMain->palette();
   p.setColor(QPalette::Background, p.color(QPalette::Background).darker(120));
@@ -259,6 +266,12 @@ void AdminWindow::InitProperties()
   mPropertyForm->setColumnsNames(schema);
 }
 
+void AdminWindow::UpdateFilter()
+{
+  ui->actionFindClose->setEnabled(!mFilter.isEmpty());
+  mObjectModel->SetFilter(mFilter, ui->treeViewSystemTree);
+}
+
 void AdminWindow::OnSysTreeCurrentChanged(const QModelIndex& selected, const QModelIndex& deselected)
 {
   Q_UNUSED(deselected);
@@ -338,4 +351,22 @@ void AdminWindow::on_labelConnectionChange_linkActivated(const QString&)
   if (mConnectionsModel->rowCount() > 0) {
     ui->listViewConnections->setVisible(true);
   }
+}
+
+void AdminWindow::on_actionFind_triggered()
+{
+  mFilter = ui->lineEditFind->text();
+  UpdateFilter();
+}
+
+void AdminWindow::on_actionFindClose_triggered()
+{
+  mFilter = "";
+  UpdateFilter();
+}
+
+void AdminWindow::on_lineEditFind_returnPressed()
+{
+  mFilter = ui->lineEditFind->text();
+  UpdateFilter();
 }

@@ -1,13 +1,15 @@
 #include <QPaintEvent>
 #include <QPainter>
 
+#include <Lib/Log/Log.h>
+
 #include "QWidgetB.h"
 
 
 void QWidgetB::paintEvent(QPaintEvent* event)
 {
   if (mBackImage.isNull()) {
-    QWidget::paintEvent(event);
+    return QWidget::paintEvent(event);
   }
 
   QRectF targetRect = event->rect();

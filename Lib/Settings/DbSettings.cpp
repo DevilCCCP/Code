@@ -56,7 +56,12 @@ QVariant DbSettings::GetValue(const QString &key, const QVariant &defaultValue)
   QVariant value = mDb.ExecuteScalar(q);
   if (value == QVariant()) {
     value = defaultValue;
-    if (!IsSilent()) {
+    if (IsAutoCreate()) {
+      SetValue(key, value);
+      if (!mError && !IsSilent()) {
+        Log.Info(QString("Created setting '%1' = '%2'").arg(key).arg(value.toString()));
+      }
+    } else if (!IsSilent()) {
       Log.Warning(QString("Use default setting '%1' = '%2'").arg(key).arg(value.toString()));
     }
   } else {
@@ -71,7 +76,7 @@ void DbSettings::SetValue(const QString &key, const QVariant &value)
 {
   mError = false;
   if (!IsSilent()) {
-    Log.Trace(QString("Set '%3%1' = '%2'").arg(key).arg(value.toString()).arg(mPrefix));
+    Log.Info(QString("Set '%3%1' = '%2'").arg(key).arg(value.toString()).arg(mPrefix));
   }
   auto q = mDb.MakeQuery();
   q->prepare(QString("UPDATE %1 SET value = '%5' WHERE %2 = '%3' AND key = '%6%4' RETURNING _id;")

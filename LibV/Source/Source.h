@@ -61,7 +61,7 @@ private:
   void SwitchStatus(Connection::EStatus status);
 
 public:
-  static SourceS CreateSource(SettingsA& settings, bool quiet);
+  static SourceS CreateSource(SettingsA& settings, bool quiet, bool thumbnail = true);
   static SourceS CreateChildSource();
 
 protected:

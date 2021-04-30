@@ -61,6 +61,12 @@ contains(DEFINES, VIDEO_ARM) {
     Win/GdiplusEngine.h \
     Win/CtrlWndDef.h
  }
+} contains(DEFINES, USE_SDL2) {
+ SOURCES +=  \
+    Sdl/SdlPlayer.cpp
+
+ HEADERS += \
+    Sdl/SdlPlayer.h
 }
 
 

@@ -23,7 +23,8 @@ SOURCES += \
     GraphWidget.cpp \
     FormWorkSpace.cpp \
     UserIdleEventFilter.cpp \
-    FuncWidget.cpp
+    FuncWidget.cpp \
+    WidgetImageR.cpp
 
 HEADERS += \
     DockWidget2.h \
@@ -42,7 +43,8 @@ HEADERS += \
     GraphWidget.h \
     FormWorkSpace.h \
     UserIdleEventFilter.h \
-    FuncWidget.h
+    FuncWidget.h \
+    WidgetImageR.h
 
 
 LIBS += \

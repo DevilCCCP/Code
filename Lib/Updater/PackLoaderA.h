@@ -22,6 +22,8 @@ class PackLoaderA
 public:
   /*new */virtual bool LoadVer(QByteArray& ver) = 0;
   /*new */virtual bool LoadInfo(QByteArray& info) = 0;
+  /*new */virtual bool LoadExternalsVer(QByteArray& ver) = 0;
+  /*new */virtual bool LoadExternalsInfo(QByteArray& info) = 0;
   /*new */virtual bool LoadFile(const QString& path, QByteArray& data) = 0;
 
   /*new */virtual void SetCtrl(CtrlWorker* ctrl) = 0;

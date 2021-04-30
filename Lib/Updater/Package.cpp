@@ -108,7 +108,21 @@ bool Package::Deploy(const PackLoaderAS& packLoader, const QString& destBasePath
     return false;
   }
   mPackingMode = eModeDeploy;
-  return DeployWithInfo(info, destBasePath);
+  if (!DeployWithInfo(info, destBasePath)) {
+    return false;
+  }
+
+//  if (mPackLoader->LoadExternalsVer(ver) && mExternalsVersion.LoadFromString(QString::fromLatin1(ver))) {
+//    if (!mPackLoader->LoadExternalsInfo(info)) {
+//      return false;
+//    }
+//    mPackingMode = eModeDeploy;
+//    if (!DeployWithInfoExt(info, destBasePath)) {
+//      return false;
+//    }
+//  }
+
+  return true;
 }
 
 bool Package::DeployWithInfo(const QByteArray& info, const QString& destBasePath)
@@ -118,6 +132,42 @@ bool Package::DeployWithInfo(const QByteArray& info, const QString& destBasePath
     lines.removeFirst();
     if (!ParseInfo(lines)) {
       Log.Error(QString("Parse info fail"));
+      return false;
+    }
+  }
+
+  if (!DeployPack(destBasePath)) {
+    if (mPackingMode == eModeInstallSoft) {
+      Log.Warning(QString("Deploy pack fail"));
+    } else {
+      Log.Error(QString("Deploy pack fail"));
+    }
+    return false;
+  }
+
+  if (mPackingMode == eModeDeploy) {
+    if (!DeployDir(".") || !WriteFile(".info", info)) {
+      return false;
+    }
+  }
+  if (mPackingMode == eModeInstallSoft || mPackingMode == eModeInstallAggressive) {
+    if (!ExecScripts()) {
+      Log.Error(QString("Exec scripts fail"));
+      return false;
+    }
+  }
+
+  Log.Info(QString("Done"));
+  return true;
+}
+
+bool Package::DeployWithInfoExt(const QByteArray& info, const QString& destBasePath)
+{
+  if (mCommandsExt.isEmpty()) {
+    QList<QByteArray> lines = info.split('\n');
+    lines.removeFirst();
+    if (!ParseInfoExt(lines)) {
+      Log.Error(QString("Parse externals info fail"));
       return false;
     }
   }
@@ -480,6 +530,17 @@ bool Package::ParseInfo(const QList<QByteArray>& lines)
   return true;
 }
 
+bool Package::ParseInfoExt(const QList<QByteArray>& lines)
+{
+  for (auto itr = lines.begin(); itr != lines.end(); itr++) {
+    const QByteArray& line = *itr;
+    if (!ParseLineExt(line)) {
+      return false;
+    }
+  }
+  return true;
+}
+
 bool Package::ParseLine(const QByteArray& line)
 {
   QString lineText = QString::fromUtf8(line).trimmed();
@@ -508,6 +569,51 @@ bool Package::ParseLine(const QByteArray& line)
   case 'M': mMd5Hash = QByteArray::fromHex(cmdParams.toLatin1()); return true;
   }
   Log.Warning(QString("Parse info: illegal line ('%1')").arg(line.constData()));
+  return true;
+}
+
+bool Package::ParseLineExt(const QByteArray& line)
+{
+  QString lineText = QString::fromUtf8(line).trimmed();
+  if (lineText.isEmpty()) {
+    return true;
+  }
+
+  char command = lineText.at(0).toLatin1();
+  QString cmdParams = lineText.mid(2).trimmed();
+  switch (command) {
+  case '-':
+  case ' ':
+  case '#':
+  case '/':
+    return true;
+  case 'D': mCommands.append(PackCommand(eDir, cmdParams)); return true;
+  }
+
+  QStringList cmdParamsList = cmdParams.split(' ', QString::KeepEmptyParts);
+  if (cmdParamsList.size() >= 4) {
+    QString fileHash = cmdParamsList.takeLast();
+    QString fileVersion = cmdParamsList.takeLast();
+    QString fileSize = cmdParamsList.takeLast();
+    QByteArray hash = QByteArray::fromHex(fileHash.toLatin1());
+    Version fileVer;
+    bool ok1 = fileVer.LoadFromString(fileVersion);
+    bool ok2;
+    qint64 size = fileSize.toLongLong(&ok2);
+    QString filePath = cmdParamsList.join(' ');
+
+    if (ok1 && ok2) {
+      switch (command) {
+      case 'F': mCommands.append(PackCommand(eFile, filePath, size, fileVer, hash)); return true;
+      case 'E': mCommands.append(PackCommand(eFileExec, filePath, size, fileVer, hash)); return true;
+      case 'A': mCommands.append(PackCommand(eArchFile, filePath, size, fileVer, hash)); return true;
+      case 'S': mCommands.append(PackCommand(eBatScript, filePath, size, fileVer, hash)); return true;
+      case 'Q': mCommands.append(PackCommand(eSqlScript, filePath, size, fileVer, hash)); return true;
+      case 'X': mCommands.append(PackCommand(eArchExec, filePath, size, fileVer, hash)); return true;
+      }
+    }
+  }
+  Log.Warning(QString("Parse info externals: illegal line ('%1')").arg(line.constData()));
   return true;
 }
 

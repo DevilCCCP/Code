@@ -172,9 +172,10 @@ bool HttpHandler::HttpResult(int code, const QByteArray& text, bool done)
     Answer().append("Connection: keep-alive\r\n");
   }
   if (done) {
-    Answer().append("Content-Type: text/html\r\n");
-    Answer().append("Content-Length: 0\r\n");
+    Answer().append(QByteArray("Content-Type: text/plain; charset=\"utf-8\"\r\n"));
+    Answer().append(QByteArray("Content-Length: ") + QByteArray::number(text.size()) + "\r\n");
     mAnswer.append(QByteArray("\r\n"));
+    mAnswer.append(text);
   }
   return true;
 }
@@ -183,7 +184,7 @@ bool HttpHandler::HttpRedirect(const QByteArray& uri)
 {
   HttpResult(301, "Redirect", false);
   Answer().append("Location: " + uri + "\r\n");
-  return HttpResultDone();
+  return HttpResultDone("Redirect");
 }
 
 bool HttpHandler::HttpResultOk(bool done)
@@ -196,9 +197,9 @@ bool HttpHandler::HttpResultUnauthorized(const char* realm, bool done)
   HttpResult(401, "Unauthorized", false);
   Answer().append("WWW-Authenticate: Basic realm=\"");
   Answer().append(realm);
-  Answer().append("\"");
+  Answer().append("\"\r\n");
   if (done) {
-    mAnswer.append(QByteArray("\r\n"));
+    HttpResultDone("Unauthorized");
   }
   return true;
 }
@@ -223,9 +224,12 @@ bool HttpHandler::HttpInternalError(bool done)
   return HttpResult(500, "Internal Server Error", done);
 }
 
-bool HttpHandler::HttpResultDone()
+bool HttpHandler::HttpResultDone(const QByteArray& text)
 {
+  Answer().append(QByteArray("Content-Type: text/plain\r\n"));
+  Answer().append(QByteArray("Content-Length: ") + QByteArray::number(text.size()) + "\r\n");
   mAnswer.append(QByteArray("\r\n"));
+  mAnswer.append(text);
   return true;
 }
 
@@ -565,10 +569,11 @@ bool HttpHandler::ParseOneFile(bool &done)
       break;
     }
 
+    static QString kContentType("Content-Type:");
     static QString kContentDisposition("Content-Disposition:");
 
     if (mRequest.mid(posb, kContentDisposition.size()) == kContentDisposition) {
-      int posc = posb + QString("Content-Disposition:").size();
+      int posc = posb + kContentDisposition.size();
       int posd = mRequest.indexOf(QChar('\n'), posb);
       QByteArray line = mRequest.mid(posc, posd - posc).trimmed();
       QList<QByteArray> params = line.split(';');
@@ -584,6 +589,10 @@ bool HttpHandler::ParseOneFile(bool &done)
           }
         }
       }
+    } else if (mRequest.mid(posb, kContentType.size()) == kContentType) {
+      int posc = posb + kContentType.size();
+      int posd = mRequest.indexOf(QChar('\n'), posb);
+      file.Type = mRequest.mid(posc, posd - posc).trimmed();
     } else {
       Log.Warning(QString("Body syntax don't known: \n") + mRequest.mid(posb, 200));
       continue;

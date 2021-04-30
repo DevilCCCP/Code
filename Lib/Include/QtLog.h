@@ -14,6 +14,9 @@ void LogMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
     //known Qt 5.5 bug
     return;
   }
+  if (msg == QStringLiteral("QWidget::paintEngine: Should no longer be called")) {
+    return;
+  }
   QString info = QString("Qt message (text: '%1', file: '%2', line: %3, func: '%4')").arg(msg).arg(context.file).arg(context.line).arg(context.function);
 
   switch (type) {

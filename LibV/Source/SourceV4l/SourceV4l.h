@@ -15,7 +15,7 @@ DefineClassS(Thumbnail);
 
 class SourceV4l: public Source
 {
-  int           mUsbDevice;
+  QString       mUsbDevice;
   QString       mFilename;
   V4lInS        mV4lIn;
   QString       mResolution;

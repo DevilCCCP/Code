@@ -2,6 +2,7 @@
 
 #include <LibV/Include/Frame.h>
 #include <Lib/Dispatcher/Conveyor.h>
+#include <Lib/Log/Log.h>
 
 
 DefineClassS(Frame);

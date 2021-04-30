@@ -34,7 +34,7 @@ bool Overseer::DoReport()
 {
   if (mDetached) {
     return true;
-  } else if (mProcessInfo->SayLive()) {
+  } else if (mProcessInfo->SayLive() && IsStatusFlag(eFlagStarting | eFlagLive)) {
     ChangeStatus(eLive);
     return true;
   } else {

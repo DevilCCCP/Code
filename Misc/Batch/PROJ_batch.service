@@ -1,0 +1,11 @@
+[Unit]
+Description=Batch executor
+
+[Service]
+ExecStart=/usr/libexec/__ABBR__-batch-exec.sh
+Type=oneshot
+TimeoutSec=600
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target

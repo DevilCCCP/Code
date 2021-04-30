@@ -26,12 +26,20 @@ class Package
     eIllegal
   };
   struct PackCommand {
-    ECommand Type;
-    QString  Path;
-    bool     DeployDone;
-    bool     ExecDone;
+    ECommand   Type;
+    QString    Path;
+    qint64     Size;
+    Version    FileVersion;
+    QByteArray FileHash;
+    bool       DeployDone;
+    bool       ExecDone;
 
-    PackCommand(ECommand _Type, const QString& _Path): Type(_Type), Path(_Path), DeployDone(false), ExecDone(false) { }
+    PackCommand(ECommand _Type, const QString& _Path)
+      : Type(_Type), Path(_Path), Size(0), DeployDone(false), ExecDone(false)
+    { }
+    PackCommand(ECommand _Type, const QString& _Path, qint64 _Size, const Version& _Ver, const QByteArray& _Hash)
+      : Type(_Type), Path(_Path), Size(_Size), FileVersion(_Ver), FileHash(_Hash), DeployDone(false), ExecDone(false)
+    { }
   };
 
   enum EMode {
@@ -45,6 +53,7 @@ class Package
   PackLoaderAS        mPackLoader;
   CtrlWorker*         mCtrl;
   QList<PackCommand>  mCommands;
+  QList<PackCommand>  mCommandsExt;
   DbS                 mDb;
 
   QDir                mDestDir;
@@ -54,6 +63,7 @@ class Package
   QCryptographicHashS mMd5;
 
   PROPERTY_GET(Version,    PackVersion)
+  PROPERTY_GET(Version,    ExternalsVersion)
   PROPERTY_GET(QString,    InstallerPath)
   PROPERTY_GET(QByteArray, Md5Hash)
   ;
@@ -67,6 +77,7 @@ public:
 
 private:
   bool DeployWithInfo(const QByteArray& info, const QString& destBasePath);
+  bool DeployWithInfoExt(const QByteArray& info, const QString& destBasePath);
   bool DeployPack(const QString& destBasePath);
   bool DeployOne(PackCommand* cmd);
   bool DeployDir(const QString& path);
@@ -86,9 +97,11 @@ private:
 
 public:
   bool ParseInfo(const QList<QByteArray>& lines);
+  bool ParseInfoExt(const QList<QByteArray>& lines);
 
 private:
   bool ParseLine(const QByteArray& line);
+  bool ParseLineExt(const QByteArray& line);
   QByteArray GetInfoData() const;
   QString ModeToString();
 

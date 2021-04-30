@@ -17,7 +17,7 @@ public:
   int       Condition;
 
 public:
-  /*override */virtual bool Equals(const TableItem&) Q_DECL_OVERRIDE;
+  /*override */virtual bool Equals(const TableItem&) const Q_DECL_OVERRIDE;
 
   DbIndexItem() { }
   /*override */virtual ~DbIndexItem() { }

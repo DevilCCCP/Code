@@ -5,7 +5,7 @@
 
 const int kWaitConnectMs = 3000;
 
-bool DbIndexItem::Equals(const TableItem &)
+bool DbIndexItem::Equals(const TableItem &) const
 {
   return false;
 }

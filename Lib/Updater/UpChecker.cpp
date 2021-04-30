@@ -1,4 +1,6 @@
 #include <QCoreApplication>
+#include <QDir>
+#include <QFile>
 
 #include <Lib/Db/ObjectType.h>
 #include <Lib/Settings/DbSettings.h>
@@ -124,23 +126,41 @@ bool UpChecker::CheckUpdate()
     }
     Version upVersion;
     if (upVersion.LoadFromString(verText)) {
+      UpdateState(eUpdateOk);
       Log.Trace(QString("%1").arg(verText.constData()));
       if (mUpVersion < upVersion) {
         mUpVersion = upVersion;
         Log.Info(QString("Found update version (point: '%1', ver: '%2')").arg(mLoader->getUri()).arg(mUpVersion.ToString()));
       }
     } else {
+      UpdateState(eUpdateError);
       if (!mError) {
         Log.Error(QString("Version not read from info file"));
         mError = true;
       }
     }
-  } else if (!mUnreach) {
-    Log.Warning(QString("Update is unreachable (point: '%1')").arg(mLoader->getUri()));
-    mUnreach = true;
+
+//    if (mLoader->LoadExternalsVer(verText)) {
+//      Version upVersion;
+//      if (upVersion.LoadFromString(verText)) {
+//        Log.Trace(QString("%1").arg(verText.constData()));
+//        if (mUpVersionExt < upVersion) {
+//          mUpVersionExt = upVersion;
+//          Log.Info(QString("Found update externals version (point: '%1', ver: '%2')").arg(mLoader->getUri()).arg(mUpVersion.ToString()));
+//        }
+//      }
+//    }
+
+  } else {
+    UpdateState(eUpdateNot);
+    if (!mUnreach) {
+      Log.Warning(QString("Update is unreachable (point: '%1')").arg(mLoader->getUri()));
+      mUnreach = true;
+    }
   }
 
   if (SayWork() && mCurrentVersion < mUpVersion) {
+    UpdateState(eUpdateDownload);
     LoadUpdate();
   }
 
@@ -161,10 +181,27 @@ bool UpChecker::LoadUpdate()
   return true;
 }
 
+void UpChecker::UpdateState(int newState)
+{
+  if (mState == newState) {
+    return;
+  }
+
+  QDir tempDir = QDir::temp();
+  QFile fileInfo(tempDir.absoluteFilePath(QString("UpInfo%1").arg(mPointItem->Id)));
+  if (fileInfo.open(QFile::WriteOnly)) {
+    if (fileInfo.write(QByteArray::number(newState))) {
+      fileInfo.flush();
+      fileInfo.close();
+      mState = newState;
+    }
+  }
+}
+
 
 UpChecker::UpChecker(Updater* _Updater, const ObjectItemS& _PointItem)
   : Imp(kWorkPeriodMs)
   , mUpdater(_Updater), mPointItem(_PointItem)
-  , mPointId(0), mRevision(0), mUnreach(false)
+  , mPointId(0), mRevision(0), mUnreach(false), mError(false), mState(-1)
 {
 }

@@ -66,15 +66,18 @@ protected:
 
   PROTECTED_GET(QString,     PreparedColumns)
   PROTECTED_GET(QString,     PreparedValues)
+  PROTECTED_GET(QString,     PreparedIdValues)
   PROTECTED_GET(QString,     PreparedSelect)
   PROTECTED_GET(QString,     PreparedSelOne)
   PROTECTED_GET(QString,     PreparedSelCnt)
   PROTECTED_GET(QString,     PreparedSelTop)
   PROTECTED_GET(QString,     PreparedInsert)
   PROTECTED_GET(QString,     PreparedInsCopy)
+  PROTECTED_GET(QString,     PreparedRestore)
   PROTECTED_GET(QString,     PreparedUpdate)
   PROTECTED_GET(QString,     PreparedDelete)
   PROTECTED_GET(QString,     PreparedInsertPack)
+  PROTECTED_GET(QString,     PreparedRestorePack)
 
 protected:
   /*new */virtual QString TableName() = 0;
@@ -224,6 +227,39 @@ public:
     return true;
   }
 
+  bool Restore(const QSharedPointer<DbItemT<IntT> >& item)
+  {
+    return Restore(*item);
+  }
+
+  bool Restore(DbItemT<IntT>& item)
+  {
+    this->PrepareStrings();
+
+    auto q = this->getDb().MakeQuery();
+    q->prepare(this->getPreparedRestore());
+    int index = 0;
+    q->bindValue(index++, item.Id);
+    if (!this->OnRowWrite(q, index, item)) {
+      return false;
+    }
+
+    if (!this->getDb().ExecuteQuery(q)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool SequenceUpdate(IntT id)
+  {
+    auto q = this->getDb().MakeQuery();
+    q->prepare(QString("SELECT setval('%1__id_seq', %2)").arg(getTable()).arg(id));
+    if (!this->getDb().ExecuteNonQuery(q)) {
+      return false;
+    }
+    return true;
+  }
+
   bool Update(const QSharedPointer<DbItemT<IntT> >& item)
   {
     return Update(*item);
@@ -277,17 +313,20 @@ protected:
       values.append("?");
       setValues.append(mColumns[i] + "=?");
     }
-    mPreparedValues  = QString("(") + values.join(',') + QString(")");
-    mPreparedSelect  = QString("SELECT _id,") + mPreparedColumns + " FROM " + mTable + " ";
-    mPreparedSelOne  = QString("SELECT ") + mPreparedColumns + " FROM " + mTable + " WHERE _id=? LIMIT 1";
-    mPreparedSelCnt  = QString("SELECT COUNT(_id) FROM ") + mTable + " ";
-    mPreparedSelTop  = QString("SELECT _id FROM ") + mTable + " %1 ORDER BY _id DESC LIMIT 1";
-    mPreparedInsert  = QString("INSERT INTO ") + mTable + "(" + mPreparedColumns + ") VALUES " + mPreparedValues + " RETURNING _id";
-    mPreparedInsCopy = QString("INSERT INTO ") + mTable + "(" + mPreparedColumns + ") (SELECT " + mPreparedColumns
+    mPreparedValues      = QString("(") + values.join(',') + QString(")");
+    mPreparedIdValues    = QString("(?,") + values.join(',') + QString(")");
+    mPreparedSelect      = QString("SELECT _id,") + mPreparedColumns + " FROM " + mTable + " ";
+    mPreparedSelOne      = QString("SELECT ") + mPreparedColumns + " FROM " + mTable + " WHERE _id=? LIMIT 1";
+    mPreparedSelCnt      = QString("SELECT COUNT(_id) FROM ") + mTable + " ";
+    mPreparedSelTop      = QString("SELECT _id FROM ") + mTable + " %1 ORDER BY _id DESC LIMIT 1";
+    mPreparedInsert      = QString("INSERT INTO ") + mTable + "(" + mPreparedColumns + ") VALUES " + mPreparedValues + " RETURNING _id";
+    mPreparedRestore     = QString("INSERT INTO ") + mTable + "(_id," + mPreparedColumns + ") VALUES " + mPreparedIdValues;
+    mPreparedInsCopy     = QString("INSERT INTO ") + mTable + "(" + mPreparedColumns + ") (SELECT " + mPreparedColumns
         + " FROM " + mTable + " WHERE _id = ?) RETURNING _id;";
-    mPreparedUpdate  = QString("UPDATE ") + mTable + " SET " + setValues.join(',') + " WHERE _id=?";
-    mPreparedDelete  = QString("DELETE FROM ") + mTable + " ";
-    mPreparedInsertPack = QString("INSERT INTO ") + mTable + "(" + mPreparedColumns + ") VALUES ";
+    mPreparedUpdate      = QString("UPDATE ") + mTable + " SET " + setValues.join(',') + " WHERE _id=?";
+    mPreparedDelete      = QString("DELETE FROM ") + mTable + " ";
+    mPreparedInsertPack  = QString("INSERT INTO ") + mTable + "(" + mPreparedColumns + ") VALUES ";
+    mPreparedRestorePack = QString("INSERT INTO ") + mTable + "(_id," + mPreparedColumns + ") VALUES ";
   }
 
 
@@ -741,6 +780,36 @@ public:
       int index = 0;
       for (int j = 0; j < curCount; j++) {
         this->OnRowWrite(q, index, *items.at(i + j));
+      }
+
+      if (!this->getDb().ExecuteNonQuery(q)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  bool RestorePack(const QVector<QSharedPointer<DbItemImpT> >& items, int count = 100)
+  {
+    this->PrepareStrings();
+    auto q = this->getDb().MakeQuery();
+    int lastCount = 0;
+    for (int i = 0; i < items.size(); i += count) {
+      int curCount = qMin(count, items.size() - i);
+      if (curCount != lastCount) {
+        QStringList valuesList;
+        for (int j = 0; j < curCount; j++) {
+          valuesList << this->getPreparedIdValues();
+        }
+        q->prepare(this->getPreparedRestorePack() + valuesList.join(','));
+        lastCount = curCount;
+      }
+
+      int index = 0;
+      for (int j = 0; j < curCount; j++) {
+        const DbItemImpT& item = *items.at(i + j);
+        q->bindValue(index++, item.Id);
+        this->OnRowWrite(q, index, item);
       }
 
       if (!this->getDb().ExecuteNonQuery(q)) {

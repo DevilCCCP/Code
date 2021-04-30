@@ -49,6 +49,7 @@ enum ECompression
   eRawYuvP  = 4,
   eRawRgba  = 5,
   eRawNv12A = 6, // NV12 align 32 bytes (vert and horz)
+  eRawY     = 0xff,
   eJpeg     = 0x100,
   eMpeg4    = 0x101,
   eH264     = 0x102,
@@ -73,10 +74,14 @@ inline static const char* CompressionToString(ECompression compression)
   case eRawYuv:    return "RawYuv";
   case eRawNv12:   return "RawNv12";
   case eRawYuvP:   return "RawYuvP";
+  case eRawRgba:   return "RawRgba";
+  case eRawNv12A:  return "RawNv12a";
   case eJpeg:      return "Jpeg";
   case eMpeg4:     return "Mpeg4";
   case eH264:      return "H264";
   case eRawAuF16:  return "RawAudioFloat16";
+  case eRawAuS16:  return "RawAudioInt16";
+  case eRawAuS32:  return "RawAudioInt32";
   case eAac16b:    return "eAac16b";
   default:         return "Unknown";
   }

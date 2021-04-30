@@ -1,0 +1,6 @@
+#!/bin/bash
+
+getent passwd __ABBR__loader || (adduser --no-create-home --disabled-password --gecos "" __ABBR__loader || exit 1)
+systemctl daemon-reload || exit 83
+systemctl enable __ABBR___batch_loader.timer || exit 84
+systemctl enable __ABBR___batch_loader.service || exit 85

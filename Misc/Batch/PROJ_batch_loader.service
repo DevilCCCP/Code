@@ -1,0 +1,14 @@
+[Unit]
+Description=Batch downloader service
+
+[Service]
+ExecStart=/usr/libexec/__ABBR__-batch-load.sh
+Type=oneshot
+TimeoutSec=600
+RemainAfterExit=true
+
+User=__ABBR__loader
+Group=__ABBR__loader
+
+[Install]
+WantedBy=multi-user.target

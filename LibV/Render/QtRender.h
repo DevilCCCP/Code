@@ -12,18 +12,22 @@ DefineClassS(QtRender);
 DefineClassS(Overseer);
 DefineClassS(Decoder);
 DefineClassS(DecodeReceiver);
-DefineClassS(QWidgetB);
+DefineClassS(WidgetImageR);
 
 class QtRender: public Render
 {
   OverseerS       mOverseer;
+  bool            mUseDecoder;
+
   DecoderS        mDecoder;
   DecodeReceiverS mDecodeReceiver;
-
   QWidget*        mParentWidget;
-  QWidgetB*       mDrawWidget;
+  WidgetImageR*   mDrawWidget;
   QRect           mSourceRect;
   QRect           mDestRect;
+
+public:
+  WidgetImageR*   DrawWidget() { return mDrawWidget; }
 
 public:
   /*override */virtual bool Init() Q_DECL_OVERRIDE;
@@ -37,7 +41,12 @@ public:
   /*override */virtual bool PlayFrame(const FrameS& frame) Q_DECL_OVERRIDE;
 
 public:
-  QtRender(const OverseerS& _Overseer);
+  void ReleaseSource(Conveyor* source);
+  void ClearImage();
+  void ConnectConsumer(CtrlWorker* consumer);
+
+public:
+  QtRender(const OverseerS& _Overseer, bool _UseDecoder = true);
   virtual ~QtRender();
 };
 

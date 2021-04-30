@@ -22,7 +22,7 @@ class SourceFfmpeg: public Source
   bool          mOpenFail;
   volatile bool mPlayFile;
 
-  int           mUsbDevice;
+  QString       mUsbDevice;
   qint64        mFromMs;
 
   bool          mFirstFrame;

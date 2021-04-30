@@ -147,7 +147,7 @@ void Source::SwitchStatus(Connection::EStatus status)
   }
 }
 
-SourceS Source::CreateSource(SettingsA &settings, bool quiet)
+SourceS Source::CreateSource(SettingsA &settings, bool quiet, bool thumbnail)
 {
   QString uri = settings.GetMandatoryValue("Uri", true).toString();
   bool useAudio = settings.GetValue("Audio", false).toBool();
@@ -186,6 +186,9 @@ SourceS Source::CreateSource(SettingsA &settings, bool quiet)
   }
   source->mUseAudio = useAudio;
   source->mQuiet = quiet;
+  if (thumbnail) {
+    source->mThumbnail.reset(new Thumbnail());
+  }
   return source;
 }
 
@@ -198,7 +201,6 @@ Source::Source(int _WorkPeriodMs)
   : ConveyorV(_WorkPeriodMs)
   , mQuiet(false), mUseAudio(true)
   , mStatus(Connection::eNone), mLastFixer(0)
-  , mThumbnail(new Thumbnail())
 {
 }
 

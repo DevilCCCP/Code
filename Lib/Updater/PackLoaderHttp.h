@@ -16,6 +16,8 @@ class PackLoaderHttp: public PackLoaderA
 public:
   /*override */virtual bool LoadVer(QByteArray& ver) Q_DECL_OVERRIDE;
   /*override */virtual bool LoadInfo(QByteArray& info) Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadExternalsVer(QByteArray& ver) Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadExternalsInfo(QByteArray& info) Q_DECL_OVERRIDE;
   /*override */virtual bool LoadFile(const QString& path, QByteArray& data) Q_DECL_OVERRIDE;
 
   /*override */virtual void SetCtrl(CtrlWorker* ctrl) Q_DECL_OVERRIDE;

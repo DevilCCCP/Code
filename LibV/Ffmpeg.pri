@@ -13,6 +13,11 @@ win32 {
  LIBS += -L$$EXTERN_DIR/ffmpeg-3.2/lib/
 }
 
+contains(QMAKE_HOST.arch, aarch64) {
+DEFINES += \
+    SWS_SCALE_BUG \
+}
+
 LIBS += \
     -lavcodec \
     -lavformat \

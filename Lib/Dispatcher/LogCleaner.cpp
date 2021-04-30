@@ -44,7 +44,6 @@ bool LogCleaner::DoCircle()
     if (!CleanNext()) {
       return true;
     }
-    mCleanInfoList.removeFirst();
     mNextCleanTime += mEstimateCleanMs;
   }
   return true;

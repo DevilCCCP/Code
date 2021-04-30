@@ -30,6 +30,7 @@ class ObjectModel: public TreeModelA
   int                    mNextId;
   int                    mCurrentFit;
   QModelIndex*           mCurrentIndex;
+  QString                mFilter;
 
   Q_OBJECT
 
@@ -40,7 +41,9 @@ public:
 public:
   int MinId();
   void UpdateSchema();
+  void SetFilter(const QString& _Filter, QTreeView* tree);
   bool ReloadTree(int currentId, int parentId, int nextId, QModelIndex& currentIndex, QTreeView* tree);
+  void LoadTree(QTreeView* tree);
   bool GetItem(const QModelIndex& index, ObjectItemS& item) const;
   bool GetItemId(const QModelIndex& index, int& id);
 

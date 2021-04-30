@@ -180,9 +180,9 @@ bool UniteHandler::VerifySign(const QByteArray& data, const QByteArray& sign)
   }
 
   if (!rsa->VerifySha256(data, sign)) {
-    Log.Debug(QString("key\n") + mCurrentPkey);
-    Log.Debug(QString("data\n") + data);
-    Log.Debug(QString("sign\n") + sign.toHex());
+    LOG_WARNING_ONCE(QString("key\n") + mCurrentPkey);
+    LOG_WARNING_ONCE(QString("data\n") + data);
+    LOG_WARNING_ONCE(QString("sign\n") + sign.toHex());
     mUniteInfo->WarnOnce(QString("Bad message sign (key: '%1')").arg(mCurrentPkey.constData()));
     return false;
   }

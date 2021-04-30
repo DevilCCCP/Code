@@ -30,9 +30,6 @@ struct MediaPath {
   MediaPath()
     : MediaLink(), MediaIndex(-1)
   { }
-  MediaPath(const MediaPath& other)
-    : MediaLink(other.MediaLink), MediaIndex(other.MediaIndex), MediaChannel(other.MediaChannel)
-  { }
 };
 typedef QMap<QString, MediaPath> MapMedia;
 

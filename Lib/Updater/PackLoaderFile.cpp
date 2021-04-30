@@ -29,6 +29,30 @@ bool PackLoaderFile::LoadInfo(QByteArray& info)
   return file.error() == QFileDevice::NoError && !info.isEmpty();
 }
 
+bool PackLoaderFile::LoadExternalsVer(QByteArray& ver)
+{
+  mUpdateDir = QDir(getUri());
+
+  QFile file(mUpdateDir.absoluteFilePath(".externals"));
+  if (!file.open(QFile::ReadOnly)) {
+    return false;
+  }
+  ver = file.readLine();
+  return !ver.isEmpty();
+}
+
+bool PackLoaderFile::LoadExternalsInfo(QByteArray& info)
+{
+  mUpdateDir = QDir(getUri());
+
+  QFile file(mUpdateDir.absoluteFilePath(".externals"));
+  if (!file.open(QFile::ReadOnly)) {
+    return false;
+  }
+  info = file.readAll();
+  return file.error() == QFileDevice::NoError && !info.isEmpty();
+}
+
 bool PackLoaderFile::LoadFile(const QString& path, QByteArray& data)
 {
   QFile file(mUpdateDir.absoluteFilePath(path));

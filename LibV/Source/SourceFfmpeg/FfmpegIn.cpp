@@ -17,13 +17,29 @@ extern "C" {
 #include "FfmpegIn.h"
 
 
+const char* AvErrorToString(int code)
+{
+  static char buff[512];
+  if (av_strerror(code, buff, 511) == 0) {
+    return buff;
+  } else {
+    return "unknown error";
+  }
+}
+
 static void FfmpegRegister()
 {
   static volatile bool gInit = false;
+  static volatile bool gInitDone = false;
   if (!gInit) {
     gInit = true;
     av_register_all();
     Log.Info("av_register_all");
+    gInitDone = true;
+  } else {
+    while (!gInitDone) {
+      QThread::msleep(1);
+    }
   }
 }
 
@@ -90,14 +106,38 @@ bool FfmpegIn::Open(const QString &filename, St::EType type, const QString& extr
   }
   AVDictionary *opts = 0;
   if (mType == St::eRtspTcp) {
-    av_dict_set(&opts, "rtsp_transport", "tcp", 0);
+    int ret = av_dict_set(&opts, "rtsp_transport", "tcp", 0);
+    if (ret < 0) {
+      Log.Warning(QString("Ffmpeg: av_dict_set rtsp_transport failed (err: %1)").arg(AvErrorToString(ret)));
+    }
   } else if (mType == St::eUsb && !extraOptions.isEmpty()) {
     QStringList settings = extraOptions.split('|', QString::KeepEmptyParts);
-    if (settings.size() > 0) {
-      av_dict_set(&opts, "video_size", settings[0].toLatin1().constData(), 0);
+    QString resolution = settings.value(0);
+    QString fps = settings.value(1);
+    QString format = settings.value(2);
+    if (!resolution.isEmpty()) {
+      int ret = av_dict_set(&opts, "video_size", resolution.toLatin1().constData(), 0);
+      if (ret < 0) {
+        Log.Warning(QString("Ffmpeg: av_dict_set video_size failed (err: %1)").arg(AvErrorToString(ret)));
+      }
     }
-    if (settings.size() > 1) {
-      av_dict_set(&opts, "framerate", settings[1].toLatin1().constData(), 0);
+    if (!fps.isEmpty()) {
+      int ret = av_dict_set(&opts, "framerate", fps.toLatin1().constData(), 0);
+      if (ret < 0) {
+        Log.Warning(QString("Ffmpeg: av_dict_set framerate failed (err: %1)").arg(AvErrorToString(ret)));
+      }
+    }
+    if (!format.isEmpty()) {
+      format = format.toLower();
+      int ret = 0;
+      if (format == "raw") {
+        ret = av_dict_set(&opts, "input_format", "rawvideo", 0);
+      } else if (format == "mjpeg") {
+        ret = av_dict_set(&opts, "input_format", "mjpeg", 0);
+      }
+      if (ret < 0) {
+        Log.Warning(QString("Ffmpeg: av_dict_set input_format failed (err: %1)").arg(AvErrorToString(ret)));
+      }
     }
   }
 
@@ -117,7 +157,7 @@ bool FfmpegIn::Open(const QString &filename, St::EType type, const QString& extr
   if (ret < 0) {
     if (mStreamOpened) {
       if (!mWarning) {
-        Log.Warning(QString("Ffmpeg: open file fail (mPath: '%1', code: %2(0x%3))").arg(mPath).arg(ret).arg(ret, 0, 16));
+        Log.Warning(QString("Ffmpeg: open file fail (mPath: '%1', err: %2)").arg(mPath).arg(AvErrorToString(ret)));
         mWarning = true;
       }
     } else {
@@ -131,7 +171,7 @@ bool FfmpegIn::Open(const QString &filename, St::EType type, const QString& extr
   ret = avformat_find_stream_info(mFileContext.data(), nullptr);
   if (ret < 0) {
     if (!mWarning) {
-      Log.Warning(QString("Ffmpeg: couldn't find stream information (mPath: '%1', code: %2)").arg(mPath).arg(ret, 8, 16));
+      Log.Warning(QString("Ffmpeg: couldn't find stream information (mPath: '%1', err: %2)").arg(mPath).arg(AvErrorToString(ret)));
       mWarning = true;
     }
     return false;
@@ -174,6 +214,7 @@ bool FfmpegIn::Open(const QString &filename, St::EType type, const QString& extr
   switch (videoCodec->codec_id) {
   case AV_CODEC_ID_RAWVIDEO:
     switch (videoCodec->pix_fmt) {
+    case AV_PIX_FMT_RGB32:   mCompression = eRawRgb; break;
     case AV_PIX_FMT_NV12:    mCompression = eRawNv12; break;
     case AV_PIX_FMT_YUYV422: mCompression = eRawYuvP; break;
     default:                 mCompression = eRawNv12; mChangeColorspace = true; break;
@@ -453,7 +494,7 @@ bool FfmpegIn::InitJ()
 
   mContextJ->mb_lmin        = mContextJ->qmin * FF_QP2LAMBDA;
   mContextJ->mb_lmax        = mContextJ->qmax * FF_QP2LAMBDA;
-  mContextJ->flags          = CODEC_FLAG_QSCALE;
+  mContextJ->flags          = AV_CODEC_FLAG_QSCALE;
   mContextJ->global_quality = mContextJ->qmin * FF_QP2LAMBDA;
 
   if (avcodec_open2(mContextJ.data(), codec, nullptr) < 0) {

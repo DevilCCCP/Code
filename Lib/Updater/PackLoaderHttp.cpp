@@ -31,6 +31,17 @@ bool PackLoaderHttp::LoadInfo(QByteArray& info)
   return mHttpUploader->UploadFile(QUrl(getUri() + ".info"), info, true);
 }
 
+bool PackLoaderHttp::LoadExternalsVer(QByteArray& ver)
+{
+  QUrl url(getUri() + ".externals");
+  return mHttpUploader->UploadFile(url, ver, false);
+}
+
+bool PackLoaderHttp::LoadExternalsInfo(QByteArray& info)
+{
+  return mHttpUploader->UploadFile(QUrl(getUri() + ".externals"), info, true);
+}
+
 bool PackLoaderHttp::LoadFile(const QString& path, QByteArray& data)
 {
   QString fullpath = getUri() + (path.startsWith('.')? (path.startsWith("./")? path.mid(2): path.mid(1)): path);

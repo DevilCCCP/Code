@@ -27,7 +27,8 @@ HEADERS += \
     AutoLang.h \
     FilesPackage.h \
     HwId.h \
-    FormatTr.h
+    FormatTr.h \
+    MedianValue.h
 
 SOURCES += \
     FpsCalc.cpp \
@@ -51,7 +52,8 @@ SOURCES += \
     AutoLang.cpp \
     FilesPackage.cpp \
     HwId.cpp \
-    FormatTr.cpp
+    FormatTr.cpp \
+    MedianValue.cpp
 
 TRANSLATIONS += Common_ru.ts
 #"/usr/lib/qt5/bin/lrelease" '/home/devil/!Code/!Code/Lib/Common/Common.pro'

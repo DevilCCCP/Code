@@ -173,11 +173,11 @@ void FuncWidget::SetValueScale(qreal value, int& precission, qreal& rescale, QSt
   }
   value *= rescale;
 
-  if (value > 1000) {
+  if (value >= 1000) {
     precission = 0;
-  } else if (value > 100) {
+  } else if (value >= 100) {
     precission = 1;
-  } else if (value > 10) {
+  } else if (value >= 10) {
     precission = 2;
   } else {
     precission = 3;
@@ -247,18 +247,18 @@ void FuncWidget::DrawInfo(QPainter* painter)
     if (mShowAxeX) {
       int valuesCount = 1;
       if (mValueXMax > mValueXMin) {
-        valuesCount = qMax(2, mAxePosX / (mAxeXTextRect.width() + 2*kTextMargin));
+        valuesCount = qMax(2, mAxePosX / (mAxeXTextRect.width()*3/2 + 2*kTextMargin));
       }
       for (int i = 0; i < valuesCount; i++) {
         qreal value = mValueXMin + (mValueXMax - mValueXMin) * i / (valuesCount - 1);
         int x = 0;
         if (mValueXMax > mValueXMin) {
-          x = (value - mValueXMin) / (mValueXMax - mValueXMin) * mAxePosX;
+          x = qMax(0, (int)(-mAxeXTextRect.width()/2 + (value - mValueXMin) / (mValueXMax - mValueXMin) * mAxePosX));
         }
         value *= mValueXRescale;
         painter->drawLine(x, mAxePosY - kAxeTickHeight, x, mAxePosY + kAxeTickHeight);
         QString valueText = QString("%1%2%3").arg(value, 0, 'f', mValueXPrecission).arg(mValueXPrefix).arg(mAxeXValue);
-        if (x < mAxeXTextRect.width()) {
+        if (x < mAxePosX) {
           QRect valueTickRect(x, mAxePosY + kTextMargin, mAxeXTextRect.width(), mAxeXTextRect.height());
           painter->drawText(valueTickRect, Qt::AlignTop | Qt::AlignLeft, valueText);
         } else {

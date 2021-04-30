@@ -43,15 +43,15 @@ const int kCellMagicE    = 0x3636367D;
 struct CellFrontHeader
 {
   /// format validation + X bit
-  int   MagicA;
+  int    MagicA;
 
   /// cell validation
-  int   UnitId;
-  int64 StartTime;
+  int    UnitId;
+  qint64 StartTime;
 
   /// back seeking
-  int   PrevCell;
-  int64 PrevStartTime;
+  int    PrevCell;
+  qint64 PrevStartTime;
 
   CellFrontHeader(int magicX): MagicA(kCellMagicA | magicX) { }
   CellFrontHeader(): MagicA(0) { }
@@ -73,9 +73,9 @@ struct CellIndexHeader
 
 struct CellIndex
 {
-  int   Disp;
-  int64 Timestamp;
-  bool  Key;
+  int    Disp;
+  qint64 Timestamp;
+  bool   Key;
 
   //static bool operator<(const qint64& timestamp, const CellIndex& b) { return timestamp < b.Timestamp; }
   //bool operator<(const CellIndex& b) { return Timestamp < b.Timestamp; }
@@ -99,20 +99,20 @@ struct CellBackHeader
   int            MagicC;
   ECellCondition Condition;
 
-  int   FrameIndexDisp; // disp to MagicB
+  int    FrameIndexDisp; // disp to MagicB
 
   /// cell validation
-  int   UnitId;
-  int64 StartTime;
+  int    UnitId;
+  qint64 StartTime;
 
   /// front seeking
-  int   NextCell;
-  int64 EndTime;
+  int    NextCell;
+  qint64 EndTime;
 
-  int   Reserved1;
-  int   Reserved2;
+  int    Reserved1;
+  int    Reserved2;
 
-  int   MagicD;
+  int    MagicD;
 
   CellBackHeader(int magicX): MagicC(kCellMagicC | magicX), Reserved1(0), Reserved2(0), MagicD(kCellMagicD | magicX) { }
   CellBackHeader(): MagicC(0), Reserved1(0), Reserved2(0), MagicD(0) { }

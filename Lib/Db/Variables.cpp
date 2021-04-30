@@ -127,7 +127,7 @@ bool VariablesTable::UpdateVariable(int objectId, const QString& key, const QStr
 bool VariablesTable::UpdateVariable(const QString& key, const QString& value)
 {
   auto q = getDb().MakeQuery();
-  q->prepare("UPDATE variables SET value = ? WHERE key = ? AND _object IS NULL");
+  q->prepare("UPDATE variables SET value = ? WHERE key = ? AND _object IS NULL RETURNING _id");
   q->addBindValue(value);
   q->addBindValue(key);
 

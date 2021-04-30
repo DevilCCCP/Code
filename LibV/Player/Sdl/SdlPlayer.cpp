@@ -14,7 +14,7 @@ void SdlCallback(void* userdata, Uint8* stream, int len)
   player->FeedAudio(stream, len);
 }
 
-void SdlPlayer::SetFrame(FrameS &frame)
+void SdlPlayer::SetFrame(const FrameS &frame)
 {
   QMutexLocker lock(&mStackMutex);
   if (mAudioStack.size() > kSyncPacketsOnce) {

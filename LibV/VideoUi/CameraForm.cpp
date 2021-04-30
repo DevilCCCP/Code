@@ -127,7 +127,7 @@ void CameraForm::CreateChat()
 
 void CameraForm::CreateDecoder()
 {
-  mDecoder.reset(new Decoder(false, false, eRawRgba));
+  mDecoder.reset(new Decoder(false, false, eRawRgba, 0, false));
   mManager->RegisterWorker(mDecoder);
 
   DecodeReceiver* dr;

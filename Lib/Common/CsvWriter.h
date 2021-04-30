@@ -6,12 +6,15 @@
 #include <Lib/Include/Common.h>
 
 
+class QTextStream;
+
 class CsvWriter
 {
-  QIODevice* mDevice;
-  bool       mAlwaysQuoted;
+  QIODevice*   mDevice;
+  bool         mAlwaysQuoted;
 
-  bool       mLineStart;
+  QTextStream* mWriter;
+  bool         mLineStart;
 
 public:
   QIODevice* Device() const { return mDevice; }
@@ -30,4 +33,5 @@ private:
 
 public:
   CsvWriter(QIODevice* _Device, bool _AlwaysQuoted = false);
+  virtual ~CsvWriter();
 };

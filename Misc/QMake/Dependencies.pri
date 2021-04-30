@@ -70,3 +70,8 @@ contains(DEPEND_LIBS, Source): contains(INCLUDE_LIB, Video) {
    error(Could not find the FfmpegDeploy.pri file!)
  }
 }
+
+contains(DEFINES, USE_SDL2) {
+  LIBS += \
+    -lSDL2
+}

@@ -28,7 +28,8 @@ FORMS += \
 
 
 LIBS += \
-    -lUi
+    -lUi \
+    -lCommon
 
 
 RESOURCES += \

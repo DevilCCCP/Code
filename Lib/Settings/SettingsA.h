@@ -12,11 +12,13 @@ DefineClassS(QSettings);
 /*abstract */class SettingsA
 {
   bool mSilent;
+  bool mAutoCreate;
 
 public:
   void SetSilent(bool _Silent) { mSilent = _Silent; }
-protected:
   bool IsSilent() { return mSilent; }
+  void SetAutoCreate(bool _AutoCreate) { mAutoCreate = _AutoCreate; }
+  bool IsAutoCreate() { return mAutoCreate; }
 
 public:
   /*new */virtual bool Open(const QString& path) = 0;

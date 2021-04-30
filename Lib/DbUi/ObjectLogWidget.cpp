@@ -251,7 +251,6 @@ void ObjectLogWidget::PaintWork(QPainter* painter, LogPeriod* logPeriod)
       painter->setPen(QPen(QBrush(mErrorColor), 0));
       painter->setBrush(QBrush(mErrorColor));
       painter->drawRect(missRect);
-//      Log.Debug(QString("Miss proc: %1, thread: %2, from: %3, to: %4").arg(mObject->Name, log->ThreadName, nextTime.toString(), log->PeriodStart.toString()));
     }
 
     qint64 timeLeft = mFromTime.msecsTo(log->PeriodStart);

@@ -1,3 +1,5 @@
+#include <QTextStream>
+
 #include "CsvWriter.h"
 
 
@@ -50,17 +52,19 @@ bool CsvWriter::WriteValue(const QByteArray& value)
 bool CsvWriter::WriteEndLine()
 {
   mLineStart = true;
-  return mDevice->write("\n");
+  *mWriter << '\n';
+  return mWriter->status() == QTextStream::Ok;
 }
 
 bool CsvWriter::WritePlaneValue(const QByteArray& value)
 {
   if (mLineStart) {
     mLineStart = false;
-    return mDevice->write(value) == value.size();
   } else {
-    return mDevice->write(QByteArray(";") + value) == value.size() + 1;
+    *mWriter << ';';
   }
+  *mWriter << value;
+  return mWriter->status() == QTextStream::Ok;
 }
 
 bool CsvWriter::WriteQuotedValue(const QByteArray& value)
@@ -69,15 +73,23 @@ bool CsvWriter::WriteQuotedValue(const QByteArray& value)
   newValue.replace("\"", "\"\"");
   if (mLineStart) {
     mLineStart = false;
-    return mDevice->write(QByteArray("\"") + newValue + QByteArray("\"")) == newValue.size() + 2;
   } else {
-    return mDevice->write(QByteArray(";\"") + newValue + QByteArray("\"")) == newValue.size() + 3;
+    *mWriter << ';';
   }
+  *mWriter << '\"' << newValue << '\"';
+  return mWriter->status() == QTextStream::Ok;
 }
 
 
 CsvWriter::CsvWriter(QIODevice* _Device, bool _AlwaysQuoted)
   : mDevice(_Device), mAlwaysQuoted(_AlwaysQuoted)
-  , mLineStart(true)
+  , mWriter(new QTextStream(_Device)), mLineStart(true)
 {
+  mWriter->setCodec("UTF-8");
+  mWriter->setGenerateByteOrderMark(true);
+}
+
+CsvWriter::~CsvWriter()
+{
+  delete mWriter;
 }

@@ -117,22 +117,22 @@ void SourceFfmpeg::InitRtsp(SettingsA& settings)
 void SourceFfmpeg::InitUsb(SettingsA& settings)
 {
 #ifndef Q_OS_WIN32
-  bool ok;
-  mUsbDevice = mFilename.toInt(&ok);
-  if (!ok) {
-    Log.Fatal(QString("Create resolve USB device number (device: %1)").arg(mFilename), true);
-  }
-  QString realFilename = LinuxUsbDevice(mUsbDevice);
-  if (!realFilename.isEmpty()) {
-    mFilename = realFilename;
-    Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbDevice).arg(mFilename));
-  } else {
-    Log.Info(QString("USB device not found (number %1)").arg(mUsbDevice));
+  QRegExp usbHubPath("[\\d\\.\\*]+");
+  if (usbHubPath.exactMatch(mFilename)) {
+    mUsbDevice = mFilename;
+    QString realFilename = LinuxUsbDevice(mUsbDevice);
+    if (!realFilename.isEmpty()) {
+      mFilename = realFilename;
+      Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbDevice).arg(mFilename));
+    } else {
+      Log.Info(QString("USB device not found (number %1)").arg(mUsbDevice));
+    }
   }
 #endif
   QString resolution = settings.GetValue("Resolution", "").toString();
-  int fps = settings.GetValue("Fps", "30").toInt();
-  mSettings = QString("%1|%2").arg(resolution).arg(fps);
+  int fps = settings.GetValue("Fps", 30).toInt();
+  QString format = settings.GetValue("Format", "").toString();
+  mSettings = QString("%1|%2|%3").arg(resolution).arg(fps).arg(format);
   mType = St::eUsb;
   Log.Info(QString("Created source from USB device (path: '%1')").arg(mFilename));
 }

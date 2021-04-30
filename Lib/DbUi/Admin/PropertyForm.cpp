@@ -95,6 +95,7 @@ void PropertyForm::SetObject(const ObjectItemS& obj)
   mStandartIdItem    = AppendSetting(0, "Id", QString::number(mCurrentObject->Id), false);
   mStandartNameItem  = AppendSetting(0, "Name", mCurrentObject->Name);
   mStandartDescrItem = AppendSetting(0, "Descr", mCurrentObject->Descr);
+  mStandartUuidItem  = AppendSetting(0, "Uuid", mCurrentObject->Guid, false);
 
   for (auto itr = mObjectSettings.begin(); itr != mObjectSettings.end(); ) {
     const ObjectSettingsS& item = *itr;
@@ -198,6 +199,16 @@ void PropertyForm::OnValueEditFinished(QStandardItem* item)
           changed = (mCurrentObject->Descr != value);
           if (changed) {
             mCurrentObject->Descr = value;
+            result = mObjectTable->UpdateItem(*mCurrentObject);
+          }
+          break;
+        }
+      }
+      if (mStandartUuidItem) {
+        if (!index--) {
+          changed = (mCurrentObject->Guid != value);
+          if (changed) {
+            mCurrentObject->Guid = value;
             result = mObjectTable->UpdateItem(*mCurrentObject);
           }
           break;

@@ -132,7 +132,7 @@ bool FfmpegOut::PrepareFile()
       mVideoStream->codec->height = mHeight;
       mVideoStream->codec->pix_fmt = codec->pix_fmts[0];
       if (mFileContext->oformat->flags & AVFMT_GLOBALHEADER) {
-        mVideoStream->codec->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        mVideoStream->codec->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
       }
 
       ret = avcodec_open2(mVideoStream->codec, codec, NULL);
@@ -165,8 +165,8 @@ bool FfmpegOut::PrepareFile()
       mExtraDataA.clear();
       mExtraDataA.append(0x14);
       mExtraDataA.append(0x08);
-      mExtraDataA.reserve(mExtraDataA.size() + FF_INPUT_BUFFER_PADDING_SIZE);
-      mAudioStream->codec->extradata = (byte*)mExtraDataA.data();
+      mExtraDataA.reserve(mExtraDataA.size() + AV_INPUT_BUFFER_PADDING_SIZE);
+      mAudioStream->codec->extradata = (uchar*)mExtraDataA.data();
       mAudioStream->codec->extradata_size = mExtraDataA.size();
     }
   }

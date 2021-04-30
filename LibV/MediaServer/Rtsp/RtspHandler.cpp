@@ -462,9 +462,9 @@ bool RtspHandler::ReceiveRtspInterleaved()
       return true;
     }
     mInterleaveChannel = Request()[1];
-    mInterleaveSize = qFromBigEndian<quint16>((const byte*)Request().constData() + 2) + 4;
-//    Log.Trace(QString("%1 %2 %3 %4 (sz: %5)").arg((int)(byte)Request().at(0), 2, 16).arg((int)(byte)Request().at(1), 2, 16)
-//      .arg((int)(byte)Request().at(2), 2, 16).arg((int)(byte)Request().at(3), 2, 16).arg(Request().size()));
+    mInterleaveSize = qFromBigEndian<quint16>((const uchar*)Request().constData() + 2) + 4;
+//    Log.Trace(QString("%1 %2 %3 %4 (sz: %5)").arg((int)(uchar)Request().at(0), 2, 16).arg((int)(uchar)Request().at(1), 2, 16)
+//      .arg((int)(uchar)Request().at(2), 2, 16).arg((int)(uchar)Request().at(3), 2, 16).arg(Request().size()));
   }
 
   ReadRequest(mInterleaveSize);

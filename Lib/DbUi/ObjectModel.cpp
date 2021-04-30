@@ -21,6 +21,13 @@ void ObjectModel::UpdateSchema()
   mTreeSchema->Reload(mObjectTypeTable);
 }
 
+void ObjectModel::SetFilter(const QString& _Filter, QTreeView* tree)
+{
+  mFilter = _Filter;
+
+  LoadTree(tree);
+}
+
 bool ObjectModel::ReloadTree(int currentId, int parentId, int nextId, QModelIndex& currentIndex, QTreeView* tree)
 {
   mCurrentId = currentId;
@@ -36,6 +43,12 @@ bool ObjectModel::ReloadTree(int currentId, int parentId, int nextId, QModelInde
   }
 
   mIcons.clear();
+  LoadTree(tree);
+  return true;
+}
+
+void ObjectModel::LoadTree(QTreeView* tree)
+{
   Clear();
 
   QVector<QList<ObjectItemS> > rootItems(mTreeSchema->GetSize());
@@ -44,6 +57,11 @@ bool ObjectModel::ReloadTree(int currentId, int parentId, int nextId, QModelInde
     const TableItemS& item = itr.value();
     const ObjectItemS& obj = item.staticCast<ObjectItem>();
 
+    if (!mFilter.isEmpty()) {
+      if (!obj->Name.contains(mFilter) && !obj->Guid.contains(mFilter)) {
+        continue;
+      }
+    }
     int objType = (!mObjectTable->IsDefault(obj->Id))? obj->Type: 0;
     int index = -1;
     while (mTreeSchema->GetIndex(objType, index)) {
@@ -70,13 +88,11 @@ bool ObjectModel::ReloadTree(int currentId, int parentId, int nextId, QModelInde
     }
   }
 
-
   Done();
 
   foreach (TreeItemA* expendItem, expendItems) {
     tree->expand(IndexFromItem(expendItem));
   }
-  return true;
 }
 
 bool ObjectModel::GetItem(const QModelIndex& index, ObjectItemS& item) const

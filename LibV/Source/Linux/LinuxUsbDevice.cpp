@@ -1,68 +1,40 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QDirIterator>
+#include <QRegExp>
 
 #include "LinuxUsbDevice.h"
 
 
-int GetUsbNumber(const QString& name)
+QString GetUsbPath(const QString& name)
 {
+  // -------------------------------------------------
+  // pci-0000:00:14.0-usb-0:1:1.0-video-index0
+  // .......................^.................
   // platform-sunxi-ehci.4-usb-0:1:1.0-video-index0
   // ....................^.........................
   // platform-3f980000.usb-usb-0:1.4:1.0-video-index0
   // ..............................^.................
-  // not supported:
-  // pci-0000:00:14.0-usb-0:1:1.0-video-index0
-  // .......................^.................
-  QStringList parts = name.split('.');
-  bool hasUsb = false;
-  foreach (const QString& part, parts) {
-    bool hasUsbPart = false;
-    int number = -1;
-    QString subString;
-    QString subNumber;
-    for (int i = 0; i < part.size(); i++) {
-      QChar ch = part.at(i);
-      if (ch.isLetter()) {
-        subString.append(ch);
-      } else if (ch.isNumber()) {
-        subNumber.append(ch);
-      } else {
-        if (!subNumber.isEmpty()) {
-          number = subNumber.toInt();
-          if (hasUsb) {
-            return number; // '.usb-usb-0:1.4' variant
-          }
-          subNumber.clear();
-        }
-        if (subString == "usb") {
-          hasUsbPart = true;
-          if (number >= 0) { // '.4-usb' variant
-            return number;
-          }
-        }
-        subString.clear();
-      }
-    }
-    if (hasUsbPart) {
-      hasUsb = true;
-    }
+  QRegExp patternUsb(".*-usb-\\d+:([\\d\\.]+):.*");
+  if (patternUsb.exactMatch(name)) {
+    return patternUsb.cap(1);
   }
-  return -1;
+  return QString();
 }
 
-QString LinuxUsbDevice(int number)
+QString LinuxUsbDevice(const QString& usbHubPath)
 {
-  if (number < 0) {
+  if (usbHubPath == "-") {
     return LinuxNotUsbDevice();
   }
 
   QDir v4l("/dev/v4l/by-path");
+  QRegExp usbHubPathPattern(usbHubPath, Qt::CaseSensitive, QRegExp::Wildcard);
   auto links = v4l.entryInfoList(QDir::Files);
   for (auto itr = links.begin(); itr != links.end(); itr++) {
     const QFileInfo& info = *itr;
-    int usbNumber = GetUsbNumber(info.fileName());
-    if (usbNumber == number) {
+    QString usbPath = GetUsbPath(info.fileName());
+    if (!usbPath.isEmpty() && usbHubPathPattern.exactMatch(usbPath)) {
       return info.canonicalFilePath();
     }
   }
@@ -76,8 +48,8 @@ QString LinuxNotUsbDevice()
   auto links = v4l.entryInfoList(QDir::Files);
   for (auto itr = links.begin(); itr != links.end(); itr++) {
     const QFileInfo& info = *itr;
-    int usbNumber = GetUsbNumber(info.fileName());
-    if (usbNumber >= 0) {
+    QString usbPath = GetUsbPath(info.fileName());
+    if (!usbPath.isEmpty()) {
       usbDevices << info.canonicalFilePath();
     }
   }

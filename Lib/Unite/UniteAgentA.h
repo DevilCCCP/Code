@@ -109,6 +109,9 @@ protected:
   /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
   /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
 
+protected:
+  /*new */virtual void UniteStateChanged(bool ok);
+
 private:
   bool CheckUpdateTime();
   bool CheckUpdateObjects(bool& needUpdate);

@@ -1,0 +1,114 @@
+Образ для терминала (play service)
+
+sudo apt update
+sudo apt upgrade
+sudo apt full-upgrade
+
+sudo mc
+Настройка пользователей:
+	добавление
+adduser PROJadmin
+adduser PROJuser
+usermod -a -G PROJuser PROJadmin
+	удобство работы
+visudo
+PROJadmin ALL=(ALL:ALL) NOPASSWD:ALL
+	отрубаем стандартного пользователя (задаём сложный пароль)
+passwd
+exit
+	далее работаем от PROJadmin
+  устанавливаем bash
+sudo usermod --shell /bin/bash PROJadmin
+  генерируем ssh ключ и кладём публичную часть в 
+~/.ssh/authorized_keys
+  приватная часть изымается для удалённого доступа
+  следующая часть конфигурится НЕ на хосте (при желании)
+mcedit ~/.ssh/config
+Host PROJ_term <CLOUD_IP>
+    HostName <CLOUD_IP>
+    IdentityFile ~/.ssh/id_PROJ
+    User PROJadmin
+
+Настройка автологина для lightdm
+  выбор lightdm
+dpkg-reconfigure lightdm
+groupadd autologin
+usermod -a -G autologin PROJuser
+usermod -a -G nopasswdlogin PROJuser
+mcedit /usr/share/lightdm/lightdm.conf.d/70_lightdm_auto.conf
+[Seat:*]
+autologin-user=PROJuser
+autologin-user-timeout=0
+
+Поворот экрана
+mcedit /etc/X11/xorg.conf
+Section "Device"
+        Identifier      "fbdev"
+        Driver          "fbdev"
+        Option          "fbdev" "/dev/fb0"
+        Option          "Rotate" "CCW"
+EndSection
+mcedit /home/PROJuser/.config/xfce4/xfconf/xfce-perchannel-xml
+1920x1080 -> 1080x1920
+
+Настройка сервиса регулярной настройки (если надо):
+mcedit /etc/systemd/system/PROJ_UNIT_config.service
+[Unit]
+Description=Configure PROJ_DESCR system
+
+[Service]
+ExecStart=/usr/libexec/PROJ-configure.sh
+Type=oneshot
+TimeoutSec=30
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+
+Настройка сервиса установки софта
+mcedit /etc/systemd/system/PROJ_UNIT_install.service
+[Unit]
+Description=Install PROJ_UNIT software (if not installed already)
+
+[Service]
+ExecStart=/usr/libexec/PROJ-install.sh
+Type=oneshot
+TimeoutSec=300
+RemainAfterExit=true
+
+[Install]
+WantedBy=multi-user.target
+
+systemctl enable PROJ_UNIT_install.service
+
+mcedit /usr/libexec/PROJ-install.sh
+#!/bin/bash
+
+(systemctl status PROJ_srvd 1,2>/dev/null) && (echo 'server ok')&&(systemctl status PROJ_upd 1,2>/dev/null) && (echo 'update ok') && exit 0
+
+if [ -d "/opt/PROJ" ]; then
+ dpkg -r PROJunit
+ rm -r /opt/PROJ
+fi
+
+echo Starting PROJ_UNIT installation
+
+for debFile in /home/PROJadmin/PROJ_*.deb
+do
+ if [ ! -f "$debFile" ]; then
+  echo "No installation package"
+  exit 1
+ fi
+ echo "Found $debFile"
+done
+
+echo "Installing from $debFile"
+
+dpkg -i $debFile || apt install -f || exit 2
+
+echo "Installation complete removing $debFile"
+rm $debFile
+systemctl disable PROJ_UNIT_install.service
+echo "Installation complete"
+
+systemctl enable PROJ_UNIT_install.service

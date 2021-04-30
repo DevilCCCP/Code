@@ -80,7 +80,7 @@ bool FfmpegDec::InitDecoder(AVCodecID _CodecId, const char* frameData)
   if (mCodecId == AV_CODEC_ID_AAC) {
     mExtraData.clear();
     mExtraData.append(frameData, 2);
-    mContext->extradata = (byte*)mExtraData.data();
+    mContext->extradata = (uchar*)mExtraData.data();
     mContext->extradata_size = mExtraData.size();
   }
   //mContext->refcounted_frames = 1;
@@ -125,14 +125,14 @@ bool FfmpegDec::Decode(char *frameData, int frameSize, int width, int height, bo
     Log.Warning("ffmpeg: decode fail, init codec first");
     return false;
   }
-  //if (frameSize + FF_INPUT_BUFFER_PADDING_SIZE < frameSize + FF_INPUT_BUFFER_PADDING_SIZE) {
-  //  Log.Warning("ffmpeg: not enough size for FF_INPUT_BUFFER_PADDING_SIZE");
+  //if (frameSize + AV_INPUT_BUFFER_PADDING_SIZE < frameSize + AV_INPUT_BUFFER_PADDING_SIZE) {
+  //  Log.Warning("ffmpeg: not enough size for AV_INPUT_BUFFER_PADDING_SIZE");
   //  return false;
   //} else {
-  //  memset(frameData + frameSize, 0, FF_INPUT_BUFFER_PADDING_SIZE);
+  //  memset(frameData + frameSize, 0, AV_INPUT_BUFFER_PADDING_SIZE);
   //}
 
-  mPacket->data = (byte*)frameData;
+  mPacket->data = (uchar*)frameData;
   mPacket->size = frameSize;
 
   mFrame->width = width;
@@ -147,7 +147,7 @@ bool FfmpegDec::Decode(char *frameData, int frameSize, int width, int height, bo
       Log.Warning(QString("ffmpeg: Error while decoding frame (code: %1, text: %2)").arg(size, 0, 16).arg(errText));
       return false;
     } else if (size == 0) {
-      Log.Warning("ffmpeg: decoding 0 bytes");
+      Log.Warning("ffmpeg: decoding 0 uchars");
       return false;
     } else if (frame) {
       return (!canSkip)? CreateFrame(): SkipFrame();
@@ -170,7 +170,7 @@ bool FfmpegDec::DecodeAudio(char *frameData, int frameSize)
   //  frameData += 2;
   //  frameSize -= 2;
   //}
-  mPacket->data = (byte*)frameData;
+  mPacket->data = (uchar*)frameData;
   mPacket->size = frameSize;
 
   for (int size = 0; mPacket->size > 0; mPacket->data += size, mPacket->size -= size) {
@@ -182,7 +182,7 @@ bool FfmpegDec::DecodeAudio(char *frameData, int frameSize)
       Log.Warning(QString("ffmpeg: Error while decoding audio frame (code: %1, text: %2)").arg(size, 0, 16).arg(errText));
       return false;
     } else if (size == 0) {
-      Log.Warning("ffmpeg: decoding audio 0 bytes");
+      Log.Warning("ffmpeg: decoding audio 0 uchars");
       return false;
     } else if (frame) {
       return CreateAudioFrame();
@@ -244,19 +244,27 @@ bool FfmpegDec::SkipFrame()
 
 bool FfmpegDec::ConvertVideoFrameDest()
 {
+#ifndef SWS_SCALE_BUG
   mSwsContext = sws_getCachedContext(mSwsContext, mFrame->width, mFrame->height, (AVPixelFormat)mFrame->format
                                      , mFrame->width, mFrame->height, mDestPixelFormat, SWS_GAUSS
                                      , nullptr, nullptr, nullptr);
+#else
+  mSwsContext = sws_getCachedContext(mSwsContext, mFrame->width, mFrame->height, (AVPixelFormat)mFrame->format
+                                     , mFrame->width-1, mFrame->height, mDestPixelFormat, SWS_GAUSS
+                                     , nullptr, nullptr, nullptr);
+#endif
 
   int dstStrides[8] = { 0 };
   av_image_fill_linesizes(dstStrides, mDestPixelFormat, mFrame->width);
 
-  int stride = dstStrides[0];
   int decodedSize = avpicture_get_size(mDestPixelFormat, mFrame->width, mFrame->height);
   mDecodedFrame->ReserveData(decodedSize);
 
-  uint8_t* dstSlices[8] = { (uint8_t*)mDecodedFrame->VideoData()
-                            , (stride)? (uint8_t*)mDecodedFrame->VideoData() + stride * mFrame->height: 0 };
+  uint8_t* dstSlices[8] = { (uint8_t*)mDecodedFrame->VideoData() };
+  if (dstStrides[1] > 0 && dstStrides[0] > 0) {
+    int stride = dstStrides[0];
+    dstSlices[1] = (uint8_t*)mDecodedFrame->VideoData() + stride * mFrame->height;
+  }
 
   int height = sws_scale(mSwsContext, mFrame->data, mFrame->linesize, 0, mFrame->height, dstSlices, dstStrides);
   if (height != mFrame->height) {
@@ -383,7 +391,7 @@ bool FfmpegDec::InitJ()
 
   mContextJ->mb_lmin        = mContextJ->qmin * FF_QP2LAMBDA;
   mContextJ->mb_lmax        = mContextJ->qmax * FF_QP2LAMBDA;
-  mContextJ->flags          = CODEC_FLAG_QSCALE;
+  mContextJ->flags          = AV_CODEC_FLAG_QSCALE;
   mContextJ->global_quality = mContextJ->qmin * FF_QP2LAMBDA;
 
   if (avcodec_open2(mContextJ.data(), codec, nullptr) < 0) {

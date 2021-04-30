@@ -79,7 +79,7 @@ bool FfmpegCodec::Code(char *frameData, int frameSize, int width, int height)
     return false;
   }
 
-  mPacketDec->data = (byte*)frameData;
+  mPacketDec->data = (uchar*)frameData;
   mPacketDec->size = frameSize;
 
   mFrame->width = width;
@@ -94,7 +94,7 @@ bool FfmpegCodec::Code(char *frameData, int frameSize, int width, int height)
       Log.Warning(QString("ffmpeg: Error while decoding frame (code: %1, text: %2)").arg(size, 0, 16).arg(errText));
       return false;
     } else if (size == 0) {
-      Log.Warning("ffmpeg: decoding 0 bytes");
+      Log.Warning("ffmpeg: decoding 0 uchars");
       return false;
     } else if (frame) {
       return EncodeFrame(mFrame);
@@ -117,7 +117,7 @@ bool FfmpegCodec::DecodeToPack(char* frameData, int frameSize, qint64 timestamp,
     return false;
   }
 
-  mPacketDec->data = (byte*)frameData;
+  mPacketDec->data = (uchar*)frameData;
   mPacketDec->size = frameSize;
 
   mFrame->width = width;
@@ -135,7 +135,7 @@ bool FfmpegCodec::DecodeToPack(char* frameData, int frameSize, qint64 timestamp,
       Log.Warning(QString("ffmpeg: Error while decoding frame (code: %1, text: %2)").arg(size, 0, 16).arg(errText));
       return false;
     } else if (size == 0) {
-      Log.Warning("ffmpeg: decoding 0 bytes");
+      Log.Warning("ffmpeg: decoding 0 uchars");
       return false;
     } else if (frame) {
       //Log.Trace(QString("decoded frames: %1").arg(frame));

@@ -12,7 +12,8 @@ SOURCES += \
     CodecA.cpp \
     Ffmpeg/FfmpegDec.cpp \
     Ffmpeg/FfmpegCodec.cpp \
-    Ffmpeg/CodecF.cpp
+    Ffmpeg/CodecF.cpp \
+    Ffmpeg/Convert.cpp
 
 HEADERS += \
     Decoder.h \
@@ -21,7 +22,8 @@ HEADERS += \
     CodecA.h \
     Ffmpeg/FfmpegDec.h \
     Ffmpeg/FfmpegCodec.h \
-    Ffmpeg/CodecF.h
+    Ffmpeg/CodecF.h \
+    Ffmpeg/Convert.h
 
 
 LIBS += \
@@ -61,10 +63,6 @@ win32 {
  }
 } else:system(dpkg -s libvdpau-dev>/dev/null 2>/dev/null) {
  # --- vdpau ----
- QT += x11extras
-
- DEFINES += USE_VDPAU
-
  SOURCES +=  \
     Vdp/VdpDec.cpp \
     Vdp/CodecP.cpp \

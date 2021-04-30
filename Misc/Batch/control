@@ -1,0 +1,10 @@
+Package: __NAME__Batch
+Version: __VERSION__
+Section: misc
+Priority: optional
+Maintainer: Devil
+Architecture: __ARCH__
+Provides: __NAME__Batch
+Description: __NAME__Batch
+Installed-Size: 1
+Depends: bash, p7zip-full, openssl

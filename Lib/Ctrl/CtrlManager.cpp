@@ -54,8 +54,8 @@ void CtrlManager::RegisterWorker(CtrlWorkerS& _Worker)
 void CtrlManager::SetConsoleBreak()
 {
   gStopSignal = 0;
-  Log.Info("Using console");
 #ifdef Q_OS_WIN32
+  Log.Info("Using console");
   if (QSysInfo::windowsVersion() > QSysInfo::WV_XP) {
     Log.Info("Setting console CP to UTF-8");
     SetConsoleOutputCP(65001);

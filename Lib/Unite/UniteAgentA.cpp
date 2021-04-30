@@ -50,6 +50,9 @@ bool UniteAgentA::DoInit()
   QFile keyFile(keyPath);
   if (keyFile.open(QFile::ReadOnly)) {
     keyData = keyFile.readAll();
+    keyFile.close();
+  } else if (keyFile.exists()) {
+    Log.Fatal(QString("Open key file fail (path: '%1', error: '%2')").arg(keyFile.fileName(), keyFile.errorString()), true);
   }
   if (!keyData.isEmpty()) {
     mRsa = Rsa::FromPem(keyData);
@@ -59,13 +62,31 @@ bool UniteAgentA::DoInit()
   }
 
   if (!mRsa) {
-    Log.Info(QString("Create new key (size: %1)").arg(kKeySize));
+    Log.Info(QString("Creating new key (size: %1)").arg(kKeySize));
     mRsa = Rsa::Create(kKeySize);
+    if (!mRsa) {
+      Log.Fatal(QString("Create key fail"), true);
+    }
     keyData = mRsa->PrivateToPem();
-    keyFile.close();
-    keyFile.open(QFile::WriteOnly);
-    keyFile.write(keyData);
-    keyFile.setPermissions(QFile::ReadOwner);
+    if (!keyFile.open(QFile::WriteOnly)) {
+      Log.Fatal(QString("Open key file for write fail (path: '%1', error: '%2')").arg(keyFile.fileName(), keyFile.errorString()), true);
+    }
+    if (keyFile.write(keyData) == keyData.size()) {
+      keyFile.close();
+      if (!keyFile.setPermissions(QFile::ReadOwner)) {
+        Log.Warning(QString("Change permissions for key file fail (path: '%1', error: '%2')").arg(keyFile.fileName(), keyFile.errorString()));
+      }
+      Log.Info(QString("Key file created (path: '%1')").arg(keyFile.fileName()));
+    } else {
+      Log.Fatal(QString("Write key file fail (path: '%1', error: '%2')").arg(keyFile.fileName(), keyFile.errorString()));
+      keyFile.close();
+      if (keyFile.remove()) {
+        Log.Info(QString("Key file removed (path: '%1')").arg(keyFile.fileName()));
+        Log.Fatal(QString("Can't proceed without key file"), true);
+      } else {
+        Log.Fatal(QString("Key file remove fail (path: '%1', error: '%2')").arg(keyFile.fileName(), keyFile.errorString()), true);
+      }
+    }
   }
 
   mRsaPubText = QString::fromLatin1(mRsa->PublicToPem());
@@ -92,6 +113,7 @@ bool UniteAgentA::DoCircle()
     (ok)? mNotifier->NotifyGood(): mNotifier->NotifyWarning();
   }
   if (ok != mHasError) {
+    UniteStateChanged(ok);
     Log.Info(QString("Unite is %1").arg(ok? "ok": "broken"));
     mHasError = ok;
   }
@@ -104,6 +126,11 @@ void UniteAgentA::DoRelease()
   delete mEventLoop;
   delete mNetAliveTimer;
   delete mNetTimeoutTimer;
+}
+
+void UniteAgentA::UniteStateChanged(bool ok)
+{
+  Q_UNUSED(ok);
 }
 
 bool UniteAgentA::CheckUpdateTime()
@@ -861,7 +888,7 @@ bool UniteAgentA::SendRequest(const QByteArray& function, int& code, QByteArray*
   }
 
   if (mUniteInfo->getDebug()) {
-    Log.Info(QString("=== Request: ======\n") + url);
+    Log.Info(QString("=== Request done ======"));
   }
 
   if (mNetworkHasError) {

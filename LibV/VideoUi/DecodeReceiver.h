@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QImage>
+#include <atomic>
 
 #include <LibV/Include/ConveyorV.h>
 
@@ -9,7 +10,8 @@ class DecodeReceiver: public ConveyorV
 {
   PROPERTY_GET_SET(bool, UseImage)
 
-  FrameS  mLastFrame;
+  FrameS                 mLastFrame;
+  std::atomic<bool>      mPaused;
 
   Q_OBJECT
 
@@ -27,8 +29,14 @@ public:
 protected:
   /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
 
+public:
+  void SetPause(bool pause);
+
 private:
+  QImage ImageFromY(const char* data, int dataSize, int width, int height);
   QImage ImageFromRgba(const char* data, int dataSize, int width, int height);
+  QImage ImageFromNv12(const char* data, int dataSize, int width, int height);
+  QImage ImageFromYuv(const char* data, int dataSize, int width, int height);
 
 signals:
   void OnDecoded();

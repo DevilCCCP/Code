@@ -105,7 +105,7 @@ protected:
   bool HttpResultNotFound(bool done);
   bool HttpResultFail(bool done);
   bool HttpInternalError(bool done);
-  bool HttpResultDone();
+  bool HttpResultDone(const QByteArray& text);
   bool HttpAddContent(const QByteArray& contentType, const QByteArray& contentData);
 
   void InitRequest(SyncSocket* _Socket) { mSocket = _Socket; }
