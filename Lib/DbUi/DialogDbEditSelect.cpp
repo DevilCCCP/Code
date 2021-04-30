@@ -25,6 +25,7 @@ DialogDbEditSelect::~DialogDbEditSelect()
 
 void DialogDbEditSelect::Init(const QVector<DbItemBS>& itemsList, DbTreeSchema* schema)
 {
+  setWindowTitle(QString("Выбор элемента '%1' для подключения").arg(schema->Name));
   mTreeModel->SetHeaders(schema->Table->Headers());
 
   QVector<TreeItemBS> modelItemList;

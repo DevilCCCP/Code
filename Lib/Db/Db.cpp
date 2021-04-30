@@ -329,21 +329,24 @@ bool Db::Connect() const
 {
   ValidateThread();
 
-  if (!mDb->isOpen()) {
-    static int gLastError = 0;
-    if (mDb->open()) {
-      gLastError = 0;
-      return true;
-    } else {
-      int error = mDb->lastError().number();
-      if (error != gLastError) {
-        Log.Warning(QString("Connection fail (code: %1): %2").arg(error).arg(mDb->lastError().text()));
-        gLastError = error;
-      }
-      return false;
-    }
-  } else {
+  if (mDb->isOpen()) {
     return true;
+  }
+
+  static int gLastError = 0;
+  if (mDb->open()) {
+    if (gLastError) {
+      gLastError = 0;
+      Log.Info(QString("Connection DB ok"));
+    }
+    return true;
+  } else {
+    int error = mDb->lastError().number();
+    if (error != gLastError) {
+      Log.Warning(QString("Connection DB fail (code: %1): %2").arg(error).arg(mDb->lastError().text()));
+      gLastError = error;
+    }
+    return false;
   }
 }
 

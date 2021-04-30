@@ -34,6 +34,7 @@ public:
 
   bool operator==(const Uri& other) const;
   bool operator<(const Uri& other) const;
+  Uri& operator=(const Uri& other);
 
 private:
   bool Parse(EType type, const QString& text);

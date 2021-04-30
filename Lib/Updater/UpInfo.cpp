@@ -2,12 +2,8 @@
 #include <QCoreApplication>
 #include <QFile>
 
+#include <Lib/Dispatcher/Tools.h>
 #include <Lib/Log/Log.h>
-#ifdef Q_OS_WIN32
-#include <Lib/Dispatcher/Win/WinTools.h>
-#else
-#include <Lib/Dispatcher/Linux/LinuxTools.h>
-#endif
 #include <Local/ModuleNames.h>
 
 #include "UpInfo.h"

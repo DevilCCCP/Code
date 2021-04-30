@@ -30,6 +30,7 @@ bool Version::LoadFromString(const QString& textVersion)
   mMajorVersion = (versionList.size() > 0)? versionList[0].toInt(): 0;
   mMinorVersion = (versionList.size() > 1)? versionList[1].toInt(): 0;
   mRevision     = (versionList.size() > 2)? versionList[2].toInt(): 0;
+  mHasRevision = versionList.size() > 2;
   return true;
 }
 
@@ -47,12 +48,16 @@ bool Version::LoadFromThis()
 
 QString Version::ToString() const
 {
-  return QString("%1.%2.%3").arg(mMajorVersion).arg(mMinorVersion).arg(mRevision);
+  return mHasRevision
+      ? QString("%1.%2.%3").arg(mMajorVersion).arg(mMinorVersion).arg(mRevision)
+      : QString("%1.%2").arg(mMajorVersion).arg(mMinorVersion);
 }
 
 QString Version::ToFilename() const
 {
-  return QString("%1_%2_%3").arg(mMajorVersion).arg(mMinorVersion).arg(mRevision);
+  return mHasRevision
+      ? QString("%1_%2_%3").arg(mMajorVersion).arg(mMinorVersion).arg(mRevision)
+      : QString("%1_%2").arg(mMajorVersion).arg(mMinorVersion);
 }
 
 bool Version::IsEmpty() const
@@ -83,22 +88,22 @@ bool Version::Less(const Version& other) const
 
 
 Version::Version()
-  : mMajorVersion(0), mMinorVersion(0), mRevision(0)
+  : mMajorVersion(0), mMinorVersion(0), mRevision(0), mHasRevision(false)
 {
 }
 
 Version::Version(int _Major)
-  : mMajorVersion(_Major), mMinorVersion(0), mRevision(0)
+  : mMajorVersion(_Major), mMinorVersion(0), mRevision(0), mHasRevision(false)
 {
 }
 
 Version::Version(int _Major, int _Minor)
-  : mMajorVersion(_Major), mMinorVersion(_Minor), mRevision(0)
+  : mMajorVersion(_Major), mMinorVersion(_Minor), mRevision(0), mHasRevision(false)
 {
 }
 
 Version::Version(int _Major, int _Minor, int Revision)
-  : mMajorVersion(_Major), mMinorVersion(_Minor), mRevision(Revision)
+  : mMajorVersion(_Major), mMinorVersion(_Minor), mRevision(Revision), mHasRevision(true)
 {
 }
 

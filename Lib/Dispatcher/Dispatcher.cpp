@@ -114,7 +114,7 @@ bool Dispatcher::Init(bool console)
 }
 
 Dispatcher::Dispatcher(const QString& _ProgramName)
-  : CtrlManager(true, kProcessManagerStopMs)
+  : CtrlManager(false, kProcessManagerStopMs)
   , mProgramName(_ProgramName)
 {
 }

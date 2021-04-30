@@ -4,101 +4,21 @@
 #include <QElapsedTimer>
 #include <QThread>
 #include <QFile>
-#include <qsystemdetection.h>
 
 #include <Lib/Log/Log.h>
 #include <Lib/Dispatcher/MainInfo.h>
-#ifdef Q_OS_WIN32
-#include <Lib/Dispatcher/Win/WinTools.h>
-#else
-#include <Lib/Dispatcher/Linux/LinuxTools.h>
-#endif
-#include <Lib/Updater/UpInfo.h>
+#include <Lib/Dispatcher/Tools.h>
 #include <Local/ModuleNames.h>
 
 #include "Installer.h"
 #include "Package.h"
+#include "UpInfo.h"
 
 
 const int kWaitDaemonsLiveMs = 30000;
 const int kWaitDaemonsDeadMs = 6000;
 QStringList kDaemonNamesList = DAEMONS_NAMES_LIST;
 QStringList kDaemonExeList = DAEMONS_EXE_LIST;
-
-int Installer::Exec(int argc, char* argv[])
-{
-  QByteArray cmd = (argc > 1)? QByteArray(argv[1]): QByteArray();
-  QString param1 = (argc > 2)? QString::fromUtf8(argv[2]): QString();
-  QString param2 = (argc > 3)? QString::fromUtf8(argv[3]): QString();
-
-  if (cmd == "inst") {
-#ifdef QT_NO_DEBUG
-    Log.SetFileLogging();
-#endif
-    return DoInstall(param1);
-  } else if (cmd == "clean") {
-#ifdef QT_NO_DEBUG
-    Log.SetFileLogging();
-#endif
-    return DoClean(param1);
-  } else if (cmd == "pack") {
-    return DoPack(param1, param2);
-  } else if (cmd == "restore") {
-    return DoRestore(param1);
-  } else {
-    Log.Info(QString("Usage: <exe> <pack|inst|clean|restore> <params>"));
-  }
-  return 0;
-}
-
-int Installer::DoPack(const QString& sourceBasePath, const QString& destBasePath)
-{
-  Package pack;
-  if (!sourceBasePath.isEmpty() && !destBasePath.isEmpty()) {
-    if (pack.Prepare(sourceBasePath, destBasePath)) {
-      return 0;
-    }
-  }
-  Log.Info(QString("Usage: <exe> pack <source path> <dest path>"));
-  return 1;
-}
-
-int Installer::DoInstall(const QString& sourceBasePath)
-{
-  Installer inst;
-  if (!sourceBasePath.isEmpty()) {
-    if (inst.Install(sourceBasePath)) {
-      return 0;
-    }
-  }
-  Log.Info(QString("Usage: <exe> inst <source path>"));
-  return 1;
-}
-
-int Installer::DoClean(const QString& execPath)
-{
-  QThread::msleep(2000);
-  if (!execPath.isEmpty()) {
-    while (QFile::exists(execPath) && !QFile::remove(execPath)) {
-      Log.Warning(QString("clean fail (file: '%1')").arg(execPath));
-      QThread::msleep(500);
-    }
-    Log.Info("Clean done");
-    return 0;
-  }
-  Log.Info(QString("Usage: <exe> inst <exec path>"));
-  return 1;
-}
-
-int Installer::DoRestore(const QString& backupPath)
-{
-  Installer inst;
-  if (!inst.RestoreBackup(backupPath)) {
-    return 2;
-  }
-
-  return 0;
-}
 
 bool Installer::Install(const QString& sourceBasePath)
 {

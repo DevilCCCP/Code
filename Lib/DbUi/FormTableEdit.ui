@@ -387,7 +387,7 @@
   </action>
   <action name="actionReload">
    <property name="icon">
-    <iconset resource="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc">
+    <iconset resource="DbUi.qrc">
      <normaloff>:/Icons/Refresh.png</normaloff>:/Icons/Refresh.png</iconset>
    </property>
    <property name="text">
@@ -408,9 +408,7 @@
   <tabstop>treeViewTable</tabstop>
  </tabstops>
  <resources>
-  <include location="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc"/>
   <include location="DbUi.qrc"/>
-  <include location="../../Lp/ArmZ/DeviceUi/DeviceUi.qrc"/>
  </resources>
  <connections/>
 </ui>

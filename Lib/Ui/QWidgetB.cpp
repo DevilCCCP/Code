@@ -1,8 +1,6 @@
 #include <QPaintEvent>
 #include <QPainter>
 
-#include <Lib/Log/Log.h>
-
 #include "QWidgetB.h"
 
 

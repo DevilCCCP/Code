@@ -1,52 +1,48 @@
 #pragma once
 
 #include <QAbstractTableModel>
-#include <QIcon>
 #include <QList>
 
-#include <Lib/Db/Db.h>
-#include <Lib/Common/Icon.h>
+#include <Lib/Include/Common.h>
+#include <Lib/Db/DbTable.h>
 
 
-template <typename TableItemTS>
-class TableTModel: public QAbstractTableModel
+class TableModel: public QAbstractTableModel
 {
-  QList<TableItemTS> mItems;
-  QIcon              mIcon;
+  PROPERTY_GET(DbTableBS,       Table)
+  PROPERTY_GET(QList<DbItemBS>, Items)
+
+  mutable QIcon                 mTableIcon;
 
 protected:
-  const QList<TableItemTS>& Items() const { return mItems; }
-  QList<TableItemTS>&       Items()       { return mItems; }
-  const QIcon&              Icon()  const { return mIcon; }
+  QList<DbItemBS>& Items() { return mItems; }
+  const QList<DbItemBS>& Items() const { return mItems; }
 
 public:
-  void SetList(const QList<TableItemTS>& _Items)
-  {
-    beginResetModel();
-    mItems = _Items;
-    endResetModel();
-  }
+  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+  /*override */virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
+  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
+  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
 
-  bool GetItem(const QModelIndex& index, TableItemTS& item)
-  {
-    if (index.isValid()) {
-      if (index.row() >= 0 && index.row() < mItems.size()) {
-        item = mItems.at(index.row());
-        return true;
-      }
-    }
-    return false;
-  }
+protected:
+  /*new */virtual QString Text(int row, int column) const;
+  /*new */virtual bool SetText(int row, int column, const QString& text);
+  /*new */virtual QBrush ForeBrush(int row, int column) const;
+  /*new */virtual QBrush BackBrush(int row, int column) const;
 
 public:
-  TableTModel(const QString& _IconName, QObject *parent = 0)
-    : QAbstractTableModel(parent)
-    , mIcon(SmallIcon(_IconName))
-  { }
+  void SetList(const QList<DbItemBS>& _Items);
+  void UpdateList(const QList<DbItemBS>& _Items);
+  void AddItem(const DbItemBS& item);
+  void UpdateItem(const DbItemBS& item);
+
+  int GetCount() const;
+  bool GetItem(const QModelIndex& index, DbItemBS& item) const;
+  bool GetItem(int index, DbItemBS& item) const;
+
+  const QIcon& GetIcon() const;
+
+public:
+  TableModel(const DbTableBS& _Table, QObject* parent = 0);
 };
-
-typedef TableTModel<TableItemBS> TableBModel;
-typedef TableTModel<TableItemS>  TableModel;
-
-typedef QSharedPointer<TableBModel> TableBModelS;
-typedef QSharedPointer<TableModel>  TableModelS;

@@ -12,6 +12,7 @@ class Version
   PROPERTY_GET(int, MajorVersion)
   PROPERTY_GET(int, MinorVersion)
   PROPERTY_GET(int, Revision)
+  bool              mHasRevision;
   ;
 public:
   static bool InitLocalVersion();
@@ -37,8 +38,8 @@ private:
   bool Less(const Version& other) const;
 
 public:
-  Version();
-  Version(int _Major);
-  Version(int _Major, int _Minor);
-  Version(int _Major, int _Minor, int Revision);
+  explicit Version();
+  explicit Version(int _Major);
+  explicit Version(int _Major, int _Minor);
+  explicit Version(int _Major, int _Minor, int Revision);
 };

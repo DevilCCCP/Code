@@ -1,12 +1,11 @@
 #include <QTranslator>
 #include <QCoreApplication>
+#include <QObject>
 
 #include "FormatTr.h"
 
 
-FormatTr* FormatTr::mSelf = nullptr;
-
-QString FormatTr::FormatTimeDeltaTr(qint64 ms, int prec)
+QString FormatTimeDeltaTr(qint64 ms, int prec)
 {
   if (ms >= 0) {
     return FormatTimeTr(ms, prec);
@@ -15,11 +14,11 @@ QString FormatTr::FormatTimeDeltaTr(qint64 ms, int prec)
   }
 }
 
-QString FormatTr::FormatTimeTr(qint64 ms, int prec)
+QString FormatTimeTr(qint64 ms, int prec)
 {
   if (ms > 2 * 24 * 60 * 60 * 1000) {
     if (prec <= 1) {
-      return Instance()->tr("%1 d").arg(qRound(ms / (24 * 60 * 60 * 1000.0)));
+      return QObject::tr("%1 d").arg(qRound(ms / (24 * 60 * 60 * 1000.0)));
     }
     int primeValue = ms / (24 * 60 * 60 * 1000);
     int secondValue = (ms % (24 * 60 * 60 * 1000));
@@ -29,13 +28,13 @@ QString FormatTr::FormatTimeTr(qint64 ms, int prec)
         primeValue++;
         secondValueHour = 0;
       }
-      return Instance()->tr("%1 d %2 h").arg(primeValue).arg(secondValueHour);
+      return QObject::tr("%1 d %2 h").arg(primeValue).arg(secondValueHour);
     } else {
-      return Instance()->tr("%1 d %2").arg(primeValue).arg(FormatTimeTr(secondValue, prec - 1));
+      return QObject::tr("%1 d %2").arg(primeValue).arg(FormatTimeTr(secondValue, prec - 1));
     }
   } else if (ms > 60 * 60 * 1000) {
     if (prec <= 1) {
-      return Instance()->tr("%1 h").arg(qRound(ms / (60 * 60 * 1000.0)));
+      return QObject::tr("%1 h").arg(qRound(ms / (60 * 60 * 1000.0)));
     }
     int primeValue = ms / (60 * 60 * 1000);
     int secondValue = (ms % (60 * 60 * 1000));
@@ -45,7 +44,7 @@ QString FormatTr::FormatTimeTr(qint64 ms, int prec)
         primeValue++;
         secondValueMin = 0;
       }
-      return Instance()->tr("%1:%2 h").arg(primeValue).arg(secondValueMin, 2, 10, QChar('0'));
+      return QObject::tr("%1:%2 h").arg(primeValue).arg(secondValueMin, 2, 10, QChar('0'));
     } else if (prec <= 3) {
       int primeValue2 = secondValue / (60 * 1000);
       int secondValue2 = qRound(secondValue / (60 * 1000.0));
@@ -70,9 +69,9 @@ QString FormatTr::FormatTimeTr(qint64 ms, int prec)
     if (prec <= 1) {
       int primeValueMin = qRound(ms / (60 * 1000.0));
       if (primeValueMin == 60) {
-        return Instance()->tr("1 h");
+        return QObject::tr("1 h");
       }
-      return Instance()->tr("%1 m").arg(primeValueMin);
+      return QObject::tr("%1 m").arg(primeValueMin);
     }
     int primeValue = ms / (60 * 1000);
     int secondValue = (ms % (60 * 1000));
@@ -82,10 +81,10 @@ QString FormatTr::FormatTimeTr(qint64 ms, int prec)
         primeValue++;
         secondValueSec = 0;
         if (primeValue == 60) {
-          return Instance()->tr("1:00 h");
+          return QObject::tr("1:00 h");
         }
       }
-      return Instance()->tr("%1:%2 m").arg(primeValue).arg(secondValueSec, 2, 10, QChar('0'));
+      return QObject::tr("%1:%2 m").arg(primeValue).arg(secondValueSec, 2, 10, QChar('0'));
     } else {
       int primeValue2 = secondValue / (1000);
       int secondValueMs = qRound(secondValue / (1000.0));
@@ -96,7 +95,7 @@ QString FormatTr::FormatTimeTr(qint64 ms, int prec)
           primeValue++;
           primeValue2 = 0;
           if (primeValue == 60) {
-            return Instance()->tr("1:00:00 h");
+            return QObject::tr("1:00:00 h");
           }
         }
       }
@@ -106,31 +105,17 @@ QString FormatTr::FormatTimeTr(qint64 ms, int prec)
     if (prec <= 1) {
       int primeSec = qRound(ms / (1000.0));
       if (primeSec == 60) {
-        return Instance()->tr("1:00 m");
+        return QObject::tr("1:00 m");
       }
-      return Instance()->tr("%1 s").arg(primeSec);
+      return QObject::tr("%1 s").arg(primeSec);
     }
     qreal value = (float)ms / (1.0f * 1000);
     if (value > 10) {
-      return Instance()->tr("%1 s").arg(value, 4, 'f', 1);
+      return QObject::tr("%1 s").arg(value, 4, 'f', 1);
     } else {
-      return Instance()->tr("%1 s").arg(value, 4, 'f', 2);
+      return QObject::tr("%1 s").arg(value, 4, 'f', 2);
     }
   } else {
-    return Instance()->tr("%1 ms").arg(ms);
-  }
-}
-
-FormatTr::FormatTr(QObject* parent)
-  : QObject(parent)
-{
-  Q_INIT_RESOURCE(Common);
-
-  if (!mSelf) {
-    mSelf = this;
-
-    QTranslator* translator = new QTranslator(this);
-    translator->load(":/Tr/Common_ru.qm");
-    QCoreApplication::instance()->installTranslator(translator);
+    return QObject::tr("%1 ms").arg(ms);
   }
 }

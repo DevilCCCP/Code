@@ -42,7 +42,8 @@ HEADERS += \
     ImpD.h \
     JobImp.h \
     LogPublisher.h \
-    LogCleaner.h
+    LogCleaner.h \
+    Tools.h
 
 win32 {
 SOURCES += \

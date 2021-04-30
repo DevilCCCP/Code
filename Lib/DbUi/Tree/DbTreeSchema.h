@@ -7,6 +7,7 @@
 
 DefineStructS(DbTreeSchema);
 DefineStructS(TableEditSchema);
+DefineStructS(TreeValidator);
 
 struct DbTreeSchema
 {
@@ -18,6 +19,7 @@ struct DbTreeSchema
   };
 
   DbTableBS            Table;
+  TreeValidatorS       Validator;
   TableEditSchemaS     EditSchema;
   QList<DbTreeSchemaS> TreeChilds;
   EConnection          Connection;

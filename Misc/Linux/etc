@@ -37,6 +37,9 @@ xrandr --newmode "1920x1080_60.00" 173.00 1920 2048 2248 2576 1080 1083 1088 112
 xrandr --addmode DP-4 1920x1080_60.00
 xrandr --output DP-4 --mode 1920x1080_60.00
 
+gtf 1080 1920 60 -x
+xrandr --newmode "1080x1920_60.00"  178.35  1080 1168 1288 1496  1920 1921 1924 1987  -HSync +Vsync
+
 sudo h3disp
 
 #!/bin/bash

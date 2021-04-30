@@ -11,13 +11,13 @@
 #include <Lib/Settings/FileSettings.h>
 #include <Lib/Log/Log.h>
 #include <Local/ModuleNames.h>
+#ifdef Q_OS_UNIX
+#include <Lib/UpdaterCore/Linux/LinuxUtils.h>
+#endif
 
 #include "Updater.h"
 #include "UpChecker.h"
 #include "UpSync.h"
-#ifdef Q_OS_UNIX
-#include "Linux/LinuxUtils.h"
-#endif
 
 
 const int kWorkPeriodMs = 500;

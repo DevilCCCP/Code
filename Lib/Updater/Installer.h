@@ -5,28 +5,23 @@
 #include <QList>
 
 #include <Lib/Include/Common.h>
+#include <Lib/UpdaterCore/InstallerCore.h>
 
 
 DefineClassS(QSharedMemory);
 
-class Installer
+class Installer: public InstallerCore
 {
   QDir                  mAppDir;
   QList<QSharedMemoryS> mShmemLockedList;
   QList<qint64>         mPidList;
   bool                  mNormalMode;
 
-public:
-  static int Exec(int argc, char* argv[]);
-
-  static int DoPack(const QString& sourceBasePath, const QString& destBasePath);
-  static int DoInstall(const QString& sourceBasePath);
-  static int DoClean(const QString& execPath);
-  static int DoRestore(const QString& backupPath);
-
-private:
+protected:
   bool Install(const QString& sourceBasePath);
   bool RestoreBackup(const QString& backupPath);
+
+private:
   void StoppingDaemons();
   void StoppingDaemonsByCmd();
   void StoppingDaemonsByShmem();

@@ -2,7 +2,7 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="ru_RU">
 <context>
-    <name>FormatTr</name>
+    <name>QObject</name>
     <message>
         <source>%1 d</source>
         <translation>%1 д</translation>

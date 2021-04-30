@@ -24,4 +24,7 @@ contains(INCLUDE_LIB, StoreTest) {
 contains(INCLUDE_LIB, DbBackup) {
  SUBDIRS += DbBackup
 }
+contains(INCLUDE_LIB, Update) {
+ SUBDIRS += Update
+}
 #SUBDIRS += CryptTest

@@ -77,6 +77,8 @@ private:
 
   void CreateEdit();
   void SaveEdit();
+  void ValidateSelected();
+  void ValidateItem(TreeItemB* item);
 
   DbTreeSchema* GetActionSchema();
 

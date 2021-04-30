@@ -1,6 +1,6 @@
 #pragma once
 
-#include "TableModel.h"
+#include "TableTModel.h"
 
 
 class EventModel: public TableModel

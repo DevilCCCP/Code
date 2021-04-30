@@ -74,6 +74,22 @@ bool Uri::operator<(const Uri& other) const
   }
 }
 
+Uri& Uri::operator=(const Uri& other)
+{
+  mType = other.mType;
+  switch (mType) {
+  case eTcp: case eUdp:
+    mHost = other.mHost;
+    mPort = other.mPort;
+    break;
+
+  case eTypeIllegal:
+  default:
+    break;
+  }
+  return *this;
+}
+
 bool Uri::Parse(Uri::EType type, const QString& text)
 {
   QStringList pair = text.split(':');

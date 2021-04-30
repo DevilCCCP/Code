@@ -7,6 +7,7 @@
 #include "FormDbEditor.h"
 #include "ui_FormDbEditor.h"
 #include "Tree/TreeModelB.h"
+#include "Tree/TreeValidator.h"
 #include "TableEditSchema.h"
 #include "DialogDbEditSelect.h"
 
@@ -259,7 +260,9 @@ void FormDbEditor::CreateActions()
     }
   }
   if (hasSchema) {
-    AddCreateAction(itemSchema);
+    if (itemSchema->Connection == DbTreeSchema::eRoot) {
+      AddCreateAction(itemSchema);
+    }
     foreach (const DbTreeSchemaS& schema, itemSchema->TreeChilds) {
       AddCreateAction(schema.data());
     }
@@ -301,7 +304,7 @@ void FormDbEditor::CreateChildItems(DbTreeSchema* schema)
       continue;
     }
     DbItemBS item;
-    schema->Table->New(item);
+    schema->Table->Create(item);
     if (!item) {
       Warning(QString(tr("Create %1 fail")).arg(schema->Name));
       continue;
@@ -604,8 +607,49 @@ void FormDbEditor::SaveEdit()
   }
   if (!mCurrentEditItem->Schema()->Table->Update(mCurrentEditItem->Item())) {
     Warning(QString(tr("Update %1 fail")).arg(mCurrentEditItem->Schema()->Name));
+  } else {
+    ValidateItem(mCurrentEditItem);
   }
   mTreeModel->UpdateItem(mCurrentEditItem);
+}
+
+void FormDbEditor::ValidateSelected()
+{
+  OnWarningTmeout();
+
+  QModelIndexList indexes = ui->treeViewDb->selectionModel()->selectedIndexes();
+  if (indexes.size() != 1) {
+    return;
+  }
+
+  QModelIndex index = indexes.first();
+  if (!index.isValid()) {
+    return;
+  }
+
+  TreeItemB* selectedEditItem = mTreeModel->ItemFromIndex(index);
+  if (!selectedEditItem->Item()->Id) {
+    Warning(QString(tr("Current %1 is not created")).arg(selectedEditItem->Schema()->Name));
+    return;
+  }
+  ValidateItem(selectedEditItem);
+}
+
+void FormDbEditor::ValidateItem(TreeItemB* item)
+{
+  if (!item->Schema()->Validator) {
+    return;
+  }
+
+  QList<DbItemBS> parentItemList;
+  for (TreeItemB* parent = item->ParentItem(); parent; parent = parent->ParentItem()) {
+    parentItemList.append(parent->Item());
+  }
+  QString errorText;
+  if (!item->Schema()->Validator->IsValid(item->Item(), parentItemList, errorText)) {
+    Warning(errorText);
+    return;
+  }
 }
 
 DbTreeSchema* FormDbEditor::GetActionSchema()
@@ -633,6 +677,7 @@ void FormDbEditor::OnTreeSelectionChanged(const QItemSelection& selected, const 
 
   CreateActions();
   CreateEdit();
+  ValidateSelected();
 }
 
 void FormDbEditor::OnWarningTmeout()

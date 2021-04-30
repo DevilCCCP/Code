@@ -73,7 +73,8 @@ HEADERS += \
     DbInline.h \
     ObjectLog.h \
     ObjectLogInfo.h \
-    ObjectState2.h
+    ObjectState2.h \
+    DbTableA.h
 
 
 LIBS += \

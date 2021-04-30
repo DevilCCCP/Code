@@ -5,7 +5,9 @@
 
 QWidget* ColumnEditLine::CreateControl(QWidget* parent)
 {
-  return mCtrl = new QLineEdit(parent);
+  mCtrl = new QLineEdit(parent);
+  mCtrl->setReadOnly(mReadOnly);
+  return mCtrl;
 }
 
 bool ColumnEditLine::LoadValue(const QVariant& value)
@@ -21,6 +23,7 @@ bool ColumnEditLine::SaveValue(QVariant& value)
 }
 
 
-ColumnEditLine::ColumnEditLine()
+ColumnEditLine::ColumnEditLine(bool _ReadOnly)
+  : mCtrl(nullptr), mReadOnly(_ReadOnly)
 {
 }

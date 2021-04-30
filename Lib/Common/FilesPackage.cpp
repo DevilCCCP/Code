@@ -37,6 +37,7 @@ bool FilesPackage::PackDir(const QString& path)
       QJsonObject jsonObject;
       jsonObject.insert("Path", QJsonValue(relPath));
       jsonObject.insert("IsDir", QJsonValue(false));
+      jsonObject.insert("Perm", QJsonValue((int)info.permissions()));
       jsonObject.insert("Data", QJsonValue(QString::fromLatin1(data.toBase64())));
       rootArray.append(jsonObject);
     } else {
@@ -86,6 +87,7 @@ bool FilesPackage::UnPackDir(const QString& path)
     if (!jsonObject.value("IsDir").toBool()) {
       QString path = jsonObject.value("Path").toString();
       QString absPath = rootDir.absoluteFilePath(path);
+      int perm = jsonObject.value("Perm").toInt(0);
       QDir dir(absPath);
       dir.cdUp();
       if (!dir.mkpath(dir.absolutePath())) {
@@ -114,6 +116,9 @@ bool FilesPackage::UnPackDir(const QString& path)
 #endif
         return false;
       }
+      if (perm) {
+        file.setPermissions((QFile::Permissions)perm);
+      }
     }
   }
   mError.clear();
@@ -122,6 +127,11 @@ bool FilesPackage::UnPackDir(const QString& path)
 
 bool FilesPackage::Load(const QByteArray& data)
 {
+  if (data.isEmpty()) {
+    mDocument = QJsonDocument();
+    mIsValid = true;
+    return true;
+  }
   QByteArray planeData = qUncompress(data);
   if (planeData.isEmpty()) {
     mIsValid = false;
@@ -147,6 +157,11 @@ bool FilesPackage::Load(const QByteArray& data)
 
 bool FilesPackage::Save(QByteArray& data)
 {
+  if (mDocument.isNull()) {
+    data.clear();
+    return true;
+  }
+
   QByteArray planeData = mDocument.toJson();
   data = qCompress(planeData);
   return true;

@@ -13,6 +13,7 @@ class FilesPackage
 
 public:
   bool IsValid() const { return mIsValid; }
+  bool IsEmpty() const { return mDocument.isEmpty(); }
   const QString& ErrorString() const { return mError; }
 
 public:

@@ -4,6 +4,9 @@ gcc:  LIB_EXT=a
 msvc: LIB_PREFIX=
 gcc:  LIB_PREFIX=lib
 
+contains(DEPEND_LIBS, Updater) {
+ DEPEND_LIBS += UpdaterCore Dispatcher Settings Db
+}
 contains(DEPEND_LIBS, Db) {
  !contains(DEPEND_LIBS, Crypto) {
   DEPEND_LIBS += Crypto
@@ -74,4 +77,14 @@ contains(DEPEND_LIBS, Source): contains(INCLUDE_LIB, Video) {
 contains(DEFINES, USE_SDL2) {
   LIBS += \
     -lSDL2
+}
+
+win32: contains(DEPEND_LIBS, UpdaterCore) {
+ msvc {
+  LIBS += \
+    -lrstrtmgr -lwbemuuid -lOle32 -lOleAut32
+ } gcc {
+  LIBS += \
+    -lrstrmgr -lwbemuuid -lOle32 -lOleAut32
+ }
 }

@@ -6,11 +6,7 @@
 
 #include "ProcessManager.h"
 #include "ModuleInfo.h"
-#ifdef Q_OS_WIN32
-#include "Win/WinTools.h"
-#else
-#include "Linux/LinuxTools.h"
-#endif
+#include "Tools.h"
 
 
 const int kWorkPeriodMs = 100;

@@ -27,6 +27,7 @@ SOURCES += \
     ColumnEdit/ColumnEditPack.cpp \
     ColumnEdit/FormKeyList.cpp \
     ColumnEdit/FormEditPack.cpp \
+    ColumnEdit/ColumnEditSwitch.cpp \
     PropertyEdit/DialogText.cpp \
     PropertyEdit/FormEditBool.cpp \
     PropertyEdit/FormEditInt.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
     Tree/TreeModelA.cpp \
     Tree/TreeModelB.cpp \
     Tree/TreeSchema.cpp \
+    Tree/TreeValidator.cpp \
     Filters/FormTableTime.cpp \
     DialogDbEditSelect.cpp \
     EventModel.cpp \
@@ -61,8 +63,9 @@ SOURCES += \
     FormTableEditAdapterB.cpp \
     FormObjectLog.cpp \
     ObjectLogWidget.cpp \
-    ColumnEdit/ColumnEditSwitch.cpp \
-    ObjectItemModel.cpp
+    FormTableEditor.cpp \
+    ObjectItemModel.cpp \
+    TableModel.cpp
 
 
 HEADERS += \
@@ -88,6 +91,7 @@ HEADERS += \
     ColumnEdit/ColumnEditPack.h \
     ColumnEdit/FormKeyList.h \
     ColumnEdit/FormEditPack.h \
+    ColumnEdit/ColumnEditSwitch.h \
     PropertyEdit/DialogText.h \
     PropertyEdit/FormEditBool.h \
     PropertyEdit/FormEditInt.h \
@@ -106,6 +110,7 @@ HEADERS += \
     Tree/TreeModelA.h \
     Tree/TreeModelB.h \
     Tree/TreeSchema.h \
+    Tree/TreeValidator.h \
     Filters/FormTableTime.h \
     AdminWindow.h \
     DialogDbEditSelect.h \
@@ -123,7 +128,6 @@ HEADERS += \
     ObjectModel.h \
     QLineEdit2.h \
     StatisticsLoader.h \
-    TableModel.h \
     Def.h \
     FormTableEditAdapterB.h \
     TableEditSchema.h \
@@ -131,7 +135,9 @@ HEADERS += \
     ObjectLogWidget.h \
     LogSchema.h \
     DbTableAutoModel.h \
-    ColumnEdit/ColumnEditSwitch.h \
+    FormTableEditor.h \
+    TableTModel.h \
+    TableModel.h \
     ObjectItemModel.h
 
 FORMS += \
@@ -158,7 +164,8 @@ FORMS += \
     FormTable.ui \
     FormTableEdit.ui \
     MonitoringWindow.ui \
-    FormObjectLog.ui
+    FormObjectLog.ui \
+    FormTableEditor.ui
 
 
 TRANSLATIONS += DbUi_ru.ts

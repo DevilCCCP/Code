@@ -25,5 +25,12 @@
         <file>Icons/Clear.png</file>
         <file>Icons/Backward.png</file>
         <file>Icons/Forward.png</file>
+        <file>Icons/Open.png</file>
+        <file>Icons/Save.png</file>
+        <file>Icons/Csv.png</file>
+        <file>Icons/Web.png</file>
+    </qresource>
+    <qresource prefix="/Tr">
+        <file>Ui_ru.qm</file>
     </qresource>
 </RCC>

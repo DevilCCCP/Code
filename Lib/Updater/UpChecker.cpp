@@ -5,18 +5,12 @@
 #include <Lib/Db/ObjectType.h>
 #include <Lib/Settings/DbSettings.h>
 #include <Lib/Log/Log.h>
-#include <Lib/Updater/Package.h>
-#include <Lib/Updater/PackLoaderFile.h>
-#include <Lib/Updater/PackLoaderHttp.h>
+#include <Lib/UpdaterCore/PackLoaderFile.h>
+#include <Lib/UpdaterCore/PackLoaderHttp.h>
 
 #include "UpChecker.h"
 #include "Updater.h"
-
-#ifdef TRACE_MD5
-#define LogMd5(X) Log.Trace(X)
-#else
-#define LogMd5(X)
-#endif
+#include "Package.h"
 
 
 const int kWorkPeriodMs = 100;

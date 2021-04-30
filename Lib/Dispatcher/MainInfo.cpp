@@ -1,5 +1,6 @@
 #include "MainInfo.h"
 
+
 void ProcessInfo::Init(int id, qint64 timeMs, EProcStatus status)
 {
   Id = id;

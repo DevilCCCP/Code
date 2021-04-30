@@ -54,6 +54,12 @@ void FormEditPack::LoadModel()
     ui->treeViewPack->setModel(mModel);
     ui->treeViewPack->expandAll();
     return;
+  } else if (mFilesPackage->IsEmpty()) {
+    QStandardItem* rootItem = new QStandardItem(QString("<Пусто>"));
+    mModel->appendRow(rootItem);
+    ui->treeViewPack->setModel(mModel);
+    ui->treeViewPack->expandAll();
+    return;
   }
 
   QStringList dirList;

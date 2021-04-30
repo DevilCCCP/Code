@@ -11,7 +11,8 @@ Settings.depends = Log Db
 Dispatcher.depends = Log Ctrl Settings
 Net.depends = Log Ctrl
 NetServer.depends = Log Settings Ctrl Net
-Updater.depends = Log Settings Ctrl Net Db
+Updater.depends = Log Settings Ctrl Net Db UpdaterCore
+UpdaterCore.depends = Log Ctrl Net
 
 # build must be last:
 CONFIG -= ordered
@@ -27,6 +28,7 @@ SUBDIRS += NetServer
 SUBDIRS += Router
 SUBDIRS += Settings
 SUBDIRS += Updater
+SUBDIRS += UpdaterCore
 
 !contains(EXCLUDE_LIB, Ui) {
  SUBDIRS += DbUi

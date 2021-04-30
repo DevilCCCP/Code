@@ -17,12 +17,6 @@ FormObjectLog::FormObjectLog(QWidget* parent)
   Q_INIT_RESOURCE(DbUi);
   Q_INIT_RESOURCE(Ui);
 
-  QTranslator* translator = new QTranslator(this);
-  translator->load(":/Tr/DbUi_ru.qm");
-  QApplication::instance()->installTranslator(translator);
-
-  new FormatTr(this);
-
   ui->setupUi(this);
   setMouseTracking(true);
 

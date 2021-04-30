@@ -8,6 +8,7 @@ class QLineEdit;
 class ColumnEditLine: public ColumnEditA
 {
   QLineEdit* mCtrl;
+  bool       mReadOnly;
 
 public:
   /*override */virtual QWidget* CreateControl(QWidget* parent) Q_DECL_OVERRIDE;
@@ -15,6 +16,6 @@ public:
   /*override */virtual bool SaveValue(QVariant& value) Q_DECL_OVERRIDE;
 
 public:
-  ColumnEditLine();
+  ColumnEditLine(bool _ReadOnly = false);
 };
 

@@ -1,0 +1,5 @@
+<RCC>
+    <qresource prefix="/">
+        <file>Cert/server.pem</file>
+    </qresource>
+</RCC>

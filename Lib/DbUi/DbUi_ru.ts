@@ -6,37 +6,37 @@
     <message>
         <location filename="AdminWindow.ui" line="14"/>
         <source>AdminWindow</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AdminWindow.ui" line="66"/>
         <source>Система</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AdminWindow.ui" line="95"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;here&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;localhost:5432&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AdminWindow.ui" line="142"/>
         <source>Скрипты</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AdminWindow.ui" line="156"/>
         <source>О ...</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AdminWindow.ui" line="182"/>
         <source>Инструмент</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="AdminWindow.ui" line="236"/>
         <source>Свойства</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -74,25 +74,45 @@
     <message>
         <location filename="Admin/DialogActions.ui" line="50"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;link&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Все&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="Admin/DialogActions.ui" line="57"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;link&quot;&gt;&lt;span style=&quot; text-decoration: underline; color:#0000ff;&quot;&gt;Ничего&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
     <name>DialogDbEditSelect</name>
     <message>
-        <location filename="DialogDbEditSelect.ui" line="14"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation type="vanished">Dialog</translation>
     </message>
     <message>
-        <location filename="DialogDbEditSelect.ui" line="20"/>
+        <location filename="DialogDbEditSelect.ui" line="17"/>
         <source>Item list</source>
         <translation>Список элементов</translation>
+    </message>
+</context>
+<context>
+    <name>DialogF3Console</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+</context>
+<context>
+    <name>DialogPid</name>
+    <message>
+        <source>Состояние</source>
+        <translation type="obsolete">Состояние</translation>
+    </message>
+</context>
+<context>
+    <name>FormCalendar</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
     </message>
 </context>
 <context>
@@ -100,103 +120,103 @@
     <message>
         <location filename="FormDbBackup.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="23"/>
         <source>Backup</source>
-        <translation type="unfinished">Резервное копирование</translation>
+        <translation>Резервное копирование</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="33"/>
         <source>Restore</source>
-        <translation type="unfinished">Восстановление</translation>
+        <translation>Восстановление</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="58"/>
         <source>File location</source>
-        <translation type="unfinished"></translation>
+        <translation>Расположение файла</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="70"/>
         <source>Select</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбор</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="84"/>
         <source>Check database items</source>
-        <translation type="unfinished"></translation>
+        <translation>Выберите элементы базы данных</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="91"/>
         <source>All</source>
-        <translation type="unfinished"></translation>
+        <translation>Все</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="98"/>
         <source>Selected</source>
-        <translation type="unfinished"></translation>
+        <translation>Выбранные</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="124"/>
         <location filename="FormDbBackup.ui" line="138"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="203"/>
         <source>Cancel</source>
-        <translation type="unfinished"></translation>
+        <translation>Отмена</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="214"/>
         <source>Start</source>
-        <translation type="unfinished"></translation>
+        <translation>Начать</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="257"/>
         <source>Progress</source>
-        <translation type="unfinished"></translation>
+        <translation>Процесс</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="282"/>
         <source>%v/%m</source>
-        <translation type="unfinished"></translation>
+        <translation>%v/%m</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="289"/>
         <source>Current table</source>
-        <translation type="unfinished"></translation>
+        <translation>Текущая таблица</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="296"/>
         <source>Total</source>
-        <translation type="unfinished"></translation>
+        <translation>Всего</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="323"/>
         <source>Done</source>
-        <translation type="unfinished"></translation>
+        <translation>Готово</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="360"/>
         <source>Expand all</source>
-        <translation type="unfinished"></translation>
+        <translation>Развернуть все</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="363"/>
         <source>Expand all tree items</source>
-        <translation type="unfinished"></translation>
+        <translation>Развернуть все элементы дерева</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="372"/>
         <source>Collapse all</source>
-        <translation type="unfinished"></translation>
+        <translation>Свернуть все</translation>
     </message>
     <message>
         <location filename="FormDbBackup.ui" line="375"/>
         <source>Collapse all tree items</source>
-        <translation type="unfinished"></translation>
+        <translation>Свернуть все элементы дерева</translation>
     </message>
 </context>
 <context>
@@ -204,112 +224,188 @@
     <message>
         <location filename="FormDbEditor.ui" line="14"/>
         <source>Form</source>
-        <translation>Форма</translation>
+        <translation>Form</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.ui" line="51"/>
+        <location filename="FormDbEditor.ui" line="63"/>
         <source>...</source>
         <translation>...</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.ui" line="115"/>
+        <location filename="FormDbEditor.ui" line="127"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;Warning&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;Внимание&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.ui" line="156"/>
+        <location filename="FormDbEditor.ui" line="180"/>
         <source>Save</source>
         <translation>Сохранить</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.ui" line="191"/>
-        <location filename="FormDbEditor.ui" line="194"/>
+        <location filename="FormDbEditor.ui" line="215"/>
+        <location filename="FormDbEditor.ui" line="218"/>
         <source>Reload</source>
         <translation>Перечитать</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="171"/>
+        <location filename="FormDbEditor.cpp" line="172"/>
         <source>Create %1</source>
         <translation>Создать %1</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="178"/>
+        <location filename="FormDbEditor.cpp" line="179"/>
         <source>Link %1</source>
         <translation>Подключить %1</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="187"/>
+        <location filename="FormDbEditor.cpp" line="188"/>
         <source>Remove %1</source>
         <translation>Удалить %1</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="194"/>
-        <location filename="FormDbEditor.cpp" line="201"/>
+        <location filename="FormDbEditor.cpp" line="195"/>
+        <location filename="FormDbEditor.cpp" line="202"/>
         <source>Unlink %1</source>
         <translation>Отключить %1</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="284"/>
-        <location filename="FormDbEditor.cpp" line="306"/>
-        <location filename="FormDbEditor.cpp" line="311"/>
-        <location filename="FormDbEditor.cpp" line="325"/>
-        <location filename="FormDbEditor.cpp" line="348"/>
+        <location filename="FormDbEditor.cpp" line="287"/>
+        <location filename="FormDbEditor.cpp" line="309"/>
+        <location filename="FormDbEditor.cpp" line="314"/>
+        <location filename="FormDbEditor.cpp" line="328"/>
+        <location filename="FormDbEditor.cpp" line="351"/>
         <source>Create %1 fail</source>
         <translation>Создание %1 провал</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="300"/>
+        <location filename="FormDbEditor.cpp" line="303"/>
         <source>Can&apos;t attach to unexisted %1</source>
         <translation>Нельзя подключить к отсутствующему элементу</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="378"/>
+        <location filename="FormDbEditor.cpp" line="381"/>
         <source>Can&apos;t link more than one item</source>
         <translation>Нельзя подключить больше одного элемента</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="386"/>
+        <location filename="FormDbEditor.cpp" line="389"/>
         <source>Link %1 fail</source>
         <translation>Подключение %1 провал</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="426"/>
-        <location filename="FormDbEditor.cpp" line="494"/>
+        <location filename="FormDbEditor.cpp" line="429"/>
+        <location filename="FormDbEditor.cpp" line="497"/>
         <source>Can&apos;t attach %1 to %2 fail</source>
         <translation>Подключение %1 к %2 невозможно</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="432"/>
-        <location filename="FormDbEditor.cpp" line="500"/>
+        <location filename="FormDbEditor.cpp" line="435"/>
+        <location filename="FormDbEditor.cpp" line="503"/>
         <source>Attach %1 to %2 fail</source>
         <translation>Подключение %1 к %2 провал</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="473"/>
-        <location filename="FormDbEditor.cpp" line="606"/>
+        <location filename="FormDbEditor.cpp" line="476"/>
+        <location filename="FormDbEditor.cpp" line="609"/>
         <source>Update %1 fail</source>
         <translation>Обновление %1 провал</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="511"/>
+        <location filename="FormDbEditor.cpp" line="514"/>
         <source>Remove %1 fail</source>
         <translation>Удаление %1 провал</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="525"/>
-        <location filename="FormDbEditor.cpp" line="537"/>
+        <location filename="FormDbEditor.cpp" line="528"/>
+        <location filename="FormDbEditor.cpp" line="540"/>
         <source>Unlink %1 fail</source>
         <translation>Отключение %1 провал</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="661"/>
+        <location filename="FormDbEditor.cpp" line="632"/>
+        <source>Current %1 is not created</source>
+        <translation>Текущий %1 не создан</translation>
+    </message>
+    <message>
+        <location filename="FormDbEditor.cpp" line="706"/>
         <source>Can&apos;t link to root item</source>
         <translation>Нельзя подключить к основному элементу</translation>
     </message>
     <message>
-        <location filename="FormDbEditor.cpp" line="662"/>
+        <location filename="FormDbEditor.cpp" line="707"/>
         <source>Can&apos;t link with type of item</source>
         <translation>Нельзя подключить этот тип элемента</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceCalibrate</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceEdit</name>
+    <message>
+        <source>Состояние</source>
+        <translation type="obsolete">Состояние</translation>
+    </message>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceEtalon</name>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDevicePrint</name>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceProgram</name>
+    <message>
+        <source>Описание</source>
+        <translation type="obsolete">Описание</translation>
+    </message>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceReturn</name>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceShip</name>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceSolve</name>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
+    </message>
+</context>
+<context>
+    <name>FormDeviceTest</name>
+    <message>
+        <source>Отменить</source>
+        <translation type="obsolete">Отменить</translation>
     </message>
 </context>
 <context>
@@ -323,7 +419,7 @@
         <location filename="PropertyEdit/FormEditBool.ui" line="43"/>
         <location filename="PropertyEdit/FormEditBool.ui" line="50"/>
         <source>RadioButton</source>
-        <translation></translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -365,12 +461,12 @@
         <translation>Имя</translation>
     </message>
     <message>
-        <location filename="ColumnEdit/FormEditPack.cpp" line="110"/>
+        <location filename="ColumnEdit/FormEditPack.cpp" line="116"/>
         <source>Save package</source>
         <translation>Сохранение пакета файлов</translation>
     </message>
     <message>
-        <location filename="ColumnEdit/FormEditPack.cpp" line="110"/>
+        <location filename="ColumnEdit/FormEditPack.cpp" line="116"/>
         <source>Save package fail</source>
         <translation>Сохранение пакета файлов провал</translation>
     </message>
@@ -437,6 +533,83 @@
     </message>
 </context>
 <context>
+    <name>FormEvents</name>
+    <message>
+        <source>Фильтр</source>
+        <translation type="obsolete">Фильтр</translation>
+    </message>
+    <message>
+        <source>Тип события</source>
+        <translation type="obsolete">Тип события</translation>
+    </message>
+    <message>
+        <source>Вывод</source>
+        <translation type="obsolete">Вывод</translation>
+    </message>
+    <message>
+        <source>Объект</source>
+        <translation type="obsolete">Объект</translation>
+    </message>
+    <message>
+        <source>Период</source>
+        <translation type="obsolete">Период</translation>
+    </message>
+    <message>
+        <source>Подробно</source>
+        <translation type="obsolete">Подробно</translation>
+    </message>
+    <message>
+        <source>По часам</source>
+        <translation type="obsolete">По часам</translation>
+    </message>
+    <message>
+        <source>По дням</source>
+        <translation type="obsolete">По дням</translation>
+    </message>
+    <message>
+        <source>с</source>
+        <translation type="obsolete">с</translation>
+    </message>
+    <message>
+        <source>по</source>
+        <translation type="obsolete">по</translation>
+    </message>
+    <message>
+        <source>Экспорт</source>
+        <translation type="obsolete">Экспорт</translation>
+    </message>
+    <message>
+        <source>Импорт</source>
+        <translation type="obsolete">Импорт</translation>
+    </message>
+    <message>
+        <source>лимит</source>
+        <translation type="obsolete">лимит</translation>
+    </message>
+    <message>
+        <source>Применить</source>
+        <translation type="obsolete">Применить</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+</context>
+<context>
+    <name>FormGraph</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+</context>
+<context>
+    <name>FormHistory</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+</context>
+<context>
     <name>FormKeyList</name>
     <message>
         <location filename="ColumnEdit/FormKeyList.ui" line="14"/>
@@ -460,6 +633,13 @@
         <location filename="ColumnEdit/FormKeyList.ui" line="91"/>
         <source>Remove selected</source>
         <translation>Удалить</translation>
+    </message>
+</context>
+<context>
+    <name>FormLog</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
     </message>
 </context>
 <context>
@@ -519,24 +699,31 @@
     </message>
     <message>
         <location filename="FormObjectLog.ui" line="108"/>
-        <location filename="FormObjectLog.cpp" line="37"/>
+        <location filename="FormObjectLog.cpp" line="33"/>
         <source>24 h</source>
         <translation>24 ч</translation>
     </message>
     <message>
-        <location filename="FormObjectLog.cpp" line="36"/>
+        <location filename="FormObjectLog.cpp" line="32"/>
         <source>12 h</source>
         <translation>12 ч</translation>
     </message>
     <message>
-        <location filename="FormObjectLog.cpp" line="38"/>
+        <location filename="FormObjectLog.cpp" line="34"/>
         <source>2 d</source>
         <translation>2 д</translation>
     </message>
     <message>
-        <location filename="FormObjectLog.cpp" line="39"/>
+        <location filename="FormObjectLog.cpp" line="35"/>
         <source>7 d</source>
         <translation>7 д</translation>
+    </message>
+</context>
+<context>
+    <name>FormProfile</name>
+    <message>
+        <source>Загрузить</source>
+        <translation type="obsolete">Загрузить</translation>
     </message>
 </context>
 <context>
@@ -544,57 +731,72 @@
     <message>
         <location filename="Admin/FormScript.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+    <message>
+        <source>Название</source>
+        <translation type="obsolete">Название</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="59"/>
         <source>Скрипт создания</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт создания</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="62"/>
         <source>Скрипт создания текущей системы</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт создания текущей системы</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="71"/>
         <source>Открыть скрипт</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть скрипт</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="74"/>
         <source>Открыть скрипт из .csv файла</source>
-        <translation type="unfinished"></translation>
+        <translation>Открыть скрипт из .csv файла</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="83"/>
         <source>Сохранить скрипт</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить скрипт</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="86"/>
         <source>Сохранить скрипт в csv файле</source>
-        <translation type="unfinished"></translation>
+        <translation>Сохранить скрипт в csv файле</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="95"/>
         <source>Применить скрипт</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить скрипт</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="98"/>
         <source>Создать записи из скрипта в данном кластере</source>
-        <translation type="unfinished"></translation>
+        <translation>Создать записи из скрипта в данном кластере</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="107"/>
         <source>Скрипт обновления</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт обновления</translation>
     </message>
     <message>
         <location filename="Admin/FormScript.ui" line="110"/>
         <source>Скрипт обновления данной системы</source>
-        <translation type="unfinished"></translation>
+        <translation>Скрипт обновления данной системы</translation>
+    </message>
+</context>
+<context>
+    <name>FormSettings</name>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
     </message>
 </context>
 <context>
@@ -602,93 +804,124 @@
     <message>
         <location filename="FormStatistics.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="81"/>
         <source>Объектов</source>
-        <translation type="unfinished"></translation>
+        <translation>Объектов</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="88"/>
         <source>Событий</source>
-        <translation type="unfinished"></translation>
+        <translation>Событий</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="95"/>
         <source>Лог</source>
-        <translation type="unfinished"></translation>
+        <translation>Лог</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="102"/>
         <source>Статистика</source>
-        <translation type="unfinished"></translation>
+        <translation>Статистика</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="127"/>
         <source>Период</source>
-        <translation type="unfinished"></translation>
+        <translation>Период</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="152"/>
         <source>Разбивка</source>
-        <translation type="unfinished"></translation>
+        <translation>Разбивка</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="162"/>
         <source>Тип расчёта</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип расчёта</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="169"/>
         <source>Быстрый расчёт</source>
-        <translation type="unfinished"></translation>
+        <translation>Быстрый расчёт</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="207"/>
         <source>Загрузить</source>
-        <translation type="unfinished"></translation>
+        <translation>Загрузить</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="230"/>
         <source>%v/%m</source>
-        <translation type="unfinished"></translation>
+        <translation>%v/%m</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="237"/>
         <source>Отменить</source>
-        <translation type="unfinished"></translation>
+        <translation>Отменить</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="269"/>
         <source>Название</source>
-        <translation type="unfinished"></translation>
+        <translation>Название</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="276"/>
         <source>Описание</source>
-        <translation type="unfinished"></translation>
+        <translation>Описание</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="283"/>
         <source>Тип</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="321"/>
         <source>Фильтр</source>
-        <translation type="unfinished"></translation>
+        <translation>Фильтр</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="348"/>
         <source>...</source>
-        <translation type="unfinished">...</translation>
+        <translation>...</translation>
     </message>
     <message>
         <location filename="FormStatistics.ui" line="390"/>
         <location filename="FormStatistics.ui" line="393"/>
         <source>Экспорт в csv</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт в csv</translation>
+    </message>
+</context>
+<context>
+    <name>FormSysLog</name>
+    <message>
+        <source>Фильтр</source>
+        <translation type="obsolete">Фильтр</translation>
+    </message>
+    <message>
+        <source>Период</source>
+        <translation type="obsolete">Период</translation>
+    </message>
+    <message>
+        <source>с</source>
+        <translation type="obsolete">с</translation>
+    </message>
+    <message>
+        <source>по</source>
+        <translation type="obsolete">по</translation>
+    </message>
+    <message>
+        <source>Тип объекта</source>
+        <translation type="obsolete">Тип объекта</translation>
+    </message>
+    <message>
+        <source>Имя объекта</source>
+        <translation type="obsolete">Имя объекта</translation>
+    </message>
+    <message>
+        <source>Применить</source>
+        <translation type="obsolete">Применить</translation>
     </message>
 </context>
 <context>
@@ -1089,6 +1322,99 @@ Record:
     </message>
 </context>
 <context>
+    <name>FormTableEditor</name>
+    <message>
+        <location filename="FormTableEditor.ui" line="14"/>
+        <source>Form</source>
+        <translation>Form</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="63"/>
+        <location filename="FormTableEditor.ui" line="70"/>
+        <location filename="FormTableEditor.ui" line="77"/>
+        <location filename="FormTableEditor.ui" line="84"/>
+        <location filename="FormTableEditor.ui" line="107"/>
+        <source>...</source>
+        <translation>...</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="216"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;Warning&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; color:#aa0000;&quot;&gt;Внимание&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="239"/>
+        <source>Save</source>
+        <translation>Сохранить</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="261"/>
+        <location filename="FormTableEditor.ui" line="264"/>
+        <source>Reload list</source>
+        <translation>Перечитать список</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="273"/>
+        <location filename="FormTableEditor.ui" line="276"/>
+        <source>Create new item</source>
+        <translation>Создать новый элемент</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="285"/>
+        <location filename="FormTableEditor.ui" line="288"/>
+        <source>Edit item</source>
+        <translation>Редактировать элемент</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="297"/>
+        <location filename="FormTableEditor.ui" line="300"/>
+        <source>Clone item</source>
+        <translation>Клонировать элемент</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.ui" line="309"/>
+        <location filename="FormTableEditor.ui" line="312"/>
+        <source>Remove item</source>
+        <translation>Удалить элемент</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="76"/>
+        <source>Load failed</source>
+        <translation>Загрузка провалилась</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="123"/>
+        <source>Update %1 fail</source>
+        <translation>Обновление %1 провал</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="188"/>
+        <location filename="FormTableEditor.cpp" line="222"/>
+        <source>Create item failed</source>
+        <translation>Создание провалилось</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="201"/>
+        <source>Select one item to edit</source>
+        <translation>Выберете один элемент для редактирования</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="214"/>
+        <source>Select one item to clone</source>
+        <translation>Выберете один элемент для клонирования</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="233"/>
+        <source>Select item(s) to remove</source>
+        <translation>Выберете элемент(ы) для удаления</translation>
+    </message>
+    <message>
+        <location filename="FormTableEditor.cpp" line="244"/>
+        <source>Remove item failed</source>
+        <translation>Удаление провалилось</translation>
+    </message>
+</context>
+<context>
     <name>FormTableTime</name>
     <message>
         <location filename="Filters/FormTableTime.ui" line="14"/>
@@ -1118,172 +1444,199 @@ Record:
     </message>
 </context>
 <context>
+    <name>MainWindow</name>
+    <message>
+        <source>Файл</source>
+        <translation type="obsolete">Файл</translation>
+    </message>
+    <message>
+        <source>Выход</source>
+        <translation type="obsolete">Выход</translation>
+    </message>
+    <message>
+        <source>...</source>
+        <translation type="obsolete">...</translation>
+    </message>
+    <message>
+        <source>События</source>
+        <translation type="obsolete">События</translation>
+    </message>
+    <message>
+        <source>Лог</source>
+        <translation type="obsolete">Лог</translation>
+    </message>
+    <message>
+        <source>Вид</source>
+        <translation type="obsolete">Вид</translation>
+    </message>
+</context>
+<context>
     <name>MonitoringWindow</name>
     <message>
         <location filename="MonitoringWindow.ui" line="28"/>
         <source>АРМ мониторинга СНА</source>
-        <translation type="unfinished"></translation>
+        <translation>АРМ мониторинга СНА</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="65"/>
         <source>Состояние</source>
-        <translation type="unfinished"></translation>
+        <translation>Состояние</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="98"/>
         <source>Лог состояний</source>
-        <translation type="unfinished"></translation>
+        <translation>Лог состояний</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="110"/>
         <location filename="MonitoringWindow.ui" line="310"/>
         <source>Фильтр</source>
-        <translation type="unfinished"></translation>
+        <translation>Фильтр</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="133"/>
         <location filename="MonitoringWindow.ui" line="384"/>
         <source>Период</source>
-        <translation type="unfinished"></translation>
+        <translation>Период</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="148"/>
         <location filename="MonitoringWindow.ui" line="458"/>
         <source>с</source>
-        <translation type="unfinished"></translation>
+        <translation>с</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="168"/>
         <location filename="MonitoringWindow.ui" line="481"/>
         <source>по</source>
-        <translation type="unfinished"></translation>
+        <translation>по</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="196"/>
         <source>Тип объекта</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип объекта</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="218"/>
         <source>Имя объекта</source>
-        <translation type="unfinished"></translation>
+        <translation>Имя объекта</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="251"/>
         <location filename="MonitoringWindow.ui" line="565"/>
         <source>Применить</source>
-        <translation type="unfinished"></translation>
+        <translation>Применить</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="284"/>
         <source>Статистика</source>
-        <translation type="unfinished"></translation>
+        <translation>Статистика</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="298"/>
         <source>События</source>
-        <translation type="unfinished"></translation>
+        <translation>События</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="333"/>
         <source>Тип события</source>
-        <translation type="unfinished"></translation>
+        <translation>Тип события</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="355"/>
         <source>Вывод</source>
-        <translation type="unfinished"></translation>
+        <translation>Вывод</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="374"/>
         <source>Объект</source>
-        <translation type="unfinished"></translation>
+        <translation>Объект</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="393"/>
         <source>Подробно</source>
-        <translation type="unfinished"></translation>
+        <translation>Подробно</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="403"/>
         <source>По часам</source>
-        <translation type="unfinished"></translation>
+        <translation>По часам</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="410"/>
         <source>По дням</source>
-        <translation type="unfinished"></translation>
+        <translation>По дням</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="504"/>
         <source>Экспорт</source>
-        <translation type="unfinished"></translation>
+        <translation>Экспорт</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="515"/>
         <source>Импорт</source>
-        <translation type="unfinished"></translation>
+        <translation>Импорт</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="539"/>
         <source>лимит</source>
-        <translation type="unfinished"></translation>
+        <translation>лимит</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="594"/>
         <source>Файл</source>
-        <translation type="unfinished"></translation>
+        <translation>Файл</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="600"/>
         <source>Вид</source>
-        <translation type="unfinished"></translation>
+        <translation>Вид</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="604"/>
         <source>Период обновления</source>
-        <translation type="unfinished"></translation>
+        <translation>Период обновления</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="647"/>
         <source>Выход</source>
-        <translation type="unfinished"></translation>
+        <translation>Выход</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="656"/>
         <location filename="MonitoringWindow.ui" line="659"/>
         <source>Обновить сейчас</source>
-        <translation type="unfinished"></translation>
+        <translation>Обновить сейчас</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="670"/>
         <source>0.5 секунды</source>
-        <translation type="unfinished"></translation>
+        <translation>0.5 секунды</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="678"/>
         <source>1 секунда</source>
-        <translation type="unfinished"></translation>
+        <translation>1 секунда</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="686"/>
         <source>2 секунды</source>
-        <translation type="unfinished"></translation>
+        <translation>2 секунды</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="694"/>
         <source>5 секунд</source>
-        <translation type="unfinished"></translation>
+        <translation>5 секунд</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="702"/>
         <source>30 секунд</source>
-        <translation type="unfinished"></translation>
+        <translation>30 секунд</translation>
     </message>
     <message>
         <location filename="MonitoringWindow.ui" line="710"/>
         <source>Пауза</source>
-        <translation type="unfinished"></translation>
+        <translation>Пауза</translation>
     </message>
 </context>
 <context>
@@ -1306,7 +1659,7 @@ Time: %1</source>
 Время: %1</translation>
     </message>
     <message>
-        <location filename="ObjectLogWidget.cpp" line="296"/>
+        <location filename="ObjectLogWidget.cpp" line="302"/>
         <source>%1p/s %2</source>
         <translation>%1 ед/с %2</translation>
     </message>
@@ -1316,18 +1669,18 @@ Time: %1</source>
     <message>
         <location filename="Admin/PropertyForm.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Form</translation>
     </message>
     <message>
         <location filename="Admin/PropertyForm.ui" line="137"/>
         <location filename="Admin/PropertyForm.ui" line="140"/>
         <source>Unlock</source>
-        <translation type="unfinished"></translation>
+        <translation>Разблокировать</translation>
     </message>
     <message>
         <location filename="Admin/PropertyForm.ui" line="143"/>
         <source>Ctrl+L</source>
-        <translation type="unfinished"></translation>
+        <translation>Ctrl+L</translation>
     </message>
 </context>
 <context>
@@ -1335,19 +1688,19 @@ Time: %1</source>
     <message>
         <location filename="FormTableAdapter.h" line="160"/>
         <source>Format of file is wrong. Expecting %1 columns, found %2</source>
-        <translation type="unfinished">Ошибка формата файла. Ожидается %1 колонок, обнаружено %2</translation>
+        <translation>Ошибка формата файла. Ожидается %1 колонок, обнаружено %2</translation>
     </message>
     <message>
         <location filename="FormTableAdapter.h" line="181"/>
         <source>Format of file is wrong. Column &apos;%1&apos; not identify</source>
-        <translation type="unfinished">Ошибка формата файла. Колонка &apos;%1&apos; не распознана</translation>
+        <translation>Ошибка формата файла. Колонка &apos;%1&apos; не распознана</translation>
     </message>
     <message>
         <location filename="FormTableAdapter.h" line="196"/>
         <source>Format record %1 (zero based) is wrong columns count not equal cells count at this record (columns: %2, cells: %3).
 Record:
 </source>
-        <translation type="unfinished">Формат записи %1 (отчёт от 0) ошибочен, количество ячеек не соответствует количеству колонок (колонок: %2, ячеек: %3).
+        <translation>Формат записи %1 (отчёт от 0) ошибочен, количество ячеек не соответствует количеству колонок (колонок: %2, ячеек: %3).
 Запись:
 </translation>
     </message>
@@ -1357,21 +1710,21 @@ Record:
         <source>
 
 Import %1 entries</source>
-        <translation type="unfinished">Импортировано %1 элементов</translation>
+        <translation>Импортировано %1 элементов</translation>
     </message>
     <message>
         <location filename="FormTableAdapter.h" line="211"/>
         <source>Import record %1 (zero based) fail.
 Record:
 </source>
-        <translation type="unfinished">Импорт элемента %1 (отчёт от 0) не удался.
+        <translation>Импорт элемента %1 (отчёт от 0) не удался.
 Запись:
 </translation>
     </message>
     <message>
         <location filename="FormTableAdapter.h" line="222"/>
         <source>Import %1 entries</source>
-        <translation type="unfinished">Импортировано %1 элементов</translation>
+        <translation>Импортировано %1 элементов</translation>
     </message>
 </context>
 <context>
@@ -1379,7 +1732,7 @@ Record:
     <message>
         <location filename="Admin/ToolForm.ui" line="14"/>
         <source>Form</source>
-        <translation type="unfinished">Форма</translation>
+        <translation>Form</translation>
     </message>
 </context>
 </TS>

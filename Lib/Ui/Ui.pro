@@ -24,7 +24,8 @@ SOURCES += \
     FormWorkSpace.cpp \
     UserIdleEventFilter.cpp \
     FuncWidget.cpp \
-    WidgetImageR.cpp
+    WidgetImageR.cpp \
+    FormUpdateSettings.cpp
 
 HEADERS += \
     DockWidget2.h \
@@ -44,8 +45,12 @@ HEADERS += \
     FormWorkSpace.h \
     UserIdleEventFilter.h \
     FuncWidget.h \
-    WidgetImageR.h
+    WidgetImageR.h \
+    FormUpdateSettings.h
 
+
+TRANSLATIONS += Ui_ru.ts
+#"/usr/lib/qt5/bin/lrelease" '/home/devil/!Code/!Code/Lib/Ui/Ui.pro'
 
 LIBS += \
     -lUpdater \
@@ -61,5 +66,6 @@ FORMS += \
     FormImage.ui \
     DialogName.ui \
     FormSchedule.ui \
-    FormWorkSpace.ui
+    FormWorkSpace.ui \
+    FormUpdateSettings.ui
 
