@@ -5,5 +5,5 @@ debug/
 release/
 *.user
 *.log
-*/Install/Update/
+*/Install/Update*/
 \.~lock\.*
