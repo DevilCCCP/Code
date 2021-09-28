@@ -15,7 +15,7 @@ Qt::ItemFlags TreeModelB::flags(const QModelIndex& index) const
   if (index.isValid()) {
     TreeItemB* item = ItemFromIndex(index);
     if (!item->IsEnabled()) {
-      flag = 0;
+      flag = Qt::NoItemFlags;
     }
     if (item->IsCheckable()) {
       flag |= Qt::ItemIsUserCheckable;

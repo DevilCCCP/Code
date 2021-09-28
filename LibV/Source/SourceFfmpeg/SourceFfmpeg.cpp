@@ -119,13 +119,13 @@ void SourceFfmpeg::InitUsb(SettingsA& settings)
 #ifndef Q_OS_WIN32
   QRegExp usbHubPath("[\\d\\.\\*]+");
   if (usbHubPath.exactMatch(mFilename)) {
-    mUsbDevice = mFilename;
-    QString realFilename = LinuxUsbDevice(mUsbDevice);
+    mUsbHubPath = mFilename;
+    QString realFilename = LinuxUsbDevice(mUsbHubPath);
     if (!realFilename.isEmpty()) {
       mFilename = realFilename;
-      Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbDevice).arg(mFilename));
+      Log.Info(QString("USB device found (pattern: '%1', path: '%2')").arg(mUsbHubPath).arg(mFilename));
     } else {
-      Log.Info(QString("USB device not found (number %1)").arg(mUsbDevice));
+      Log.Warning(QString("USB device not found (pattern: '%1')").arg(mUsbHubPath));
     }
   }
 #endif
@@ -214,7 +214,7 @@ void SourceFfmpeg::CheckUsbDevice()
     mFirstFrame = false;
   }
   if (mFrameTimer.elapsed() > kCheckUsbMs) {
-    QString newFilename = LinuxUsbDevice(mUsbDevice);
+    QString newFilename = LinuxUsbDevice(mUsbHubPath);
     if (!newFilename.isEmpty() && mFilename != newFilename) {
       mFilename = newFilename;
       Reconnect();
@@ -227,9 +227,9 @@ void SourceFfmpeg::CheckUsbDevice()
 bool SourceFfmpeg::InitUsbDevice()
 {
 #ifndef Q_OS_WIN32
-  mFilename = LinuxUsbDevice(mUsbDevice);
+  mFilename = LinuxUsbDevice(mUsbHubPath);
   if (!mFilename.isEmpty()) {
-    Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbDevice).arg(mFilename));
+    Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbHubPath).arg(mFilename));
     return true;
   }
 #endif

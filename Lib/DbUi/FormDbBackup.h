@@ -20,7 +20,7 @@ class FormDbBackup: public QWidget
 
   DbBackupThreadS        mDbBackupThread;
 
-  typedef QMap<QString, QStandardItem*> ModelItemMap;
+  typedef QMultiMap<QString, QStandardItem*> ModelItemMap;
   QFileDialog*           mFileDialog;
   QStandardItemModel*    mModel;
   ModelItemMap           mModelUseMap;
@@ -47,7 +47,7 @@ public:
   friend class DbBackupTc;
 
 protected:
-  virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+  virtual void closeEvent(QCloseEvent* event) override;
 
 public:
   void AddTable(const QString& tableInfo, const QIcon& tableIcon, const QStringList& tableRef);

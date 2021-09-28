@@ -40,12 +40,12 @@ public:
   const QByteArray& Id() { return mId; }
 
 protected:
-//  /*override */virtual bool OnStart() Q_DECL_OVERRIDE;
-//  /*override */virtual bool OnTest() Q_DECL_OVERRIDE;
-  /*override */virtual void OnStop() Q_DECL_OVERRIDE;
+//  /*override */virtual bool OnStart() override;
+//  /*override */virtual bool OnTest() override;
+  /*override */virtual void OnStop() override;
 
-  /*override */virtual void OnFrame(const TrFrameS& frame) Q_DECL_OVERRIDE;
-  /*override */virtual void OnClearFrames() Q_DECL_OVERRIDE;
+  /*override */virtual void OnFrame(const TrFrameS& frame) override;
+  /*override */virtual void OnClearFrames() override;
 
 public:
   void GetParameters(const QByteArray& dataIn, QByteArray& dataOut, QByteArray& extraHeader);

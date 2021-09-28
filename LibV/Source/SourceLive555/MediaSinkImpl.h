@@ -48,7 +48,7 @@ class MediaSinkImpl: public MediaSink
   };
 
 protected:
-  /*override */virtual Boolean continuePlaying() Q_DECL_OVERRIDE;
+  /*override */virtual Boolean continuePlaying() override;
 
 private:
   void OnFrame(int frameSize, const qint64& ts);

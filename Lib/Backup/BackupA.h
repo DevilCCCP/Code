@@ -44,12 +44,12 @@ class BackupA: public ImpD
   bool              mRestoreWarning;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Backup"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "B"; }
+  /*override */virtual const char* Name() override { return "Backup"; }
+  /*override */virtual const char* ShortName() override { return "B"; }
 protected:
-  /*override */virtual bool LoadSettings(SettingsA* settings) Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadSettings(SettingsA* settings) override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 
 protected:
   /*new */virtual int GetVersion();

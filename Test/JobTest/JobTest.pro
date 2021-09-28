@@ -10,13 +10,15 @@ SOURCES += \
     MainWindow.cpp \
     Calc.cpp \
     MultiThreadCalc.cpp \
-    MultiProcessCalc.cpp
+    MultiProcessCalc.cpp \
+    TestJob.cpp
 
 HEADERS += \
     MainWindow.h \
     Calc.h \
     MultiThreadCalc.h \
-    MultiProcessCalc.h
+    MultiProcessCalc.h \
+    TestJob.h
 
 DEPEND_LIBS = \
     Updater \
@@ -25,7 +27,6 @@ DEPEND_LIBS = \
     Db \
     Ctrl \
     Settings \
-    Common \
     Log
 
 !include($$PRI_DIR/Dependencies.pri) {
@@ -34,3 +35,6 @@ DEPEND_LIBS = \
 
 FORMS += \
     MainWindow.ui
+
+DISTFILES += \
+    TestJob.sql

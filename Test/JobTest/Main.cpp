@@ -10,7 +10,7 @@
 
 
 const QString GetProgramName()
-{ return QString("Db backup"); }
+{ return QString("Job Test"); }
 
 int qmain(int argc, char* argv[])
 {
@@ -24,16 +24,22 @@ int qmain(int argc, char* argv[])
 
   if (qApp->arguments().size() == 3 && qApp->arguments().at(1) == "worker") {
     int id = qApp->arguments().at(2).toInt();
-    ObjectItemS obj(new ObjectItem());
-    obj->Id = id;
-    obj->Name = QString("Worker %1").arg(id);
-    obj->Guid = obj->Name;
-    obj->Type = 1;
-    db->getObjectTable()->InsertItem(obj);
-    Overseer overseer("test", id, true, true, true, QString(), QString());
+    QString name = QString("Worker %1").arg(id);
+    ObjectItemS obj = db->getObjectTable()->GetItem(QString("WHERE guid=%1").arg(ToSql(name))).dynamicCast<ObjectItem>();
+    if (!obj) {
+      obj.reset(new ObjectItem());
+      obj->Name = name;
+      obj->Guid = name;
+      obj->Type = 1;
+      db->getObjectTable()->InsertItem(obj);
+    }
+    if (!obj) {
+      return 1;
+    }
+    Overseer overseer("test", obj->Id, true, true, true, QString(), QString());
     MultiProcessCalcS calc(new MultiProcessCalc(*db));
     overseer.RegisterWorker(calc);
-    db->MoveToThread(calc.data());
+    Log.SetFileLogging(QString("%1_").arg(id, 6, 10, QChar('0')));
     return overseer.Run();
   }
 

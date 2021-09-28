@@ -30,7 +30,7 @@ int DownloadPlayer(const QString& params, const DbS& db, const OverseerS& overse
     return -3002;
   }
 
-  ObjectType objectType(*db);
+  ObjectTypeTable objectType(*db);
   objectType.Reload();
   const NamedItem* camType = objectType.GetItemByName("cam");
   const NamedItem* srvType = objectType.GetItemByName("srv");

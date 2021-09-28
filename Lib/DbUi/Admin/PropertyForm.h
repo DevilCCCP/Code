@@ -55,7 +55,7 @@ public:
   ~PropertyForm();
 
 protected:
-  /*override */void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+  /*override */void showEvent(QShowEvent* event) override;
 
 public:
   bool Reload();

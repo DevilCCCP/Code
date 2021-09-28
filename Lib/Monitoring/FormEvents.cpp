@@ -304,7 +304,7 @@ bool FormEvents::ImportEvent(const QString& path)
   while (!file.atEnd()) {
     QString line = QString::fromUtf8(file.readLine().trimmed());
     lineEnd++;
-    QStringList raw = line.split(';', QString::KeepEmptyParts);
+    QStringList raw = line.split(';', Qt::KeepEmptyParts);
     if (raw.size() == 4) {
       QString name = raw[0].mid(1, raw[0].size() - 2);
       QString evTypeName = raw[1].mid(1, raw[1].size() - 2);

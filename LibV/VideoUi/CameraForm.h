@@ -55,8 +55,8 @@ private:
   void Init();
 
 protected:
-  /*override */virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void closeEvent(QCloseEvent* event) override;
+  /*override */virtual void showEvent(QShowEvent* event) override;
 
 public:
   void GetThumbnailOk(const char* data, int size);

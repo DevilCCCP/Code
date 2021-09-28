@@ -11,7 +11,6 @@
 
 const char kUnitName[] = MAKE_STRING(PROGRAM_ABBR);
 static volatile LinuxService* gLinuxService = nullptr;
-static volatile bool gStopped = 0;
 
 class ServiceConfig
 {

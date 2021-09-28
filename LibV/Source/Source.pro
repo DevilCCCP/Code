@@ -47,7 +47,7 @@ contains(INCLUDE_LIB, Live555) {
     SourceLive555/SourceLive.h
 }
 
-!win32{
+linux {
  DEFINES += USE_V4L
  SOURCES += \
     Linux/LinuxUsbDevice.cpp \
@@ -61,9 +61,6 @@ contains(INCLUDE_LIB, Live555) {
     Linux/MmapBuffer.h \
     SourceV4l/SourceV4l.h \
     SourceV4l/V4lIn.h
-
-# INCLUDEPATH += \
-#    /usr/include/linux
 }
 
 

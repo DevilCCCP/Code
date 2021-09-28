@@ -118,7 +118,7 @@ bool TableB::RemoveItem(const qint64& id)
 
 QString TableB::GetColumns(const QString& table)
 {
-  QStringList columns = QString(GetColumnNames()).split(QChar(','), QString::SkipEmptyParts);
+  QStringList columns = QString(GetColumnNames()).split(QChar(','), Qt::SkipEmptyParts);
   columns.prepend("_id");
   for (auto itr = columns.begin(); itr != columns.end(); itr++) {
     QString& column = *itr;
@@ -217,7 +217,7 @@ qint64 TableB::GetCount(const QString& conditions, bool* ok)
 QString TableB::GetSelectColumns(const QString& prefix)
 {
   QString result = QString(" %1._id").arg(prefix);
-  QStringList columns = QString(GetColumnNames()).split(QChar(','), QString::SkipEmptyParts);
+  QStringList columns = QString(GetColumnNames()).split(QChar(','), Qt::SkipEmptyParts);
   for (auto itr = columns.begin(); itr != columns.end(); itr++) {
     result.append(QString(", %1.%2").arg(prefix).arg(*itr));
   }

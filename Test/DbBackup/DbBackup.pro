@@ -13,13 +13,12 @@ HEADERS += \
     MainWindow.h
 
 DEPEND_LIBS = \
+    Dispatcher \
     Updater \
     DbUi \
-    Db \
-    Dispatcher \
-    Ctrl \
     Settings \
-    Common \
+    Db \
+    Ctrl \
     Log
 
 !include($$PRI_DIR/Dependencies.pri) {

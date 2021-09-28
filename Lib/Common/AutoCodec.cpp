@@ -178,11 +178,11 @@ bool AutoCodec::Load(const QByteArray& data)
 
 bool AutoCodec::DefineCodecLang(const QByteArray& text)
 {
-  QMap<qreal, int> codecFitMap;
+  QMultiMap<qreal, int> codecFitMap;
   for (int i = 0; i < mCodecInfoList.size(); i++) {
     const CodecInfo& codecInfo = mCodecInfoList[i];
     qreal fit = codecInfo.RangesHyst->CalcTwoByteFitRange(text);
-    codecFitMap.insertMulti(fit, i);
+    codecFitMap.insert(fit, i);
   }
   qreal codecPrecisionThreshold = codecFitMap.lastKey() - 0.01;
   if (codecPrecisionThreshold < 0.1) {

@@ -1,3 +1,5 @@
+#include <QtMath>
+
 #include "Calc.h"
 
 
@@ -32,7 +34,7 @@ void Calc::CalcTime(qint64 seed, qint64 limitMs)
 void Calc::CalcOne()
 {
   for (int i = 0; i < 1000; i++) {
-    mResult = sin(mResult) + cos(mResult);
+    mResult = qSin(mResult) + qCos(mResult);
   }
 }
 

@@ -17,7 +17,7 @@ public:
   int        VstypeId;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<int>& other) const Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<int>& other) const override
   {
     const VaStat& vs = static_cast<const VaStat&>(other);
     return DbItemT<int>::Equals(other) && ObjectId == vs.ObjectId && VstypeId == vs.VstypeId;
@@ -33,11 +33,11 @@ class VaStatTable: public DbTableT<int, VaStat>
   QMap<QPair<int, int>, VaStatS> mItemsMap;
 
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<int> >& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<int>& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<int> >& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<int>& item) override;
 
 public:
   bool GetSimple(int objectId, int vstypeId, VaStatS& vaStatItem, bool useCache = true);

@@ -17,11 +17,11 @@ class DbBackupTc: public DbBackupController
   FormDbBackup* mHost;
 
 public:
-  /*override */virtual bool QueryContinue() Q_DECL_OVERRIDE;
-  /*override */virtual void OnPercent(int perc) Q_DECL_OVERRIDE;
-  /*override */virtual void OnTable(int index) Q_DECL_OVERRIDE;
-  /*override */virtual void OnInfo(const QString& text) Q_DECL_OVERRIDE;
-  /*override */virtual void OnError(const QString& text) Q_DECL_OVERRIDE;
+  /*override */virtual bool QueryContinue() override;
+  /*override */virtual void OnPercent(int perc) override;
+  /*override */virtual void OnTable(int index) override;
+  /*override */virtual void OnInfo(const QString& text) override;
+  /*override */virtual void OnError(const QString& text) override;
 
 public:
   DbBackupTc(FormDbBackup* _Host);
@@ -38,7 +38,7 @@ class DbBackupThread: public QThread
   QString       mFile;
 
 public:
-  /*override */virtual void run() Q_DECL_OVERRIDE;
+  /*override */virtual void run() override;
 
 public:
   void Start(const QString& file, const QSet<QString>& tableSet, bool backup);

@@ -57,7 +57,7 @@ public:
   bool GetChildIds(const qint64& id, QList<qint64>& ids);
   bool GetParentsCount(const qint64& id, qint64& count);
   bool GetChildsCount(const qint64& id, qint64& count);
-  bool GetAllItems(const QString& condition, QMap<qint64, qint64>& itemsMap);
+  bool GetAllItems(const QString& condition, QMultiMap<qint64, qint64>& itemsMap);
   bool RemoveDuplicates(const qint64& keyId);
 private:
   bool LoadItems(QueryS& q, QList<MapItemBS>& items);

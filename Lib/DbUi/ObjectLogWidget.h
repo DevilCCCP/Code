@@ -49,8 +49,8 @@ class ObjectLogWidget: public QWidget
   Q_OBJECT
 
 protected:
-  /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void paintEvent(QPaintEvent* event) override;
+  /*override */virtual void mouseMoveEvent(QMouseEvent* event) override;
 
 public:
   void SetLogSchema(const LogSchema& _LogSchema);

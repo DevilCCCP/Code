@@ -12,9 +12,10 @@
 
 bool Rsa::CreatePem(const QString& keyFilename, const QString& certFilename)
 {
-  QString command = QString("openssl req -newkey rsa -sha256 -new -nodes -keyout %1 -out %2 -subj /CN=localhost")
-      .arg(keyFilename, certFilename);
-  int ret = QProcess::execute(command);
+  QStringList args = QStringList()
+      << "req" << "-newkey" << "rsa" << "-sha256" << "-new" << "-nodes"
+      << "-keyout" << keyFilename << "-out" << certFilename << "-subj" << "/CN=localhost";
+  int ret = QProcess::execute("openssl", args);
   return ret == 0;
 }
 

@@ -11,11 +11,11 @@ class ListenSvc: public Listener
   DbS mDb;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "ListenerSvc"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "L"; }
+  /*override */virtual const char* Name() override { return "ListenerSvc"; }
+  /*override */virtual const char* ShortName() override { return "L"; }
 
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
 
 public:
   ListenSvc(int _Port, ChaterManagerS _ChaterManager = ChaterManagerS(new ChaterManager()), DbS _Db = DbS(), int _ConnectionsLimit = 100);

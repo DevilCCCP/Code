@@ -1,6 +1,5 @@
 #pragma once
 
-#include <qsystemdetection.h>
 #include <QElapsedTimer>
 #include <QMap>
 
@@ -11,12 +10,8 @@
 #include <LibV/Include/Region.h>
 
 #include "Va.h"
-#include "DebugWnd.h"
+#include "Wnd/DebugWnd.h"
 
-
-#ifdef Q_OS_WIN32
-#define ANAL_DEBUG
-#endif
 
 DefineClassS(CtrlManager);
 DefineClassS(DebugWnd);
@@ -26,25 +21,25 @@ DefineClassS(QByteArray);
 
 /*abstract */class AnalyticsA
 {
-  PROPERTY_GET(int,          Id)
-  FilesTableS                mFilesTable;
-  VaStatTypeTableS           mVaStatTypeTable;
-  VaStatTableS               mVaStatTable;
-  VaStatHoursTableS          mVaStatHoursTable;
-  VaStatDaysTableS           mVaStatDaysTable;
+  PROPERTY_GET(int,            Id)
+  FilesTableS                  mFilesTable;
+  VaStatTypeTableS             mVaStatTypeTable;
+  VaStatTableS                 mVaStatTable;
+  VaStatHoursTableS            mVaStatHoursTable;
+  VaStatDaysTableS             mVaStatDaysTable;
 
-  PROPERTY_GET(ECompression, Compression)
-  PROPERTY_GET(int,          Width)
-  PROPERTY_GET(int,          Height)
-  PROPERTY_GET(int,          Stride)
-  bool                       mWarning;
+  PROPERTY_GET(ECompression,   Compression)
+  PROPERTY_GET(int,            Width)
+  PROPERTY_GET(int,            Height)
+  PROPERTY_GET(int,            Stride)
+  bool                         mWarning;
 
-  PROPERTY_GET(qint64,       StartTimestamp) // absolute time
-  PROPERTY_GET(qint64,       LastTimestamp)  // absolute prev frame time
-  PROPERTY_GET(qint64,       CurrentMs)      // relative to start time
-  PROPERTY_GET(qint64,       FrameMs)        // relative to prev frame time
-  PROPERTY_GET(qreal,        FrameSec)
-  PROPERTY_GET(qint64,       CurrentFrame)
+  PROPERTY_GET(qint64,         StartTimestamp) // absolute time
+  PROPERTY_GET(qint64,         LastTimestamp)  // absolute prev frame time
+  PROPERTY_GET(qint64,         CurrentMs)      // relative to start time
+  PROPERTY_GET(qint64,         FrameMs)        // relative to prev frame time
+  PROPERTY_GET(qreal,          FrameSec)
+  PROPERTY_GET(qint64,         CurrentFrame)
 
   PROPERTY_GET(bool,           UseStandBy)
   bool                         mStandByMode;
@@ -63,8 +58,8 @@ DefineClassS(QByteArray);
   bool                         mUsingStats;
 
 #ifdef ANAL_DEBUG
-  DebugWndS                  mDebugWnd;
-  QByteArray                 mDebugObj;
+  DebugWndS                    mDebugWnd;
+  QByteArray                   mDebugObj;
 #endif
 
 public:
@@ -73,7 +68,9 @@ public:
   void SetDb(const DbS& _Db);
   void SetSettings(const SettingsAS& _Settings);
   void SetDetectors(const QList<DetectorS>& _Detectors);
-  void SetDebug(CtrlManager* _CtrlManager);
+#ifdef ANAL_DEBUG
+  void SetDebug(CtrlManager* ctrlManager, const QList<QWidget*>& windowPool);
+#endif
 
 protected:
   /*new */virtual void InitSettings(const SettingsAS& _Settings) = 0;

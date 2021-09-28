@@ -14,9 +14,9 @@ class ColumnEditInt: public ColumnEditA
   QSpinBox* mCtrl;
 
 public:
-  /*override */virtual QWidget* CreateControl(QWidget* parent) Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadValue(const QVariant& value) Q_DECL_OVERRIDE;
-  /*override */virtual bool SaveValue(QVariant& value) Q_DECL_OVERRIDE;
+  /*override */virtual QWidget* CreateControl(QWidget* parent) override;
+  /*override */virtual bool LoadValue(const QVariant& value) override;
+  /*override */virtual bool SaveValue(QVariant& value) override;
 
 public:
   ColumnEditInt(qint64 _MinValue, qint64 _DefaultValue, qint64 _MaxValue);

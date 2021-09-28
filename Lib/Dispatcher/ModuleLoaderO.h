@@ -41,11 +41,11 @@ class ModuleLoaderO: public ModuleLoaderD
 protected:
   /*new */virtual void SetDbScheme() = 0;
 
-  /*override */virtual bool InitializeExtra() Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadObject() Q_DECL_OVERRIDE;
-  /*override */virtual bool CheckUpdateState() Q_DECL_OVERRIDE;
-  /*override */virtual bool UpdateState() Q_DECL_OVERRIDE;
-  /*override */virtual EModuleState GetObjectState() Q_DECL_OVERRIDE;
+  /*override */virtual bool InitializeExtra() override;
+  /*override */virtual bool LoadObject() override;
+  /*override */virtual bool CheckUpdateState() override;
+  /*override */virtual bool UpdateState() override;
+  /*override */virtual EModuleState GetObjectState() override;
 
 protected:
   void RegisterDbModule(const QString& abbr, const QString& path, int state, QStringList params = QStringList());

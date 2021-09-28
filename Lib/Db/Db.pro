@@ -36,7 +36,8 @@ SOURCES += \
     DbTransaction.cpp \
     ObjectLog.cpp \
     ObjectLogInfo.cpp \
-    ObjectState2.cpp
+    ObjectState2.cpp \
+    Job.cpp
 
 HEADERS += \
     Db.h \
@@ -74,7 +75,8 @@ HEADERS += \
     ObjectLog.h \
     ObjectLogInfo.h \
     ObjectState2.h \
-    DbTableA.h
+    DbTableA.h \
+    Job.h
 
 
 LIBS += \

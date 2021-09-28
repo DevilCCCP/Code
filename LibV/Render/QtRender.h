@@ -30,15 +30,15 @@ public:
   WidgetImageR*   DrawWidget() { return mDrawWidget; }
 
 public:
-  /*override */virtual bool Init() Q_DECL_OVERRIDE;
-  /*override */virtual bool SetRegion(const QRect& srcRegion, const QRect& destRegion) Q_DECL_OVERRIDE;
-  /*override */virtual bool SetWidget(QWidget* destWidget) Q_DECL_OVERRIDE;
-  /*override */virtual bool SetPause(bool paused) Q_DECL_OVERRIDE;
-  /*override */virtual void Release() Q_DECL_OVERRIDE;
+  /*override */virtual bool Init() override;
+  /*override */virtual bool SetRegion(const QRect& srcRegion, const QRect& destRegion) override;
+  /*override */virtual bool SetWidget(QWidget* destWidget) override;
+  /*override */virtual bool SetPause(bool paused) override;
+  /*override */virtual void Release() override;
 
 public:
-  /*override */virtual void SetSource(Conveyor* source) Q_DECL_OVERRIDE;
-  /*override */virtual bool PlayFrame(const FrameS& frame) Q_DECL_OVERRIDE;
+  /*override */virtual void SetSource(Conveyor* source) override;
+  /*override */virtual bool PlayFrame(const FrameS& frame) override;
 
 public:
   void ReleaseSource(Conveyor* source);

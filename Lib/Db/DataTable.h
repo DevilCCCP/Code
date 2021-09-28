@@ -12,7 +12,7 @@ class QDataStream;
 class DataItem: public DbItemT<qint64>
 {
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE;
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const override;
 
   /*new */virtual void Serialize(QDataStream* stream) const = 0;
   /*new */virtual void Deserialize(QDataStream* stream) = 0;
@@ -26,13 +26,13 @@ template<typename DataItemT>
 class DataTable: public DbTableT<qint64, DataItemT>
 {
 protected:
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE
+  /*override */virtual QString Columns() override
   {
     return "data";
   }
 
-//  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<qint64> >& item) Q_DECL_OVERRIDE;
-//  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<qint64>& item) Q_DECL_OVERRIDE;
+//  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<qint64> >& item) override;
+//  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<qint64>& item) override;
 
   bool OnRowReadData(QSqlQueryS& q, int& index, DataItemT* item)
   {

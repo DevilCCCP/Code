@@ -18,17 +18,17 @@ class ArmLoader: public ModuleLoaderD
   int           mRevision;
 
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
 
 protected:
-  /*override */virtual bool IsNeedIp() Q_DECL_OVERRIDE;
-  /*override */virtual void RegisterStatic() Q_DECL_OVERRIDE;
-  /*override */virtual bool InitializeExtra() Q_DECL_OVERRIDE;
-  /*override */virtual bool CheckUpdateObject() Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadObject() Q_DECL_OVERRIDE;
-//  /*override */virtual bool CheckUpdateState() Q_DECL_OVERRIDE;
-//  /*override */virtual bool UpdateState() Q_DECL_OVERRIDE;
-//  /*override */virtual EModuleState GetObjectState() Q_DECL_OVERRIDE;
+  /*override */virtual bool IsNeedIp() override;
+  /*override */virtual void RegisterStatic() override;
+  /*override */virtual bool InitializeExtra() override;
+  /*override */virtual bool CheckUpdateObject() override;
+  /*override */virtual bool LoadObject() override;
+//  /*override */virtual bool CheckUpdateState() override;
+//  /*override */virtual bool UpdateState() override;
+//  /*override */virtual EModuleState GetObjectState() override;
 
 private:
   bool LoadDbArm(int id);

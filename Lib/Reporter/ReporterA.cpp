@@ -117,14 +117,14 @@ QString ReporterA::MakeReportSubject(const ReportS& report)
 
 bool ReporterA::LoadRecepients()
 {
-  ObjectTypeS objectTypeTable(new ObjectTypeTable(mDb));
+  ObjectTypeTable objectTypeTable(mDb);
   int  smtpType = 0;
   int emailType = 0;
 
-  if (const NamedItem* item = objectTypeTable->GetItemByName("smp")) {
+  if (const NamedItem* item = objectTypeTable.GetItemByName("smp")) {
     smtpType = item->Id;
   }
-  if (const NamedItem* item = objectTypeTable->GetItemByName("eml")) {
+  if (const NamedItem* item = objectTypeTable.GetItemByName("eml")) {
     emailType = item->Id;
   }
   if (!smtpType || !emailType) {
@@ -150,7 +150,7 @@ bool ReporterA::LoadRecepients()
   while (q->next()) {
     int idMaster = q->value(0).toInt();
     int idSlave = q->value(1).toInt();
-    mAccountMap.insertMulti(idMaster, idSlave);
+    mAccountMap.insert(idMaster, idSlave);
     accounts.insert(idMaster);
     emails.insert(idSlave);
   }
@@ -459,7 +459,7 @@ bool ReporterA::Prepare(ReporterA::EPeriodic periodic, QDateTime& nextPeriod)
       if (!mStartTime.isValid()) {
         mStartTime = QDateTime::currentDateTime();
       } else if (mStartDay > mStartTime.date()) {
-        mStartTime = QDateTime(mStartDay);
+        mStartTime = QDateTime(mStartDay, QTime(0, 0));
       }
     }
     nextPeriod = mStartTime;

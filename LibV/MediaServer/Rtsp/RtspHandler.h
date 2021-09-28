@@ -33,29 +33,29 @@ public:
   void SetInChannel(RtspChannelS _RtspChannelIn) { mRtspChannelIn = _RtspChannelIn; }
 
 protected: /*Handler*/
-  /*override */virtual bool Receive(SyncSocket* socket, bool& sendDone) Q_DECL_OVERRIDE; // false: disconnect
-  /*override */virtual void OnDisconnected() Q_DECL_OVERRIDE;
+  /*override */virtual bool Receive(SyncSocket* socket, bool& sendDone) override; // false: disconnect
+  /*override */virtual void OnDisconnected() override;
 
 protected: /*HttpHandler*/
-  /*override */virtual const char* Protocol() Q_DECL_OVERRIDE { return "RTSP"; }
+  /*override */virtual const char* Protocol() override { return "RTSP"; }
 
-  /*override */virtual bool Options(const QString& path) Q_DECL_OVERRIDE;
+  /*override */virtual bool Options(const QString& path) override;
 
-//  /*override */virtual bool Announce(const QString& path, const QList<File>& files) Q_DECL_OVERRIDE;
+//  /*override */virtual bool Announce(const QString& path, const QList<File>& files) override;
 
-  /*override */virtual bool Describe(const QString& path) Q_DECL_OVERRIDE;
+  /*override */virtual bool Describe(const QString& path) override;
 
-  /*override */virtual bool Setup(const QString& path) Q_DECL_OVERRIDE;
+  /*override */virtual bool Setup(const QString& path) override;
 
-//  /*override */virtual bool Record(const QString& path) Q_DECL_OVERRIDE;
+//  /*override */virtual bool Record(const QString& path) override;
 
-  /*override */virtual bool Play(const QString& path) Q_DECL_OVERRIDE;
+  /*override */virtual bool Play(const QString& path) override;
 
-  /*override */virtual bool Pause(const QString& path) Q_DECL_OVERRIDE;
+  /*override */virtual bool Pause(const QString& path) override;
 
-  /*override */virtual bool GetParameter(const QString& path, const QList<File>& files) Q_DECL_OVERRIDE;
+  /*override */virtual bool GetParameter(const QString& path, const QList<File>& files) override;
 
-  /*override */virtual bool Teardown(const QString& path) Q_DECL_OVERRIDE;
+  /*override */virtual bool Teardown(const QString& path) override;
 
 private:
   void AntiSpam(int cmdId, int value = 1);

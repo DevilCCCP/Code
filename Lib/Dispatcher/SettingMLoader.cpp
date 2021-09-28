@@ -10,7 +10,12 @@ bool SettingMLoader::UpdateModules()
     SettingsA* settings = GetSettings();
     settings->SetSilent(true);
 
-    QSet<int> oldServices = mServices.keys().toSet();
+    QList<int> oldServicesList = mServices.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+    QSet<int> oldServices(oldServicesList.begin(), oldServicesList.end());
+#else
+    QSet<int> oldServices = QSet<int>::fromList(oldServicesList);
+#endif
     for (int i = 1; settings->BeginGroup(QString("Service%1").arg(i)); i++) {
       int id = settings->GetValue("id").toInt();
       QString path = settings->GetValue("path").toString();

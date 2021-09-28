@@ -24,15 +24,15 @@ public:
   bool UseAudio() { return (mAudioCompression & eAnyAudio) != 0; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Codec"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "C"; }
+  /*override */virtual const char* Name() override { return "Codec"; }
+  /*override */virtual const char* ShortName() override { return "C"; }
 
 protected:
-//  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+//  /*override */virtual bool DoInit() override;
+//  /*override */virtual void DoRelease() override;
 
 protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
 
 private:
   void CodeVideo();

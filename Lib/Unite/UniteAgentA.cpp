@@ -909,7 +909,7 @@ bool UniteAgentA::UpdateTopLog()
 {
   mTopHostLogId = mTopNextLogId;
   if (mRemoveLocal) {
-    return mDb->getObjectLogTable()->Delete(QString("WHERE _id < %1").arg(mTopHostLogId));
+    return mDb->getObjectLogTable()->Delete(QString("WHERE _id <= %1").arg(mTopHostLogId));
   } else {
     return true;
   }

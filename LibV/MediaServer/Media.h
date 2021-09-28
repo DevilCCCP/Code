@@ -35,7 +35,7 @@ public:
   const QString& Id() { return mId; }
 
 protected:
-  /*override */virtual void OnFrame(const TrFrameS& frame) Q_DECL_OVERRIDE;
+  /*override */virtual void OnFrame(const TrFrameS& frame) override;
 
   /*new */virtual void OnChannelAdd(const ChannelS& channel);
   /*new */virtual void OnChannelRemove(const ChannelS& channel);

@@ -15,7 +15,7 @@ public:
   QString    Value;
 
 public:
-  /*override */virtual bool Equals(const DbItem& other) const Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItem& other) const override
   {
     const Variables& vs = static_cast<const Variables&>(other);
     return DbItem::Equals(other) && Object == vs.Object && Key == vs.Key && Value == vs.Value;
@@ -29,11 +29,11 @@ public:
 class VariablesTable: public DbTableT<int, Variables>
 {
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItem>& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItem& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItem>& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItem& item) override;
 
 public:
   bool SelectVariables(int objectId, const QString& keyLike, QMap<QString, VariablesS>& variableMap);

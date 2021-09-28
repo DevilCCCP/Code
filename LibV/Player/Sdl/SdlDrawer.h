@@ -25,14 +25,14 @@ class QtDrawer: public DeviceDrawer
   SDL_Surface*          mFrameSurface;
 
 public:
-  /*override */virtual void SetFrame(FrameS& frame) Q_DECL_OVERRIDE;
-  /*override */virtual void SetStatusFrame(FrameS& frame) Q_DECL_OVERRIDE;
-  /*override */virtual void SetStatus(EDrawStatus status) Q_DECL_OVERRIDE;
-  /*override */virtual void Redraw() Q_DECL_OVERRIDE;
-  /*override */virtual void Clear() Q_DECL_OVERRIDE;
+  /*override */virtual void SetFrame(FrameS& frame) override;
+  /*override */virtual void SetStatusFrame(FrameS& frame) override;
+  /*override */virtual void SetStatus(EDrawStatus status) override;
+  /*override */virtual void Redraw() override;
+  /*override */virtual void Clear() override;
 
-  /*override */virtual void SetZoom(int scale) Q_DECL_OVERRIDE;
-  /*override */virtual void MoveZoom(const QPointF& pos) Q_DECL_OVERRIDE;
+  /*override */virtual void SetZoom(int scale) override;
+  /*override */virtual void MoveZoom(const QPointF& pos) override;
 
 private:
   bool Draw();

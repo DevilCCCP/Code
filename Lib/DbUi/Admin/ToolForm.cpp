@@ -351,15 +351,25 @@ bool ToolForm::IsChildExist(int parentId, int childTypeId)
 
 bool ToolForm::IsSameMaster(int idSibling, bool from, bool& connected)
 {
-  const QMap<int, int>& masters = mObjectTable->MasterConnection();
-  QSet<int> mastersSelected = masters.values(mSelectedItem->Id).toSet();
-  QSet<int> mastersSibling = masters.values(idSibling).toSet();
+  const QMultiMap<int, int>& masters = mObjectTable->MasterConnection();
+  QList<int> mastersSelected = masters.values(mSelectedItem->Id);
+  QList<int> mastersSibling = masters.values(idSibling);
   if (from) {
     connected = mastersSibling.contains(mSelectedItem->Id);
   } else {
     connected = mastersSelected.contains(idSibling);
   }
-  return !mastersSelected.intersect(mastersSibling).isEmpty();
+//  QSet<int> s1(mastersSelected.begin(), mastersSelected.end());
+//  QSet<int> s2(mastersSibling.begin(), mastersSibling.end());
+//  return !s1.intersect(s2).isEmpty();
+  foreach (int id1, mastersSelected) {
+    foreach (int id2, mastersSibling) {
+      if (id1 == id2) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 void ToolForm::AddOneAction(const ToolAction& action)

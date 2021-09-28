@@ -305,7 +305,7 @@ bool FormScript::LoadTemplates()
         }
       }
 
-      mTemplateObjects.insertMulti(item->Type, defaultObj);
+      mTemplateObjects.insert(item->Type, defaultObj);
       mTemplateNamesMap[item->Name] = defaultObj;
     }
   }
@@ -479,7 +479,7 @@ bool FormScript::UseScriptLine(int j)
       parent = itr.value();
     }
   }
-  QStringList linksText = mScriptModel->index(mCurrentLine, eLinks).data().toString().split(",", QString::SkipEmptyParts);
+  QStringList linksText = mScriptModel->index(mCurrentLine, eLinks).data().toString().split(",", Qt::SkipEmptyParts);
   QList<int> links;
   for (int i = 0; i < linksText.size(); i++) {
     QString text = linksText.at(i).trimmed();

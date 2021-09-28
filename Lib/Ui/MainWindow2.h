@@ -22,7 +22,7 @@ class MainWindow2: public QMainWindow
   Q_OBJECT
 
 public:
-  MainWindow2(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+  MainWindow2(QWidget* parent = 0, Qt::WindowFlags flags = Qt::Widget);
 
 protected:
   QSettings* GetSettings() { return mSettings.data(); }
@@ -48,7 +48,7 @@ private:
   void SaveWindowState();
 
 protected:
-  /*override */virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void moveEvent(QMoveEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void resizeEvent(QResizeEvent* event) override;
+  /*override */virtual void moveEvent(QMoveEvent* event) override;
 };
 

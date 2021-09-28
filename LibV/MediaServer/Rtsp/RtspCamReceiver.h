@@ -20,7 +20,7 @@ class RtspCamReceiver: public Receiver
   bool          mWarningDisconnect;
 
 public:
-  /*override */virtual bool ReceiveMessage(NetMessageS& msg) Q_DECL_OVERRIDE
+  /*override */virtual bool ReceiveMessage(NetMessageS& msg) override
   {
     switch (msg->GetMessageType()) {
     case eMsgSpsPps:
@@ -41,7 +41,7 @@ public:
     }
   }
 
-  /*override */virtual void OnDisconnected() Q_DECL_OVERRIDE
+  /*override */virtual void OnDisconnected() override
   {
     if (!mWarningDisconnect) {
       Log.Warning(QString("Disconnected (camera: %1)").arg(mItem->Id));

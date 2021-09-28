@@ -1,6 +1,7 @@
 #pragma once
+
 #include <QPointF>
-#include <math.h>
+#include <QtMath>
 
 
 inline int GetAlignedLeft(int value, int align)
@@ -53,16 +54,16 @@ inline qreal Radius2(QPointF p)
 template<typename TypeT>
 inline TypeT Radius(TypeT x1, TypeT y1, TypeT x2, TypeT y2)
 {
-  return sqrt(Radius2(x1, y1, x2, y2));
+  return qSqrt(Radius2(x1, y1, x2, y2));
 }
 
 inline qreal Radius(QPointF p1, QPointF p2)
 {
-  return sqrt(Radius2(p1, p2));
+  return qSqrt(Radius2(p1, p2));
 }
 
 inline qreal Radius(QPointF p)
 {
-  return sqrt(Radius2(p));
+  return qSqrt(Radius2(p));
 }
 

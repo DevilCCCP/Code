@@ -18,7 +18,7 @@ public:
   QString    Descr;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<int>& other) const Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<int>& other) const override
   {
     const VaStatType& vs = static_cast<const VaStatType&>(other);
     return DbItemT<int>::Equals(other) && Abbr == vs.Abbr && Name == vs.Name && Descr == vs.Descr;
@@ -34,11 +34,11 @@ class VaStatTypeTable: public DbTableT<int, VaStatType>
   QMap<QString, VaStatTypeS>    mItemsCache;
 
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<int> >& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<int>& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<int> >& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<int>& item) override;
 
 public:
   bool GetByAbbr(const QString& abbr, VaStatTypeS& item, bool useCache = true);

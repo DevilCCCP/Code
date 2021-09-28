@@ -140,7 +140,7 @@ void PropertyForm::AppendSetting(const ObjectSettingsType* descr, const QVariant
   QStandardItem* keyItem = new QStandardItem(descr->Name);
   keyItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
   keyItem->setBackground(mBrushDisabled);
-  keyItem->setData(qVariantFromValue(descr));
+  keyItem->setData(QVariant::fromValue(descr));
   QStandardItem* editItem = new QStandardItem(value.toString());
   if (editable || mUnlockEdit) {
     editItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEditable | Qt::ItemIsEnabled);
@@ -148,7 +148,7 @@ void PropertyForm::AppendSetting(const ObjectSettingsType* descr, const QVariant
     editItem->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     editItem->setBackground(mBrushDisabled);
   }
-  editItem->setData(qVariantFromValue(descr));
+  editItem->setData(QVariant::fromValue(descr));
   editItem->setData(value, Qt::UserRole + 2);
   mPropertyValues.append(editItem);
   mPropertiesModel->appendRow(QList<QStandardItem*>() << keyItem << editItem);

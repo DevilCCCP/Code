@@ -14,10 +14,10 @@ class DbStateNotifier: public StateNotifier
   OverseerState* mOverseerState;
 
 public:
-  /*override */ virtual void NotifyGood() Q_DECL_OVERRIDE;
-  /*override */ virtual void NotifyNothing() Q_DECL_OVERRIDE;
-  /*override */ virtual void NotifyWarning() Q_DECL_OVERRIDE;
-  /*override */ virtual void NotifyError() Q_DECL_OVERRIDE;
+  /*override */ virtual void NotifyGood() override;
+  /*override */ virtual void NotifyNothing() override;
+  /*override */ virtual void NotifyWarning() override;
+  /*override */ virtual void NotifyError() override;
 
 public:
   DbStateNotifier(OverseerState* _OverseerState): mOverseerState(_OverseerState) { }
@@ -34,7 +34,7 @@ public:
   DbStateNotifierS GetNotifier() const { return mNotifier; }
 
 protected:
-  /*override */virtual bool InitReport() Q_DECL_OVERRIDE
+  /*override */virtual bool InitReport() override
   {
     if (!Quiet()) {
       mStateInformer.Init(Id());
@@ -42,7 +42,7 @@ protected:
     return Overseer::InitReport();
   }
 
-  /*override */virtual bool DoReport() Q_DECL_OVERRIDE
+  /*override */virtual bool DoReport() override
   {
     if (!Quiet()) {
       mStateInformer.UpdateState();
@@ -50,7 +50,7 @@ protected:
     return Overseer::DoReport();
   }
 
-  /*override */virtual void FinalReport() Q_DECL_OVERRIDE
+  /*override */virtual void FinalReport() override
   {
     if (!Quiet()) {
       mStateInformer.End();

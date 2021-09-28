@@ -191,8 +191,8 @@ QString Core::GetHeader()
                               "  qint64 mCounter;"
                               "\n");
       text.replace("NAME_H2", "\n"
-                              "  /*override */virtual bool CreateDefaultItem(QSharedPointer<DbItemT<qint64> >& item) Q_DECL_OVERRIDE;\n"
-                              "  /*override */virtual void NewDefaultItem(QSharedPointer<DbItemT<qint64> >& item) Q_DECL_OVERRIDE;\n");
+                              "  /*override */virtual bool CreateDefaultItem(QSharedPointer<DbItemT<qint64> >& item) override;\n"
+                              "  /*override */virtual void NewDefaultItem(QSharedPointer<DbItemT<qint64> >& item) override;\n");
     } else {
       text.remove("NAME_H1");
       text.remove("NAME_H2");

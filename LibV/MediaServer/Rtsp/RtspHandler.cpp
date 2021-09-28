@@ -37,7 +37,7 @@ class RhTester: public QThread
   int           mRepeate;
 
 public:
-  virtual void run() Q_DECL_OVERRIDE
+  virtual void run() override
   {
     mTimer.start();
     for (int i = 1; i <= kRepeateCount; i++) {

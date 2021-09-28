@@ -15,7 +15,7 @@ public:
   const CtrlManagerS& GetCtrlManager() { return mCtrlManager; }
 
 protected:
-  /*override */virtual void run() Q_DECL_OVERRIDE
+  /*override */virtual void run() override
   {
     mCtrlManager->Run();
     mCtrlManager.clear();

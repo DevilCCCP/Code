@@ -14,12 +14,12 @@ class FormImageRegion: public QWidget
   Q_OBJECT
 
 protected:
-  /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void paintEvent(QPaintEvent* event) override;
 
-//  /*override */virtual void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-//  /*override */virtual void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-//  /*override */virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-//  /*override */virtual void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+//  /*override */virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
+//  /*override */virtual void mouseMoveEvent(QMouseEvent* event) override;
+//  /*override */virtual void mousePressEvent(QMouseEvent* event) override;
+//  /*override */virtual void mouseReleaseEvent(QMouseEvent* event) override;
 
 public:
   void SetImage(const QImage& image);

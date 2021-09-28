@@ -2,6 +2,7 @@
   error(Could not find the Common.pri file!)
 }
 
+message(DbTest is absolutly out of time)
 
 QT += sql
 

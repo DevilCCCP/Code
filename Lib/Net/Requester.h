@@ -14,13 +14,13 @@ class Requester: public Messenger
   QTcpSocket2S      mConnection2;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Requester"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Rq"; }
+  /*override */virtual const char* Name() override { return "Requester"; }
+  /*override */virtual const char* ShortName() override { return "Rq"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual void DoRelease() override;
 public:
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 public:
   Requester(const Uri& _Uri);

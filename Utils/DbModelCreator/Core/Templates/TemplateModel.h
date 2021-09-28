@@ -10,7 +10,7 @@ DefineClassS(ClassTModel);
 class ClassTModel: public DbTableModel<ClassT>
 {
 protected:
-  /*override */virtual QString Text(int row, int column) const Q_DECL_OVERRIDE;
+  /*override */virtual QString Text(int row, int column) const override;
 
 public:
   ClassTModel(QObject* parent = 0);

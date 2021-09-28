@@ -6,7 +6,6 @@
 #include "ScheduleWidget.h"
 
 
-const int kPrecisePixel = 2;
 const int kTextMargin = 4;
 const int kTimelineTickHeight = 4;
 

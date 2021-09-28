@@ -15,7 +15,7 @@ DefineClassS(Thumbnail);
 
 class SourceV4l: public Source
 {
-  QString       mUsbDevice;
+  QString       mUsbHubPath;
   QString       mFilename;
   V4lInS        mV4lIn;
   QString       mResolution;
@@ -27,20 +27,20 @@ class SourceV4l: public Source
   QElapsedTimer mFrameTimer;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "SourceV4l"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "S"; }
+  /*override */virtual const char* Name() override { return "SourceV4l"; }
+  /*override */virtual const char* ShortName() override { return "S"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 protected:
-  /*override */virtual void Reconnect() Q_DECL_OVERRIDE;
+  /*override */virtual void Reconnect() override;
 
 public:
-  /*override */virtual bool NeedDecoder() Q_DECL_OVERRIDE;
+  /*override */virtual bool NeedDecoder() override;
 
 private:
   void Init(SettingsA& settings);

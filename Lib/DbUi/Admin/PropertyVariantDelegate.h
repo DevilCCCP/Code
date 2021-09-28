@@ -13,10 +13,10 @@ class PropertyVariantDelegate: public QStyledItemDelegate
   mutable FormEditVariant*  mForm;
 
 public:
-  /*override */virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
-  /*override */virtual void setEditorData(QWidget* editor, const QModelIndex& index) const Q_DECL_OVERRIDE;
-  /*override */virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const Q_DECL_OVERRIDE;
-//  /*override */virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+  /*override */virtual QWidget* createEditor(QWidget* parent, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
+  /*override */virtual void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+  /*override */virtual void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const override;
+//  /*override */virtual void updateEditorGeometry(QWidget* editor, const QStyleOptionViewItem& option, const QModelIndex& index) const override;
 
 private:
   void Done();

@@ -8,13 +8,15 @@ HEADERS += \
     Jwt.h \
     Tools.h \
     InnerCrypt.h \
-    Xtea.h
+    Xtea.h \
+    Aes.h
 
 SOURCES += \
     Rsa.cpp \
     Jwt.cpp \
     InnerCrypt.cpp \
-    Xtea.cpp
+    Xtea.cpp \
+    Aes.cpp
 
 
 LIBS += \

@@ -26,7 +26,7 @@ template<typename HandlerT>
 class HandlerManagerB: public HandlerManager
 {
 protected:
-  /*override */virtual HandlerS NewHandler() Q_DECL_OVERRIDE { return HandlerS(new HandlerT()); }
+  /*override */virtual HandlerS NewHandler() override { return HandlerS(new HandlerT()); }
 
 public:
   static HandlerManagerS New() { return HandlerManagerS(new HandlerManagerB()); }
@@ -43,7 +43,7 @@ class HandlerManagerC: public HandlerManager
   HandlerParentT* mParent;
 
 protected:
-  /*override */virtual HandlerS NewHandler() Q_DECL_OVERRIDE { return HandlerS(new HandlerT(mParent)); }
+  /*override */virtual HandlerS NewHandler() override { return HandlerS(new HandlerT(mParent)); }
 
 public:
   static HandlerManagerS New() { return HandlerManagerS(new HandlerManagerC()); }

@@ -66,7 +66,7 @@ protected:
   ToolForm*     GetToolForm()        const { return mToolForm; }
 
 protected:
-  /*override */virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void showEvent(QShowEvent* event) override;
 
 protected:
   /*new */virtual void GetTreeSchema(TreeSchema& schema) const = 0;

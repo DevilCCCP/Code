@@ -27,7 +27,12 @@ void FormSystem::ReloadState()
   mStateModel->setHorizontalHeaderItem(0, new QStandardItem(QString::fromUtf8("Сервера")));
   mStateModel->setHorizontalHeaderItem(1, new QStandardItem(QString::fromUtf8("Состояние")));
   mStateModel->setHorizontalHeaderItem(2, new QStandardItem());
-  QSet<int> childs = mCore->getObjectTable()->MasterConnection().keys().toSet();
+  QList<int> childsList = mCore->getObjectTable()->MasterConnection().keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+  QSet<int> childs(childsList.begin(), childsList.end());
+#else
+  QSet<int> childs = QSet<int>::fromList(childsList);
+#endif
   const QMap<int, TableItemS>& items = mCore->getObjectTable()->GetItems();
   for (auto itr = items.begin(); itr != items.end(); itr++) {
     const ObjectItem& item = static_cast<const ObjectItem&>(*itr.value());

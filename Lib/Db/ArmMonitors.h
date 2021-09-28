@@ -20,7 +20,7 @@ public:
   bool    Used;
 
 public:
-  /*new*/virtual bool Equals(const DbItem& other)
+  /*new*/virtual bool Equals(const DbItem& other) const override
   {
     const ArmMonitors& vs = static_cast<const ArmMonitors&>(other);
     return DbItem::Equals(other) && Object == vs.Object && Name == vs.Name && Descr == vs.Descr
@@ -35,11 +35,11 @@ public:
 class ArmMonitorsTable: public DbTableT<int, ArmMonitors>
 {
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItem>& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItem& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItem>& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItem& item) override;
 
 public:
   ArmMonitorsTable(const Db& _Db);

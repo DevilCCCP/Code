@@ -21,11 +21,11 @@ public: /*internal */
   const MediaPlayerManagerS& GetMediaPlayerManager() { return mMediaPlayerManager; }
 
 protected:
-//  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+//  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 public:
-//  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+//  /*override */virtual void Stop() override;
 
 protected:
   /*new */virtual void OnRegisterMedia(const MediaS& media);

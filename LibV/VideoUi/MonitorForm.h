@@ -57,7 +57,7 @@ public:
   ~MonitorForm();
 
 protected:
-  /*override */virtual void showEvent(QShowEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void showEvent(QShowEvent* event) override;
 
 private:
   void Init();

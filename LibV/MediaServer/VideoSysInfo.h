@@ -35,7 +35,7 @@ public:
 class RtspInfo: public VideoSysInfo
 {
 protected:
-  /*override */virtual MediaPackagerS CreateDefaultMediaPackager() Q_DECL_OVERRIDE { return MediaPackagerS(new RtspPackager()); }
+  /*override */virtual MediaPackagerS CreateDefaultMediaPackager() override { return MediaPackagerS(new RtspPackager()); }
 
 public:
   RtspInfo(const DbS& _Db, CtrlManager* _CtrlManager): VideoSysInfo(_Db, _CtrlManager) { }

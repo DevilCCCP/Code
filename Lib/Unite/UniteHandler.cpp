@@ -148,7 +148,7 @@ bool UniteHandler::ValidateSign(const QList<QByteArray>& params, const QList<Fil
   QByteArray data = uuid;
   for (auto itr = files.begin(); itr != files.end(); itr++) {
     const File& file = *itr;
-    data.append(file.Type);
+    data.append(file.Type.toUtf8());
     data.append(file.Name.toUtf8());
     data.append(file.Data);
   }

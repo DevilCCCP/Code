@@ -38,10 +38,10 @@ class FormScript: public QWidget
   QStandardItemModel*       mScriptModel;
   bool                      mIsUpdateScript;
 
-  QMap<int, DefaultObjectS>     mTemplateObjects;
-  QMap<QString, DefaultObjectS> mTemplateNamesMap;
-  QMap<int, QString>            mTypeNames;
-  QStringList                   mCustomHeaders;
+  QMultiMap<int, DefaultObjectS> mTemplateObjects;
+  QMap<QString, DefaultObjectS>  mTemplateNamesMap;
+  QMap<int, QString>             mTypeNames;
+  QStringList                    mCustomHeaders;
 
   QFileDialog               mFileDialog;
   QStringList               mUseLog;

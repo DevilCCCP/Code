@@ -60,12 +60,12 @@ public:
   const SdpExtantionS& GetSdpExtantion() { return mSdpExtantion; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Rtsp server"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Rv"; }
+  /*override */virtual const char* Name() override { return "Rtsp server"; }
+  /*override */virtual const char* ShortName() override { return "Rv"; }
 
 protected:
-  /*override */virtual void OnRegisterMedia(const MediaS& media) Q_DECL_OVERRIDE;
-  /*override */virtual void OnUnregisterMedia(const MediaS& media) Q_DECL_OVERRIDE;
+  /*override */virtual void OnRegisterMedia(const MediaS& media) override;
+  /*override */virtual void OnUnregisterMedia(const MediaS& media) override;
 
 public: /*internal */
   const MediaPath& FindMediaPath(const QString& path);

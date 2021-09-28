@@ -3,9 +3,21 @@
 #include "Tlv.h"
 
 
-TlvS Tlv::At(int typeA)
+const int kNoType = -1;
+
+bool Tlv::IsValid() const
 {
-  for (auto itr = Childs.begin(); itr != Childs.end(); itr++) {
+  return Type != kNoType || !Childs.isEmpty();
+}
+
+bool Tlv::HasValue() const
+{
+  return Type != kNoType;
+}
+
+TlvS Tlv::At(int typeA) const
+{
+  for (auto itr = Childs.constBegin(); itr != Childs.constEnd(); itr++) {
     const TlvS& child = *itr;
     if (child->Type == typeA) {
       return child;
@@ -14,7 +26,7 @@ TlvS Tlv::At(int typeA)
   return TlvS();
 }
 
-TlvS Tlv::At(int typeA, int typeB)
+TlvS Tlv::At(int typeA, int typeB) const
 {
   TlvS a = At(typeA);
   if (a) {
@@ -23,11 +35,14 @@ TlvS Tlv::At(int typeA, int typeB)
   return a;
 }
 
-TlvS Tlv::At(int typeA, int typeB, int typeC)
+TlvS Tlv::At(int typeA, int typeB, int typeC) const
 {
   TlvS a = At(typeA);
   if (a) {
-    a = a->At(typeB, typeC);
+    a = a->At(typeB);
+    if (a) {
+      a = a->At(typeC);
+    }
   }
   return a;
 }
@@ -119,5 +134,6 @@ QString Tlv::DumpValueText(const QByteArray& value)
 
 
 Tlv::Tlv()
+  : Type(kNoType), Parent(nullptr)
 {
 }

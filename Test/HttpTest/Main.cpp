@@ -9,7 +9,7 @@
 class HttpHandlerB: public HttpHandler
 {
 protected:
-  /*override */virtual bool Get(const QString& path, const QList<QByteArray>& params, QByteArray& answer) Q_DECL_OVERRIDE
+  /*override */virtual bool Get(const QString& path, const QList<QByteArray>& params, QByteArray& answer) override
   {
     answer = QByteArray(GetHtmlHeader());
     answer.append(QString("Time: %1<br>\n").arg(QDateTime::currentDateTime().toString(Qt::ISODate)));
@@ -33,7 +33,7 @@ protected:
     return true;
   }
 
-  /*override */virtual bool Post(const QString& path, const QList<QByteArray>& params, const QList<File>& files, QByteArray& answer) Q_DECL_OVERRIDE
+  /*override */virtual bool Post(const QString& path, const QList<QByteArray>& params, const QList<File>& files, QByteArray& answer) override
   {
     Log.Trace(QString("POST path: %1, params: %2, files: %3").arg(path).arg(params.size()).arg(files.count()));
     answer = QByteArray(GetHtmlHeader());

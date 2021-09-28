@@ -13,7 +13,7 @@ contains(INCLUDE_LIB, Install) {
  SUBDIRS += KeyGenerator
 }
 contains(INCLUDE_LIB, AllTest) {
- SUBDIRS += DbTest
+# SUBDIRS += DbTest
  SUBDIRS += HttpTest
  SUBDIRS += NetTest
  SUBDIRS += JobTest
@@ -26,5 +26,8 @@ contains(INCLUDE_LIB, DbBackup) {
 }
 contains(INCLUDE_LIB, Update) {
  SUBDIRS += Update
+}
+contains(INCLUDE_LIB, GoogleApi) {
+ SUBDIRS += GoogleApiTest
 }
 #SUBDIRS += CryptTest

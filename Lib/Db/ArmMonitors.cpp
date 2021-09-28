@@ -24,7 +24,7 @@ bool ArmMonitorsTable::OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbIte
   am->Num = q->value(index++).toInt();
   am->Width = q->value(index++).toInt();
   am->Height = q->value(index++).toInt();
-  QStringList point = q->value(index++).toString().split(QRegExp("\\D"), QString::SkipEmptyParts);
+  QStringList point = q->value(index++).toString().split(QRegExp("\\D"), Qt::SkipEmptyParts);
   if (point.size() == 2) {
     am->Size = QPoint(point[0].toInt(), point[1].toInt());
   }

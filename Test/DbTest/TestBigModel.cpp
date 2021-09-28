@@ -7,7 +7,7 @@ bool TestBigModel::Prepare()
   if (!mDb->OpenDefault() || !mDb->Connect()) {
     return false;
   }
-  mTestBigtable.reset(new TestBigTable(mDb));
+  mTestBigtable.reset(new TestBigTable(*mDb));
   return true;
 }
 
@@ -20,7 +20,7 @@ bool TestBigModel::Do()
   for (auto itr = list.begin(); itr != list.end(); itr++) {
     const TestBig* item = (*itr).data();
     for (int j = 0; j < 16; j++) {
-      result += item->mData[j].size();
+      result += item->BigData[j].size();
     }
   }
 
@@ -35,7 +35,7 @@ bool TestBigModelIns::Prepare()
   if (!mDb->OpenDefault() || !mDb->Connect()) {
     return false;
   }
-  mTestBigtable.reset(new TestBigTable(mDb));
+  mTestBigtable.reset(new TestBigTable(*mDb));
 
   for (int i = 0; i < 100; i++) {
     QString value;
@@ -54,7 +54,7 @@ bool TestBigModelIns::Do()
   for (int i = 0; i < mCount; i++) {
     TestBigS item(new TestBig());
     for (int j = 0; j < 16; j++) {
-      item->mData[j] = mTestData[(qrand() % mTestData.size())];
+      item->BigData[j] = mTestData[(qrand() % mTestData.size())];
     }
     items.append(item);
   }

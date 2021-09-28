@@ -6,7 +6,7 @@
 
 
 DefineClassS(TreeItemB);
-DefineClassS(DbTreeSchema);
+DefineStructS(DbTreeSchema);
 
 class TreeItemB
 {

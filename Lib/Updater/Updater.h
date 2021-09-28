@@ -46,12 +46,12 @@ class Updater: public Imp
   UpSyncS               mUpSync;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Updater"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "U"; }
+  /*override */virtual const char* Name() override { return "Updater"; }
+  /*override */virtual const char* ShortName() override { return "U"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+  /*override */virtual void DoRelease() override;
 
 private:
   void CheckUpdate();

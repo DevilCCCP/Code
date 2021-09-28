@@ -8,7 +8,6 @@
 #include "GraphWidget.h"
 
 
-const int kPrecisePixel = 2;
 const int kTextMargin = 4;
 const int kTimelineTickHeight = 3;
 const int kValueTickWidth = 3;

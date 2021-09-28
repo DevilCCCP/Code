@@ -27,14 +27,14 @@ class ObjectSettingsTypeTable: public TableNamed
   QMap<int, QMap<QString, const ObjectSettingsType*> > mTypeKeyIndexs;
 
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Select() Q_DECL_OVERRIDE;
-//  /*override */virtual const char* Update() Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
-//  /*override */virtual bool OnSetItem(QueryS& q, const TableItem& unit) Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override */virtual const char* Select() override;
+//  /*override */virtual const char* Update() override;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
+//  /*override */virtual bool OnSetItem(QueryS& q, const TableItem& unit) override;
 
-  /*override */virtual void CreateIndexes() Q_DECL_OVERRIDE;
-  /*override */virtual void ClearIndexes() Q_DECL_OVERRIDE;
+  /*override */virtual void CreateIndexes() override;
+  /*override */virtual void ClearIndexes() override;
 
 public:
   const ObjectSettingsType* GetObjectTypeSettingsType(int typeId, const QString& key);

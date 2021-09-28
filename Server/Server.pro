@@ -11,7 +11,7 @@ SUBDIRS += Installer
 SUBDIRS += UpD
 SUBDIRS += UpLoader
 !contains(DEFINES, NOLICENSE) {
- SUBDIRS += LicenseLoader
+# SUBDIRS += LicenseLoader
 }
 contains(DEFINES, ROUTER) {
  SUBDIRS += TcpRouter

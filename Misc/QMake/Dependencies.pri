@@ -44,10 +44,12 @@ contains(DEPEND_LIBS, Decoder) {
  }
 
  linux {
+  contains(INCLUDE_LIB, Vdp) {
   system(dpkg -s libvdpau-dev>/dev/null 2>/dev/null) {
    !include($$HEAD_DIR/LibV/Vdp.pri) {
     error(Could not find the Vdp.pri file!)
    }
+  }
   }
   exists("/opt/vc/src/hello_pi") {
    !include($$HEAD_DIR/LibV/Omx.pri) {

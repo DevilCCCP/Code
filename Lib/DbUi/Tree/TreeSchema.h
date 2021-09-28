@@ -25,7 +25,7 @@ class TreeSchema
 {
   QList<TreeRootItem>   mSchema;
 
-  QMap<int, int>        mTypeItemMap;
+  QMultiMap<int, int>   mTypeItemMap;
   int                   mMinId;
   bool                  mInit;
 

@@ -34,11 +34,11 @@ class TrReceiver: public Receiver
   bool          mMemoryStoreConnected;
 
 public:
-  /*override */virtual void DoCircle() Q_DECL_OVERRIDE;
+  /*override */virtual void DoCircle() override;
 
-  /*override */virtual bool ReceiveRequest(NetMessageS& msg, int& rspMsgId, QByteArray& rspMsgData) Q_DECL_OVERRIDE;
-  /*override */virtual bool ReceiveMessage(NetMessageS& msg) Q_DECL_OVERRIDE;
-  /*override */virtual void OnDisconnected() Q_DECL_OVERRIDE;
+  /*override */virtual bool ReceiveRequest(NetMessageS& msg, int& rspMsgId, QByteArray& rspMsgData) override;
+  /*override */virtual bool ReceiveMessage(NetMessageS& msg) override;
+  /*override */virtual void OnDisconnected() override;
 
 private:
   void DispatchMsgLiveRequest(NetMessageS &msg);

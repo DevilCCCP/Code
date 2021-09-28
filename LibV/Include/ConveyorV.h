@@ -23,7 +23,7 @@ protected:
 
 protected:
 #ifdef QT_NO_DEBUG
-  /*override */virtual void OnOverflow(QList<FrameAS>& conveyorFrames) Q_DECL_OVERRIDE
+  /*override */virtual void OnOverflow(QList<FrameAS>& conveyorFrames) override
   {
     conveyorFrames.erase(conveyorFrames.begin(), conveyorFrames.begin() + kFrameOverflowClearCount);
     while (!conveyorFrames.isEmpty()) {
@@ -36,7 +36,7 @@ protected:
     }
   }
 #else
-  /*override */virtual void OnOverflow(QList<FrameAS>& conveyorFrames) Q_DECL_OVERRIDE
+  /*override */virtual void OnOverflow(QList<FrameAS>& conveyorFrames) override
   {
     conveyorFrames.erase(conveyorFrames.begin() + kFrameOverflowCount - kFrameOverflowClearCount, conveyorFrames.end());
     while (!conveyorFrames.isEmpty()) {

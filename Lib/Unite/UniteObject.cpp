@@ -437,7 +437,9 @@ bool UniteObject::RemoveUnused(int serverId, const QSet<int>& usedObjs, int& obj
       int id = *itr;
       mDb.getObjectTable()->LoadSlaves(id, nextLevel);
     }
-    existed.unite(nextLevel.toSet());
+    foreach(int idSlave, nextLevel) {
+      existed.insert(idSlave);
+    }
   }
 
   existed.subtract(usedObjs);

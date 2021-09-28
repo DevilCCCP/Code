@@ -16,8 +16,8 @@ class ThumbnailReceiver: public QObject, public Receiver
   Q_OBJECT
 
 public:
-  /*override */virtual bool ReceiveMessage(NetMessageS& msg) Q_DECL_OVERRIDE;
-  /*override */virtual void OnDisconnected() Q_DECL_OVERRIDE;
+  /*override */virtual bool ReceiveMessage(NetMessageS& msg) override;
+  /*override */virtual void OnDisconnected() override;
 
 private:
   bool OnEncodedFrame(NetMessageS& msg);

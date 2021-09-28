@@ -18,18 +18,18 @@ class FileSaver: public ConveyorV
   bool          mOpened;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "FileSaver"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "S"; }
+  /*override */virtual const char* Name() override { return "FileSaver"; }
+  /*override */virtual const char* ShortName() override { return "S"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual void DoRelease() override;
 
 public:
-//  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+//  /*override */virtual void Stop() override;
 
 protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
-  /*override */virtual void OnOverflow(QList<FrameAS>& conveyorFrames) Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
+  /*override */virtual void OnOverflow(QList<FrameAS>& conveyorFrames) override;
 
 private:
   void Done();

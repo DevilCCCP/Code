@@ -16,7 +16,7 @@
 
 #include "AnalyticsA.h"
 #ifdef ANAL_DEBUG
-#include "DebugWnd.h"
+#include "Wnd/DebugWnd.h"
 #endif
 
 
@@ -71,17 +71,15 @@ void AnalyticsA::SetDetectors(const QList<DetectorS>& _Detectors)
   InitDetectors(_Detectors);
 }
 
-void AnalyticsA::SetDebug(CtrlManager* _CtrlManager)
+#ifdef ANAL_DEBUG
+void AnalyticsA::SetDebug(CtrlManager* ctrlManager, const QList<QWidget*>& windowPool)
 {
-#ifndef ANAL_DEBUG
-  Q_UNUSED(_CtrlManager);
-#else
-  if (_CtrlManager) {
-    mDebugWnd = DebugWndS(new DebugWnd());
-    _CtrlManager->RegisterWorker(mDebugWnd);
+  if (ctrlManager) {
+    mDebugWnd = DebugWndS(new DebugWnd(windowPool));
+    ctrlManager->RegisterWorker(mDebugWnd);
   }
-#endif
 }
+#endif
 
 bool AnalyticsA::GetStatAbbr(int type, QString& abbr)
 {

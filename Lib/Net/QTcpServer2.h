@@ -13,8 +13,8 @@ class QTcpServer2 : public QTcpServer
   QList<qintptr> mSocketDescriptors;
 
 private:
-  /*override */virtual void incomingConnection(qintptr socketDescriptor) Q_DECL_OVERRIDE;
-  ///*override */virtual QTcpSocket* nextPendingConnection() Q_DECL_OVERRIDE;
+  /*override */virtual void incomingConnection(qintptr socketDescriptor) override;
+  ///*override */virtual QTcpSocket* nextPendingConnection() override;
 
 public:
   bool Listen(int port);

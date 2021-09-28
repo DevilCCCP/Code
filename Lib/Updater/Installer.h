@@ -33,6 +33,8 @@ private:
   bool WaitDaemonsByShmem();
   void Clean();
 
+  void DaemonsCommand(const QString& cmd);
+
 public:
   Installer();
 };

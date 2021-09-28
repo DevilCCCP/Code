@@ -21,7 +21,7 @@ public:
   ~FormImage();
 
 protected:
-  /*override */virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void resizeEvent(QResizeEvent* event) override;
 
 public:
   void SetImage(const QImage& image);

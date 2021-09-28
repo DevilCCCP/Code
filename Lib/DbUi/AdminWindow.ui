@@ -59,7 +59,7 @@
          </property>
          <widget class="QWidget" name="tabSystem">
           <attribute name="icon">
-           <iconset resource="../../Nex/ArmZ/AdminUi/Admin.qrc">
+           <iconset resource="DbUi.qrc">
             <normaloff>:/ObjTree/Icons/System.png</normaloff>:/ObjTree/Icons/System.png</iconset>
           </attribute>
           <attribute name="title">
@@ -156,7 +156,7 @@
          </widget>
          <widget class="QWidget" name="tabScript">
           <attribute name="icon">
-           <iconset resource="../../Nex/ArmZ/AdminUi/Admin.qrc">
+           <iconset resource="DbUi.qrc">
             <normaloff>:/ObjTree/Icons/Script.png</normaloff>:/ObjTree/Icons/Script.png</iconset>
           </attribute>
           <attribute name="title">
@@ -343,9 +343,7 @@
  </customwidgets>
  <resources>
   <include location="DbUi.qrc"/>
-  <include location="../../Nex/ArmZ/AdminUi/Admin.qrc"/>
   <include location="../Ui/Ui.qrc"/>
-  <include location="../../Nex/ArmZ/AdminUi/Admin.qrc"/>
  </resources>
  <connections/>
 </ui>

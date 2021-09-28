@@ -63,7 +63,7 @@ bool TlvParser::ParseElem(const QByteArray& tlvData, int& pos, int* value)
   int val = (int)(uchar)tlvData[pos++];
   if (val >= 0x80) {
     int len = val - 0x80;
-    if (len == 0 || pos + len > tlvData.size()) {
+    if (len == 0 || len > 4 || pos + len > tlvData.size()) {
       return false;
     }
 

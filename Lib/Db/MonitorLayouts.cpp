@@ -19,7 +19,7 @@ bool MonitorLayoutsTable::OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<Db
   MonitorLayouts* al;
   item.reset(al = new MonitorLayouts());
   al->Monitor = q->value(index++).toInt();
-  QStringList box = q->value(index++).toString().split(QRegExp("\\D"), QString::SkipEmptyParts);
+  QStringList box = q->value(index++).toString().split(QRegExp("\\D"), Qt::SkipEmptyParts);
   if (box.size() == 4) {
     al->Place.setRight(box[0].toInt());
     al->Place.setBottom(box[1].toInt());

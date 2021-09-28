@@ -50,26 +50,26 @@ class PtzOnvif: public Ptz
   QXmlStreamReader*      mXmlReader;
 
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 public:
-//  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+//  /*override */virtual void Stop() override;
 
 public:
-  /*override */virtual bool GetAbilities(int& _AbilityFlag) Q_DECL_OVERRIDE;
-  /*override */virtual bool GetPosition(PtzVector& _Position) Q_DECL_OVERRIDE;
-  /*override */virtual bool GetRange(PtzVector& _MinPosition, PtzVector& _MaxPosition, PtzVector& _MinSpeed, PtzVector& _MaxSpeed) Q_DECL_OVERRIDE;
-  /*override */virtual bool GetHome(PtzVector& _HomePosition) Q_DECL_OVERRIDE;
-  /*override */virtual bool SetPosition(const PtzVector& _Position) Q_DECL_OVERRIDE;
-  /*override */virtual bool SetPosition(const PtzVector& _Position, const PtzVector& _Speed) Q_DECL_OVERRIDE;
-  /*override */virtual bool RelativeMove(const PtzVector& _Position) Q_DECL_OVERRIDE;
-  /*override */virtual bool RelativeMove(const PtzVector& _Position, const PtzVector& _Speed) Q_DECL_OVERRIDE;
-  /*override */virtual bool ContinuousMove(const PtzVector& _Speed, int _Timeout) Q_DECL_OVERRIDE;
-  /*override */virtual bool StopMove() Q_DECL_OVERRIDE;
-  /*override */virtual bool MoveHome() Q_DECL_OVERRIDE;
-  /*override */virtual bool MoveHome(const PtzVector& _Speed) Q_DECL_OVERRIDE;
-  /*override */virtual bool SetHome(const PtzVector& _Position) Q_DECL_OVERRIDE;
+  /*override */virtual bool GetAbilities(int& _AbilityFlag) override;
+  /*override */virtual bool GetPosition(PtzVector& _Position) override;
+  /*override */virtual bool GetRange(PtzVector& _MinPosition, PtzVector& _MaxPosition, PtzVector& _MinSpeed, PtzVector& _MaxSpeed) override;
+  /*override */virtual bool GetHome(PtzVector& _HomePosition) override;
+  /*override */virtual bool SetPosition(const PtzVector& _Position) override;
+  /*override */virtual bool SetPosition(const PtzVector& _Position, const PtzVector& _Speed) override;
+  /*override */virtual bool RelativeMove(const PtzVector& _Position) override;
+  /*override */virtual bool RelativeMove(const PtzVector& _Position, const PtzVector& _Speed) override;
+  /*override */virtual bool ContinuousMove(const PtzVector& _Speed, int _Timeout) override;
+  /*override */virtual bool StopMove() override;
+  /*override */virtual bool MoveHome() override;
+  /*override */virtual bool MoveHome(const PtzVector& _Speed) override;
+  /*override */virtual bool SetHome(const PtzVector& _Position) override;
 
 private:
   bool InitPtz();

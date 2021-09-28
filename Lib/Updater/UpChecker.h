@@ -39,14 +39,14 @@ class UpChecker: public Imp
   PackLoaderAS  mLoader;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "UpdateChecker"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Ch"; }
+  /*override */virtual const char* Name() override { return "UpdateChecker"; }
+  /*override */virtual const char* ShortName() override { return "Ch"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 public:
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 public:
   void UpdatePoint(const ObjectItemS& item);

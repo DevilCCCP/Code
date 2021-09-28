@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QMultiMap>
 #include <QDateTime>
 #include <QElapsedTimer>
 
@@ -18,7 +19,7 @@ public:
   QString Icon;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const override;
 
 public:
   EventType() { }
@@ -28,9 +29,9 @@ public:
 class EventTypeTable: public TableNamed
 {
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override*/virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override*/virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override*/virtual const char* Select() override;
+  /*override*/virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
 
 public:
   EventTypeTable(const Db& _Db);
@@ -53,7 +54,7 @@ public:
   int       EventTypeId;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other);
+  /*override*/virtual bool Equals(const TableItem &other) const override;
 
 public:
   Event() { }
@@ -62,7 +63,7 @@ public:
 
 class EventTable: public Table
 {
-  QMap<int, int>             mObjectTypes;
+  QMultiMap<int, int>        mObjectTypes;
 
   QMap<int, QMap<int, int> > mInitedEvents;
 
@@ -71,13 +72,13 @@ public:
   QList<int> GetObjectEventTypes(int id) { return mObjectTypes.values(id); }
 
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Insert() Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnSetItem(QueryS& q, const TableItem& unit) Q_DECL_OVERRIDE;
-  /*override */virtual void CreateIndexes() Q_DECL_OVERRIDE;
-  /*override */virtual void ClearIndexes() Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override */virtual const char* Select() override;
+  /*override */virtual const char* Insert() override;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
+  /*override */virtual bool OnSetItem(QueryS& q, const TableItem& unit) override;
+  /*override */virtual void CreateIndexes() override;
+  /*override */virtual void ClearIndexes() override;
 
 public:
   bool InitEvent(int detectorId, int eventTypeId, int* id);

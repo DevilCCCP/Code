@@ -2,12 +2,10 @@
 
 #include "HttpHandler.h"
 
-const int kMaxCommandLen = 20;
-const int kMaxPathLen = 512;
+
 const char kHtmlHeader[] = "HTTP/1.1 200 Ok\r\n""Content-Type: text/html; charset=\"utf-8\"\r\n";
 const char kHtmlHeaderDone[] = "HTTP/1.1 200 Ok\r\n""Content-Type: text/html; charset=\"utf-8\"\r\n""\r\n";
 const char kRtspHeader[] = "RTSP/1.0 200 OK\r\n";
-
 
 bool HttpHandler::Receive(SyncSocket* socket, bool& sendDone)
 {
@@ -226,7 +224,7 @@ bool HttpHandler::HttpInternalError(bool done)
 
 bool HttpHandler::HttpResultDone(const QByteArray& text)
 {
-  Answer().append(QByteArray("Content-Type: text/plain\r\n"));
+  Answer().append(QByteArray("Content-Type: text/plain; charset=utf-8\r\n"));
   Answer().append(QByteArray("Content-Length: ") + QByteArray::number(text.size()) + "\r\n");
   mAnswer.append(QByteArray("\r\n"));
   mAnswer.append(text);
@@ -429,7 +427,7 @@ bool HttpHandler::ParseHeader(bool& needMoreData)
   if (spaceIndex < 4) {
     return false;
   }
-  int end = mRequest.indexOf(QChar('\r'), spacePos[3]);
+  int end = mRequest.indexOf('\r', spacePos[3]);
   if (end < 0) {
     needMoreData = true;
     return false;
@@ -448,7 +446,7 @@ bool HttpHandler::ParseHeader(bool& needMoreData)
   mVersion = mRequest.mid(posV, end - posV);
   mCommand = mRequest.mid(0, spacePos[0]);
   QByteArray pathParams = mRequest.mid(spacePos[1], spacePos[2] - spacePos[1]);
-  int posD = pathParams.indexOf(QChar('?'));
+  int posD = pathParams.indexOf('?');
   mParams.clear();
   if (posD >= 0) {
     mPath = pathParams.mid(0, posD);
@@ -462,7 +460,9 @@ bool HttpHandler::ParseHeader(bool& needMoreData)
   mMultyPart = false;
   mMultyPartSize = 0;
   mMultyPartBoundary.clear();
-  for (int pos = mRequest.indexOf(QChar('\n'), spacePos[1] + 5) + 1; pos > 0 && pos < mRequest.size(); pos = mRequest.indexOf(QChar('\n'), pos) + 1) {
+  for (int pos = mRequest.indexOf('\n', spacePos[1] + 5) + 1
+       ; pos > 0 && pos < mRequest.size()
+       ; pos = mRequest.indexOf('\n', pos) + 1) {
     if (mRequest[pos] == '\r') {
       if (++pos >= mRequest.size()) {
         return false;
@@ -559,7 +559,7 @@ bool HttpHandler::ParseOneFile(bool &done)
   }
 
   File file;
-  for (posb++; posb > 0 && posb < mRequest.size(); posb = mRequest.indexOf(QChar('\n'), posb) + 1) {
+  for (posb++; posb > 0 && posb < mRequest.size(); posb = mRequest.indexOf('\n', posb) + 1) {
     if (mRequest[posb] == '\r') {
       if (++posb >= mRequest.size()) {
         return false;
@@ -574,7 +574,7 @@ bool HttpHandler::ParseOneFile(bool &done)
 
     if (mRequest.mid(posb, kContentDisposition.size()) == kContentDisposition) {
       int posc = posb + kContentDisposition.size();
-      int posd = mRequest.indexOf(QChar('\n'), posb);
+      int posd = mRequest.indexOf('\n', posb);
       QByteArray line = mRequest.mid(posc, posd - posc).trimmed();
       QList<QByteArray> params = line.split(';');
       for (int i = 0; i < params.size(); i++) {
@@ -591,7 +591,7 @@ bool HttpHandler::ParseOneFile(bool &done)
       }
     } else if (mRequest.mid(posb, kContentType.size()) == kContentType) {
       int posc = posb + kContentType.size();
-      int posd = mRequest.indexOf(QChar('\n'), posb);
+      int posd = mRequest.indexOf('\n', posb);
       file.Type = mRequest.mid(posc, posd - posc).trimmed();
     } else {
       Log.Warning(QString("Body syntax don't known: \n") + mRequest.mid(posb, 200));

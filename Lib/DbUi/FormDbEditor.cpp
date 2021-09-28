@@ -68,7 +68,7 @@ void FormDbEditor::Reload()
   ui->treeViewDb->expandAll();
 }
 
-void FormDbEditor::ReloadTable(const QList<DbTreeSchemaS>& schemaChilds, const QMap<qint64, TreeItemB*>& parentMap)
+void FormDbEditor::ReloadTable(const QList<DbTreeSchemaS>& schemaChilds, const QMultiMap<qint64, TreeItemB*>& parentMap)
 {
   foreach (const DbTreeSchemaS& schema, schemaChilds) {
     if (schema->Icon.isNull()) {
@@ -97,57 +97,57 @@ void FormDbEditor::LoadRootTable(const DbTreeSchemaS& schema)
   ReloadTable(schema->TreeChilds, currentMap);
 }
 
-void FormDbEditor::LoadChildTable(const DbTreeSchemaS& schema, const QMap<qint64, TreeItemB*>& parentMap)
+void FormDbEditor::LoadChildTable(const DbTreeSchemaS& schema, const QMultiMap<qint64, TreeItemB*>& parentMap)
 {
   QVector<DbItemBS> itemsList;
   schema->Table->Select(QString("ORDER BY _id"), itemsList);
-  QMap<qint64, TreeItemB*> currentMap;
+  QMultiMap<qint64, TreeItemB*> currentMap;
   foreach (const DbItemBS& item, itemsList) {
     qint64 keyId = item->Key(schema->KeyIndex);
 
     for (auto itr = parentMap.find(keyId); itr != parentMap.end() && itr.key() == keyId; itr++) {
       TreeItemBS treeItem(new TreeItemB(item, schema.data()));
       itr.value()->AppendChild(treeItem);
-      currentMap.insertMulti(item->Id, treeItem.data());
+      currentMap.insert(item->Id, treeItem.data());
     }
   }
 
   ReloadTable(schema->TreeChilds, currentMap);
 }
 
-void FormDbEditor::LoadLinkTable(const DbTreeSchemaS& schema, const QMap<qint64, TreeItemB*>& parentMap)
+void FormDbEditor::LoadLinkTable(const DbTreeSchemaS& schema, const QMultiMap<qint64, TreeItemB*>& parentMap)
 {
-  QMap<qint64, TreeItemB*> parentLinkMap;
+  QMultiMap<qint64, TreeItemB*> parentLinkMap;
   for (auto itr = parentMap.begin(); itr != parentMap.end(); itr++) {
     TreeItemB* treeItem = itr.value();
     qint64           id = treeItem->Item()->Key(schema->KeyIndex);
-    parentLinkMap.insertMulti(id, treeItem);
+    parentLinkMap.insert(id, treeItem);
   }
 
   QVector<DbItemBS> itemsList;
   schema->Table->Select(QString("ORDER BY _id"), itemsList);
-  QMap<qint64, TreeItemB*> currentMap;
+  QMultiMap<qint64, TreeItemB*> currentMap;
   foreach (const DbItemBS& item, itemsList) {
     qint64 keyId = item->Id;
     auto itr = parentLinkMap.find(keyId);
     for (; itr != parentLinkMap.end() && itr.key() == keyId; itr++) {
       TreeItemBS treeItem(new TreeItemB(item, schema.data()));
       itr.value()->AppendChild(treeItem);
-      currentMap.insertMulti(item->Id, treeItem.data());
+      currentMap.insert(item->Id, treeItem.data());
     }
   }
 
   ReloadTable(schema->TreeChilds, currentMap);
 }
 
-void FormDbEditor::LoadMultiLinkTable(const DbTreeSchemaS& schema, const QMap<qint64, TreeItemB*>& parentMap)
+void FormDbEditor::LoadMultiLinkTable(const DbTreeSchemaS& schema, const QMultiMap<qint64, TreeItemB*>& parentMap)
 {
   QMap<qint64, DbItemBS> itemsMap;
   schema->Table->Select(QString("ORDER BY _id"), itemsMap);
   QVector<DbItemBS> itemsLinkList;
   schema->MultiLinkTable->Select(QString(""), itemsLinkList);
 
-  QMap<qint64, TreeItemB*> currentMap;
+  QMultiMap<qint64, TreeItemB*> currentMap;
   foreach (const DbItemBS& linkItem, itemsLinkList) {
     qint64 parentId = linkItem->Key(schema->KeyIndex);
     qint64  childId = linkItem->Key(schema->MultiLinkIndex);
@@ -159,7 +159,7 @@ void FormDbEditor::LoadMultiLinkTable(const DbTreeSchemaS& schema, const QMap<qi
         TreeItemBS treeItem(new TreeItemB(item, schema.data()));
         treeItem->SetMultiLinkId(linkItem->Id);
         itrp.value()->AppendChild(treeItem);
-        currentMap.insertMulti(item->Id, treeItem.data());
+        currentMap.insert(item->Id, treeItem.data());
       }
     }
   }

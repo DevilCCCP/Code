@@ -43,4 +43,5 @@ public:
   Uri();
   Uri(EType _Type);
   Uri(EType _Type, const QString& _Host, int _Port);
+  Uri(const Uri&) = default;
 };

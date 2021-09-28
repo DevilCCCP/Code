@@ -15,10 +15,6 @@ HEADERS += \
     RouterClient.h \
     Packet.h
 
-DEPEND_LIBS += \
-    Log
-
-!include($$PRI_DIR/Dependencies.pri) {
-  error(Could not find the Dependencies.pri file!)
-}
+LIBS += \
+    -lLog
 

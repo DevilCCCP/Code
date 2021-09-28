@@ -7,6 +7,7 @@
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "MultiThreadCalc.h"
+#include "TestJob.h"
 
 
 MainWindow::MainWindow(const DbS& _Db, QWidget* parent)
@@ -69,21 +70,19 @@ void MainWindow::OnFinished()
 
 void MainWindow::OnTimeout()
 {
-  auto q = mDb->MakeQuery();
-  q->prepare(QString("SELECT done + fail, iter_end FROM job WHERE _id = %1;").arg(mJobId));
-  if (!mDb->ExecuteQuery(q) || !q->next()) {
-    return;
-  }
+  TestJobTable jobTable(*mDb);
+  TestJobS job;
+  jobTable.SelectOne(QString("WHERE _id = %1").arg(mJobId), job);
 
-  int done = q->value(0).toInt();
-  int end  = q->value(1).toInt();
-  if (done >= end) {
+  int done = (int)job->Done + job->Fail;
+  int total = (int)job->IterEnd;
+  if (done >= total) {
     ui->doubleSpinBoxResultProcess->setMaximum(mWorkTimer.elapsed() * 0.001);
     ui->doubleSpinBoxResultProcess->setValue(mWorkTimer.elapsed() * 0.001);
     mWatchDbTimer->stop();
     ui->progressBarProcess->setVisible(false);
   } else {
-    ui->progressBarProcess->setValue(100 * done / end);
+    ui->progressBarProcess->setValue(100 * done / total);
   }
 }
 
@@ -126,10 +125,14 @@ void MainWindow::on_pushButtonTestProcess_clicked()
   if (!mDb->Connect()) {
     return;
   }
+
+  TestJobTable jobTable(*mDb);
   {
-    auto q = mDb->MakeQuery();
-    q->prepare(QString("DELETE FROM job;"));
-    mDb->ExecuteNonQuery(q);
+    bool ok = false;
+    if (!jobTable.TestTable(ok) || !ok) {
+      Log.Warning("No job table");
+      return;
+    }
   }
 
   qint64 circles = ui->spinBoxCircles->value();
@@ -147,24 +150,18 @@ void MainWindow::on_pushButtonTestProcess_clicked()
     QProcess* proc = mWorkProcesses.takeLast();
     proc->kill();
   }
-  for (int i = 0; i < mWorkProcesses.size(); i++) {
-    QProcess* proc = mWorkProcesses[i];
-    proc->waitForStarted();
-  }
 
   ui->progressBarProcess->setVisible(true);
-  mWatchDbTimer->start(10);
+  mWatchDbTimer->start(500);
   mWorkTimer.start();
   {
-    QString params = QString("%1").arg(circles);
-    auto q = mDb->MakeQuery();
-    q->prepare(QString("INSERT INTO job(name, is_active, iter_end, data) VALUES ('test_job', true, ?, ?) RETURNING _id;"));
-    q->addBindValue(totalCalcs);
-    q->addBindValue(params.toLatin1());
-    if (!mDb->ExecuteQuery(q) || !q->next()) {
+    TestJobS job(new TestJob());
+    job->IterEnd = totalCalcs;
+    job->Circles = circles;
+    if (!jobTable.Insert(job)) {
       return;
     }
-    mJobId = q->value(0).toLongLong();
+    mJobId = job->Id;
   }
 }
 

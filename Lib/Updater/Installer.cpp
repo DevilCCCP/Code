@@ -90,12 +90,7 @@ void Installer::StoppingDaemons()
 
 void Installer::StoppingDaemonsByCmd()
 {
-  for (auto itr = kDaemonExeList.begin(); itr != kDaemonExeList.end(); itr++) {
-    const QString& daemonExe = *itr;
-    QString cmd = QString("\"%1\" stop").arg(QDir::toNativeSeparators(mAppDir.absoluteFilePath(daemonExe)));
-    int ret = QProcess::execute(cmd);
-    Log.Info(QString("Stop by cmd '%1' (ret: %2)").arg(cmd).arg(ret));
-  }
+  DaemonsCommand("stop");
 }
 
 void Installer::StoppingDaemonsByShmem()
@@ -182,12 +177,7 @@ void Installer::RestartDaemons()
 {
   Log.Info("Start daemons");
   forever {
-    for (auto itr = kDaemonExeList.begin(); itr != kDaemonExeList.end(); itr++) {
-      const QString& daemonExe = *itr;
-      QString cmd = QString("\"%1\" start").arg(QDir::toNativeSeparators(mAppDir.absoluteFilePath(daemonExe)));
-      int ret = QProcess::execute(cmd);
-      Log.Info(QString("%1 (ret: %2)").arg(cmd).arg(ret));
-    }
+    DaemonsCommand("start");
 
     mPidList.clear();
     QElapsedTimer waitTimer;
@@ -244,6 +234,16 @@ void Installer::Clean()
 {
   Log.Info("Start install clean");
   QProcess::startDetached(mAppDir.absoluteFilePath(kInstallExe), QStringList() << "clean" << QCoreApplication::applicationFilePath());
+}
+
+void Installer::DaemonsCommand(const QString& cmd)
+{
+  for (auto itr = kDaemonExeList.begin(); itr != kDaemonExeList.end(); itr++) {
+    const QString& daemonExe = *itr;
+    QString prog = mAppDir.absoluteFilePath(daemonExe);
+    int ret = QProcess::execute(prog, QStringList() << cmd);
+    Log.Info(QString("%1 %2 (ret: %3)").arg(daemonExe, cmd).arg(ret));
+  }
 }
 
 

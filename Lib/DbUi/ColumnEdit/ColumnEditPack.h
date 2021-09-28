@@ -12,9 +12,9 @@ class ColumnEditPack: public QObject, public ColumnEditA
   Q_OBJECT
 
 public:
-  /*override */virtual QWidget* CreateControl(QWidget* parent) Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadValue(const QVariant& value) Q_DECL_OVERRIDE;
-  /*override */virtual bool SaveValue(QVariant& value) Q_DECL_OVERRIDE;
+  /*override */virtual QWidget* CreateControl(QWidget* parent) override;
+  /*override */virtual bool LoadValue(const QVariant& value) override;
+  /*override */virtual bool SaveValue(QVariant& value) override;
 
 public:
   ColumnEditPack();

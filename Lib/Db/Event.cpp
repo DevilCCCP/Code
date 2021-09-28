@@ -39,7 +39,7 @@ EventTypeTable::~EventTypeTable()
 }
 
 
-bool Event::Equals(const TableItem& other)
+bool Event::Equals(const TableItem& other) const
 {
   const Event& other_ = dynamic_cast<const Event&>(other);
   return Id == other_.Id && ObjectId == other_.ObjectId && EventTypeId == other_.EventTypeId;
@@ -82,7 +82,7 @@ void EventTable::CreateIndexes()
 {
   for (auto itr = mItems.begin(); itr != mItems.end(); itr++) {
     const Event* event = static_cast<const Event*>(itr.value().data());
-    mObjectTypes.insertMulti(event->ObjectId, event->EventTypeId);
+    mObjectTypes.insert(event->ObjectId, event->EventTypeId);
   }
 }
 

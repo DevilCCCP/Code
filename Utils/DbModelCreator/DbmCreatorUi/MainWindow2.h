@@ -48,7 +48,7 @@ private:
   void SaveWindowState();
 
 protected:
-  /*override */virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void moveEvent(QMoveEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void resizeEvent(QResizeEvent* event) override;
+  /*override */virtual void moveEvent(QMoveEvent* event) override;
 };
 

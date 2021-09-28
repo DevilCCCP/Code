@@ -1,11 +1,6 @@
-#include <qsystemdetection.h>
-
-#ifdef Q_OS_WIN32
-#define ANAL_DEBUG
-#endif
-
-#if defined(ANAL_DEBUG) || defined(USE_VDPAU)
+#ifdef ANAL_DEBUG
 #include <Lib/Include/QtAppWin.h>
+#include <Lib/Dispatcher/OverseerThread.h>
 #else
 #include <Lib/Include/QtAppCon.h>
 #endif
@@ -161,6 +156,17 @@ int qmain(int argc, char* argv[])
   if (analizer) {
     db->MoveToThread(analizer.data());
   }
+
+#ifdef ANAL_DEBUG
+  analizer->InitDebug();
+  OverseerThreadS overseerTh(new OverseerThread(overseer));
+  overseerTh->start();
+
+  int ret = qApp->exec();
+  overseerTh->wait();
+  return ret;
+#else
   return overseer->Run();
+#endif
 }
 

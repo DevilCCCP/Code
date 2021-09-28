@@ -181,7 +181,7 @@ bool MapTableB::GetChildsCount(const qint64& id, qint64& count)
   return true;
 }
 
-bool MapTableB::GetAllItems(const QString& condition, QMap<qint64, qint64>& itemsMap)
+bool MapTableB::GetAllItems(const QString& condition, QMultiMap<qint64, qint64>& itemsMap)
 {
   if (mPreparedItemsMap.isEmpty()) {
     Prepare();
@@ -197,7 +197,7 @@ bool MapTableB::GetAllItems(const QString& condition, QMap<qint64, qint64>& item
   while (q->next()) {
     qint64 key = q->value(0).toLongLong();
     qint64 value = q->value(1).toLongLong();
-    itemsMap.insertMulti(key, value);
+    itemsMap.insert(key, value);
   }
   return true;
 }
@@ -248,30 +248,31 @@ bool MapTableB::LoadIds(QueryS& q, QList<qint64>& ids)
 void MapTableB::Prepare()
 {
   mPreparedInsertSelect = QString("INSERT INTO %1(%2, %3) ")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedInsert = QString("INSERT INTO %1(%2, %3) VALUES (?, ?) RETURNING _id")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
-  mPreparedRemove = QString("DELETE FROM %1 WHERE _id=?").arg(GetTableName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
+  mPreparedRemove = QString("DELETE FROM %1 WHERE _id=?")
+      .arg(GetTableName());
   mPreparedRemove2 = QString("DELETE FROM %1 WHERE %2=? AND %3=?")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedRemoveM = QString("DELETE FROM %1 WHERE %2=?")
-      .arg(GetTableName()).arg(GetColumnKeyName());
+      .arg(GetTableName(), GetColumnKeyName());
   mPreparedRemoveS = QString("DELETE FROM %1 WHERE %2=?")
-      .arg(GetTableName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnValueName());
   mPreparedItemsMap = QString("SELECT %2, %3 FROM %1")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedParents = QString("SELECT _id, %2, %3 FROM %1 WHERE %3=?")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedChilds = QString("SELECT _id, %2, %3 FROM %1 WHERE %2=?")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedParentIds = QString("SELECT %2 FROM %1 WHERE %3=?")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedChildIds = QString("SELECT %3 FROM %1 WHERE %2=?")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
   mPreparedParentsCount = QString("SELECT COUNT(_id) FROM %1 WHERE %2=?")
-      .arg(GetTableName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnValueName());
   mPreparedChildsCount = QString("SELECT COUNT(_id) FROM %1 WHERE %2=?")
-      .arg(GetTableName()).arg(GetColumnKeyName());
+      .arg(GetTableName(), GetColumnKeyName());
   mPreparedInsertUniq = QString("DELETE FROM %1 WHERE %2=? AND %3=?;"
                                 " INSERT INTO %1(%2, %3) VALUES (?, ?)")
       .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
@@ -279,7 +280,7 @@ void MapTableB::Prepare()
                                        " FROM (SELECT _id,"
                                        " ROW_NUMBER() OVER (partition BY %2, %3 ORDER BY _id) AS rnum"
                                        " FROM %1 WHERE %2 = ?) t WHERE t.rnum > 1);")
-      .arg(GetTableName()).arg(GetColumnKeyName()).arg(GetColumnValueName());
+      .arg(GetTableName(), GetColumnKeyName(), GetColumnValueName());
 }
 
 MapTableB::MapTableB(const Db& _Db)

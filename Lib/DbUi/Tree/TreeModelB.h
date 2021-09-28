@@ -21,14 +21,14 @@ public:
   void SetHeaders(const QStringList& _Headers) { mHeaders = _Headers; }
 
 public:
-  /*override */virtual Qt::ItemFlags flags(const QModelIndex& index) const Q_DECL_OVERRIDE;
-  /*override */virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
-  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role) Q_DECL_OVERRIDE;
-  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
-  /*override */virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-  /*override */virtual QModelIndex parent(const QModelIndex& index) const Q_DECL_OVERRIDE;
-  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
+  /*override */virtual Qt::ItemFlags flags(const QModelIndex& index) const override;
+  /*override */virtual QVariant data(const QModelIndex& index, int role) const override;
+  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role) override;
+  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
+  /*override */virtual QModelIndex index(int row, int column, const QModelIndex& parent = QModelIndex()) const override;
+  /*override */virtual QModelIndex parent(const QModelIndex& index) const override;
+  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;
 
 public:
   void Clear();

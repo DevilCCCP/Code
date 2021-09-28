@@ -27,9 +27,9 @@ public:
   const MediaPlayerManagerS& GetMediaPlayerManager() { return mMpManager; }
 
 protected:
-  /*override */virtual bool OnTest() Q_DECL_OVERRIDE;
-  /*override */virtual void OnChannelAdd(const ChannelS& channel) Q_DECL_OVERRIDE;
-  /*override */virtual void OnChannelRemove(const ChannelS& channel) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnTest() override;
+  /*override */virtual void OnChannelAdd(const ChannelS& channel) override;
+  /*override */virtual void OnChannelRemove(const ChannelS& channel) override;
 
 public:
   RtspChannelS FindChannel(const QByteArray& id);

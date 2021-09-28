@@ -13,7 +13,7 @@ public:
   FrameLabel(QWidget* parent = nullptr);
 
 protected:
-  /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void paintEvent(QPaintEvent* event) override;
 
 public:
   void SetFrame(const FrameS& _Frame);

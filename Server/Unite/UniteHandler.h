@@ -18,8 +18,8 @@ class UniteHandler: public HttpHandler
   ObjectItemS mCurrentObject;
 
 protected:
-  /*override */virtual bool Get(const QString& path, const QList<QByteArray>& params) Q_DECL_OVERRIDE;
-  /*override */virtual bool Post(const QString& path, const QList<QByteArray>& params, const QList<File>& files) Q_DECL_OVERRIDE;
+  /*override */virtual bool Get(const QString& path, const QList<QByteArray>& params) override;
+  /*override */virtual bool Post(const QString& path, const QList<QByteArray>& params, const QList<File>& files) override;
 
 protected:
   bool ValidateSign(const QList<QByteArray>& params, const QList<File>& files);

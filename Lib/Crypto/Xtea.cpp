@@ -6,7 +6,6 @@
 
 
 const int kKeySize = 4; // in quint32 units
-const int kDoubleKeySize = 8; // in quint32 units
 const int kDataBlockSize = sizeof(quint32) * 2; // in bytes
 
 const int kXteaIterations = 64;

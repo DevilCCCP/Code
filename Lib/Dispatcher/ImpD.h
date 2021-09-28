@@ -17,7 +17,7 @@ protected:
 protected:
   /*new */virtual bool LoadSettings(SettingsA* settings) = 0;
 
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
 
 public:
   ImpD(const Db& _Db, int _WorkPeriodMs, bool _AutoWorkCalc = true, bool _Critical = true);

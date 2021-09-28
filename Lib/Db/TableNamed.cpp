@@ -1,3 +1,5 @@
+#include <Lib/Log/Log.h>
+
 #include "TableNamed.h"
 #include "Db.h"
 
@@ -53,7 +55,7 @@ void TableNamed::CreateNameIndex()
 {
   for (auto itr = mItems.begin(); itr != mItems.end(); itr++) {
     const NamedItem* item = static_cast<const NamedItem*>(itr.value().data());
-    mNameIndex.insertMulti(item->Name, item);
+    mNameIndex.insert(item->Name, item);
   }
 }
 
@@ -62,11 +64,10 @@ const NamedItem* TableNamed::GetItemByName(const QString &name)
   auto itr = mNameIndex.find(name);
   if (itr != mNameIndex.end()) {
     auto itrn = itr + 1;
-    if (itrn == mNameIndex.end() || itrn.key() != name) {
-      return itr.value();
-    } else {
-      return nullptr;
+    if (itrn != mNameIndex.end() && itrn.key() == name) {
+      Log.Warning(QString("Found items with same name (table: '%1', name: '%2')").arg(Name(), name));
     }
+    return itr.value();
   }
 
   QString queryText;
@@ -80,7 +81,7 @@ const NamedItem* TableNamed::GetItemByName(const QString &name)
       if (OnRowLoad(q, unit)) {
         mItems[unit->Id] = unit;
         NamedItem* unitData = static_cast<NamedItem*>(unit.data());
-        mNameIndex[name] = unitData;
+        mNameIndex.insert(name, unitData);
         return unitData;
       }
     }

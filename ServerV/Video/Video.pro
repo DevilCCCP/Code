@@ -4,7 +4,8 @@
 
 QT += sql network core gui
 
-win32 {
+CONFIG(debug, debug|release) {
+ DEFINES += ANAL_DEBUG
  QT += widgets
 }
 
@@ -43,6 +44,10 @@ DEPEND_LIBS = \
     Settings \
     Log
 
+CONFIG(debug, debug|release) {
+ DEPEND_LIBS += Ui
+}
+
 !contains(INCLUDE_LIB, Analytics) {
  DEPEND_LIBS -= Analyser
  DEPEND_LIBS -= Analytics
@@ -53,13 +58,6 @@ DEPEND_LIBS = \
 }
 
 include($$PROJECT_DIR/Local/Analytics.pri)
-
-win32 {
- LIBS += \
-    -luser32 \
-    -lGdi32
-} unix {
-}
 
 win32 {
   QMAKE_POST_LINK  = VideoDeploy.bat $$shell_quote($$HEAD_DIR) $$shell_quote($$DESTDIR)

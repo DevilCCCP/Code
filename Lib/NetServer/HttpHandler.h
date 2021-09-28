@@ -67,8 +67,8 @@ protected:
   bool IsLogAny() { return mLogRequest || mLogRespond; }
 
 protected:
-  /*override */virtual bool Receive(SyncSocket* socket, bool& sendDone) Q_DECL_OVERRIDE;
-//  /*override */virtual void OnDisconnected() Q_DECL_OVERRIDE;
+  /*override */virtual bool Receive(SyncSocket* socket, bool& sendDone) override;
+//  /*override */virtual void OnDisconnected() override;
 
 protected:
   /*new */virtual const char* Protocol();

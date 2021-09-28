@@ -59,7 +59,7 @@ template <typename MediaPlayerT>
 class MediaPlayerManagerA: public MediaPlayerManager
 {
 public:
-  /*override */virtual MediaPlayerS CreateMediaPlayer() Q_DECL_OVERRIDE { return MediaPlayerS(new MediaPlayerT()); }
+  /*override */virtual MediaPlayerS CreateMediaPlayer() override { return MediaPlayerS(new MediaPlayerT()); }
 
 public:
   explicit MediaPlayerManagerA() { }
@@ -76,7 +76,7 @@ public:
   ParentT& Parent() { return mParent; }
 
 public:
-  /*override */virtual MediaPlayerS CreateMediaPlayer() Q_DECL_OVERRIDE { return MediaPlayerS(new MediaPlayerT(mParent)); }
+  /*override */virtual MediaPlayerS CreateMediaPlayer() override { return MediaPlayerS(new MediaPlayerT(mParent)); }
 
 public:
   explicit MediaPlayerManagerB(ParentT _Parent)

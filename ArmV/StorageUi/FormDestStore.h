@@ -40,7 +40,7 @@ public:
   ~FormDestStore();
 
 protected:
-  /*override */virtual void closeEvent(QCloseEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void closeEvent(QCloseEvent* event) override;
 
 public:
   void SetCellSize(int size);

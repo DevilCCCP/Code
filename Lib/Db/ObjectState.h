@@ -21,7 +21,7 @@ public:
   QString Color;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const override;
 
 public:
   ObjectStateValuesItem() { }
@@ -33,11 +33,11 @@ class ObjectStateValuesTable: public TableNamed
   QMap<QPair<int, int>, const ObjectStateValuesItem*> mTypeStateIndex;
 
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
-  /*override */virtual void CreateIndexes() Q_DECL_OVERRIDE;
-  /*override */virtual void ClearIndexes() Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override */virtual const char* Select() override;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
+  /*override */virtual void CreateIndexes() override;
+  /*override */virtual void ClearIndexes() override;
 
 public:
   const ObjectStateValuesItem* GetItemByTypeState(int type, int state);
@@ -62,8 +62,8 @@ public:
 class ObjectStateTypeTable: public TableNamed
 {
 protected:
-  /*override*/virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override*/virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
+  /*override*/virtual const char* Select() override;
+  /*override*/virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
 
 public:
   ObjectStateTypeTable(const Db& _Db);
@@ -82,7 +82,7 @@ public:
   int       ChangeSec;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const override;
 
 public:
   ObjectStateItem() { }
@@ -127,12 +127,12 @@ public:
   };
 
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override*/virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override*/virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override*/virtual const char* Select() override;
+  /*override*/virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
 
-  /*override*/virtual void CreateIndexes() Q_DECL_OVERRIDE;
-  /*override*/virtual void ClearIndexes() Q_DECL_OVERRIDE;
+  /*override*/virtual void CreateIndexes() override;
+  /*override*/virtual void ClearIndexes() override;
 
 public:
   bool InitState(int _ObjectId, int _ObjectStateTypeId, int _DefaultState, int _NowState);

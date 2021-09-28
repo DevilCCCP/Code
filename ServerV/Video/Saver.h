@@ -19,14 +19,14 @@ class Saver: public ConveyorV
   LICENSE_HEADER;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Repo saver"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "R"; }
+  /*override */virtual const char* Name() override { return "Repo saver"; }
+  /*override */virtual const char* ShortName() override { return "R"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual void DoRelease() override;
 
 protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
 
 public:
   Saver(SettingsAS &_StorageSettings);

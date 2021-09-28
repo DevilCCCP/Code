@@ -214,10 +214,12 @@ bool Db::Exec(const QString &query, bool warn) const
 {
   ValidateThread();
 
-  auto q = mDb->exec(query);
-  if (q.lastError().isValid()) {
+  const QSqlQuery& q = mDb->exec(query);
+  const QSqlError& err = q.lastError();
+  if (err.isValid()) {
     if (warn) {
-      Log.Warning(QString("Exec error: %1 (error: '%2', code: %3)").arg(query).arg(q.lastError().text()).arg(q.lastError().number()));
+      Log.Warning(QString("Exec error: \n%1\n(error: '%2', code: %3)")
+                  .arg(query).arg(err.text(), err.nativeErrorCode()));
     }
     return false;
   }
@@ -333,17 +335,17 @@ bool Db::Connect() const
     return true;
   }
 
-  static int gLastError = 0;
+  static QSqlError gLastError;
   if (mDb->open()) {
-    if (gLastError) {
-      gLastError = 0;
+    if (gLastError.isValid()) {
+      gLastError = QSqlError();
       Log.Info(QString("Connection DB ok"));
     }
     return true;
   } else {
-    int error = mDb->lastError().number();
+    const QSqlError& error = mDb->lastError();
     if (error != gLastError) {
-      Log.Warning(QString("Connection DB fail (code: %1): %2").arg(error).arg(mDb->lastError().text()));
+      Log.Warning(QString("Connection DB fail (error: '%1', code: '%2')").arg(error.text(), error.nativeErrorCode()));
       gLastError = error;
     }
     return false;
@@ -399,7 +401,7 @@ bool Db::ExecuteBatch(QueryS& query) const
   if (!mDb->rollback()) {
     Log.Warning(QString("query rollback fail"));
   }
-  Log.Warning(QString("'%1' fail (error: '%2', code: %3)").arg(GetPreparedQueryText(*query)).arg(query->lastError().text()).arg(query->lastError().number()));
+  Log.Warning(QString("'%1' fail (error: '%2', code: %3)").arg(GetPreparedQueryText(*query), query->lastError().text(), query->lastError().nativeErrorCode()));
   return false;
 }
 

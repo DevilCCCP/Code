@@ -1,6 +1,9 @@
 #include <QHostInfo>
 #include <QElapsedTimer>
 #include <QRegExp>
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+#include <QRandomGenerator>
+#endif
 
 #include <Lib/Log/Log.h>
 #include <Lib/Net/QSslSocket2.h>
@@ -55,7 +58,9 @@ void Smtp::SetDefaults()
   mSmtpType = eSsl;
   mSmtpEhlo = "[:Ip:]";
 
+#if (QT_VERSION < QT_VERSION_CHECK(5, 10, 0))
   qsrand(QDateTime::currentMSecsSinceEpoch());
+#endif
 
   setConnectTimeout(kDefaultConnectTimeout);
   setRespondTimeout(kDefaultRespondTimeout);
@@ -355,7 +360,12 @@ QByteArray Smtp::GenerateBoundary()
 {
   QByteArray boundary;
   for (int i = 0; i < 16; i += 2) {
+#if (QT_VERSION >= QT_VERSION_CHECK(5, 10, 0))
+    static QRandomGenerator gRandomGenerator(QDateTime::currentMSecsSinceEpoch());
+    int r = gRandomGenerator.bounded(1 << 16);
+#else
     int r = qrand();
+#endif
     boundary.append((char)(uchar)(r));
     boundary.append((char)(uchar)(r >> 8));
   }

@@ -23,7 +23,6 @@
 const int kWorkPeriodMs = 500;
 const int kUpdatePointListMs = 5000;
 const int kValidateUpdateInfoMs = 5000;
-const int kUpdateInfoInitMs = 30 * 1000;
 
 bool Updater::DoInit()
 {
@@ -158,7 +157,12 @@ void Updater::DoWork()
     }
   }
 
-  QSet<int> oldIds = mCheckers.keys().toSet();
+  QList<int> idList = mCheckers.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+  QSet<int> oldIds(idList.begin(), idList.end());
+#else
+  QSet<int> oldIds = QSet<int>::fromList(idList);
+#endif
   for (auto itr = points.begin(); itr != points.end(); itr++) {
     const ObjectItemS& item = *itr;
     if (item->Id != mDefaultPointId) {

@@ -19,7 +19,7 @@ class EventLoop: public ConveyorV
   SourceLive* mSourceLive;
 
 protected:
-  /*override */virtual void run() Q_DECL_OVERRIDE;
+  /*override */virtual void run() override;
 
 public:
   void OnFrame(const FrameS& frame) { EmergeVFrame(frame); }
@@ -64,20 +64,20 @@ class SourceLive: public Source
   friend void CallbackDefault(RTSPClient* client, int resultCode, char* resultString);
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "SourceRTSP"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "S"; }
+  /*override */virtual const char* Name() override { return "SourceRTSP"; }
+  /*override */virtual const char* ShortName() override { return "S"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+  /*override */virtual void DoRelease() override;
 
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
-
-protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 protected:
-  /*override */virtual void Reconnect() Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
+
+protected:
+  /*override */virtual void Reconnect() override;
 
 private:
   bool ConnectSource();

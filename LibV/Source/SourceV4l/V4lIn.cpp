@@ -73,10 +73,9 @@ bool V4lIn::Open(const QString &filename, const QString& resolution, const QStri
   if (ioctl(fd, VIDIOC_G_FMT, &fmt) < 0) {
     return OpenError(QString("Can't read video format"));
   }
-  int pixelFormat = fmt.fmt.pix.pixelformat;
+  int pixelFormat = fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_YUYV;
   int width  = fmt.fmt.pix.width;
   int height = fmt.fmt.pix.height;
-  fmt.fmt.pix.pixelformat = V4L2_PIX_FMT_NV12;
   if (mWidth > 0 && mHeight > 0) {
     fmt.fmt.pix.width  = mWidth;
     fmt.fmt.pix.height = mHeight;
@@ -98,7 +97,16 @@ bool V4lIn::Open(const QString &filename, const QString& resolution, const QStri
     Log.Warning(QString("Select video format fail, using (w: %1, h: %2, f: '%3')").arg(mWidth).arg(mHeight)
                 .arg(QByteArray((char*)&pixelFormat, 4).constData()));
   } else {
-    Log.Info(QString("Set video format to NV12 (w: %1, h: %2)").arg(mWidth).arg(mHeight));
+    int pixelFormat2 = fmt.fmt.pix.pixelformat;
+    switch (pixelFormat2) {
+    case V4L2_PIX_FMT_NV12:   mCompression = eRawNv12; break;
+    case V4L2_PIX_FMT_YUV420: mCompression = eRawYuv; break;
+    case V4L2_PIX_FMT_YUYV:   mCompression = eRawYuvP; break;
+    case V4L2_PIX_FMT_MJPEG:  mCompression = eJpeg; break;
+    default: return OpenError(QString("Got unsupported pixel format ('%1')").arg(QByteArray((char*)&pixelFormat2, 4).constData()));
+    }
+
+    Log.Info(QString("Set video format to %1 (w: %2, h: %3)").arg(CompressionToString(mCompression)).arg(mWidth).arg(mHeight));
   }
 
   v4l2_streamparm parm;

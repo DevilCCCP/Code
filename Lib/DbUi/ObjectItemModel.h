@@ -15,10 +15,10 @@ class ObjectItemModel: public QAbstractTableModel
   PROPERTY_GET(QList<ObjectItemS>, Items)
 
 public:
-  /*override */virtual int rowCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
-  /*override */virtual int columnCount(const QModelIndex &parent) const Q_DECL_OVERRIDE;
-  /*override */virtual QVariant data(const QModelIndex &index, int role) const Q_DECL_OVERRIDE;
-  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
+  /*override */virtual int rowCount(const QModelIndex &parent) const override;
+  /*override */virtual int columnCount(const QModelIndex &parent) const override;
+  /*override */virtual QVariant data(const QModelIndex &index, int role) const override;
+  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
 public:
   void SetList(const QList<ObjectItemS>& _Items);

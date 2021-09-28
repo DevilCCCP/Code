@@ -11,7 +11,7 @@ class SettingMLoader: public ModuleLoaderB
   QMap<int, QPair<QString, QString> > mServices;
 
 protected:
-  /*override */virtual bool UpdateModules() Q_DECL_OVERRIDE;
+  /*override */virtual bool UpdateModules() override;
 
 public:
   SettingMLoader(SettingsAS& _Settings);

@@ -31,7 +31,12 @@ bool ModuleLoaderO::LoadObject()
     return false;
   }
 
-  QSet<int> lastSchedules = mObjectSchedules.keys().toSet();
+  QList<int> lastSchedulesList = mObjectSchedules.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+  QSet<int> lastSchedules(lastSchedulesList.begin(), lastSchedulesList.end());
+#else
+  QSet<int> lastSchedules = QSet<int>::fromList(lastSchedulesList);
+#endif
   mMainSchedule.clear();
   mUpdateSchedules.clear();
   while (q->next()) {

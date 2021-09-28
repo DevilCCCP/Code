@@ -33,11 +33,11 @@ class ImageWithPoints: public QLabel
   Q_OBJECT
 
 protected:
-  virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+  virtual void resizeEvent(QResizeEvent* event) override;
 
-  virtual void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-  virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-  virtual void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+  virtual void mouseMoveEvent(QMouseEvent* event) override;
+  virtual void mousePressEvent(QMouseEvent* event) override;
+  virtual void mouseReleaseEvent(QMouseEvent* event) override;
 
 public:
   bool SetPointsType(const Db& _Db, int objectId, EPointsType _PointsType);

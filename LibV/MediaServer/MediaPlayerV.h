@@ -47,12 +47,12 @@ protected:
   const qint64&  Timestamp() { return mTimestamp; }
 
 protected:
-  /*override */virtual bool Open() Q_DECL_OVERRIDE;
+  /*override */virtual bool Open() override;
 public:
-//  /*override */virtual bool Play(const ParamsMap& params, QByteArray& extraData) Q_DECL_OVERRIDE;
-  /*override */virtual bool Pause() Q_DECL_OVERRIDE;
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
-  /*override */virtual void Release() Q_DECL_OVERRIDE;
+//  /*override */virtual bool Play(const ParamsMap& params, QByteArray& extraData) override;
+  /*override */virtual bool Pause() override;
+  /*override */virtual void Stop() override;
+  /*override */virtual void Release() override;
 
 protected:
   /*new */virtual bool OnVideoInfo(const qint64& timestamp);

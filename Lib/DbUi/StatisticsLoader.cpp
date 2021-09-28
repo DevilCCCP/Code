@@ -9,7 +9,6 @@
 
 const int kLogPackSize = 1000;
 const int kUpdatePeriodMs = 100;
-const int kReloadCountPeriodMs = 30000;
 
 void StatisticsLoader::Load(int days, const QDateTime& from, const QDateTime& to)
 {

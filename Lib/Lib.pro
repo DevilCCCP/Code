@@ -49,3 +49,7 @@ contains(INCLUDE_LIB, Unite) {
  SUBDIRS += Unite
  Unite.depends = Settings Dispatcher NetServer
 }
+contains(INCLUDE_LIB, GoogleApi) {
+ SUBDIRS += GoogleApi
+ GoogleApi.depends = Settings
+}

@@ -24,7 +24,7 @@ public:
   const CellInfoList& GetCellInfoList() const { return mCellInfoList; }
 
 protected:
-  virtual void run() Q_DECL_OVERRIDE;
+  virtual void run() override;
 
 public:
   void Stop();

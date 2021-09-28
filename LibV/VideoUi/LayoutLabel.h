@@ -13,7 +13,7 @@ class LayoutLabel: public QLabel
   Q_OBJECT
 
 protected:
-  /*override */virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void mousePressEvent(QMouseEvent* event) override;
 
 signals:
   void Clicked();

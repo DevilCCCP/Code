@@ -20,7 +20,8 @@ SOURCES += \
     ImpD.cpp \
     JobImp.cpp \
     LogPublisher.cpp \
-    LogCleaner.cpp
+    LogCleaner.cpp \
+    JobAImp.cpp
 
 HEADERS += \
     MainInfo.h \
@@ -43,7 +44,8 @@ HEADERS += \
     JobImp.h \
     LogPublisher.h \
     LogCleaner.h \
-    Tools.h
+    Tools.h \
+    JobAImp.h
 
 win32 {
 SOURCES += \

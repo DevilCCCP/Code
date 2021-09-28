@@ -59,7 +59,7 @@ private slots:
   void on_tabWidgetMain_currentChanged(int index);
 
 public:
-  explicit MonitoringWindow(Db& _Db, UpInfo* _UpInfo, bool _UseEvents, QWidget *parent = 0);
+  explicit MonitoringWindow(Db& _Db, UpInfo* _UpInfo, bool _UseEvents, QWidget* parent = nullptr);
   ~MonitoringWindow();
 };
 

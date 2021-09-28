@@ -8,7 +8,6 @@
 #include "QTcpSocket2.h"
 
 
-const int kWorkCircleMs = 500;
 const int kConnectMaxMs = 30000;
 
 bool Requester::DoInit()

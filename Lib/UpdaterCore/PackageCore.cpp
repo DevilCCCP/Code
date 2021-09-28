@@ -609,7 +609,7 @@ bool PackageCore::ParseLineExt(const QByteArray& line)
   case 'D': mCommands.append(PackCommand(eDir, cmdParams)); return true;
   }
 
-  QStringList cmdParamsList = cmdParams.split(' ', QString::KeepEmptyParts);
+  QStringList cmdParamsList = cmdParams.split(' ', Qt::KeepEmptyParts);
   if (cmdParamsList.size() >= 4) {
     QString fileHash = cmdParamsList.takeLast();
     QString fileVersion = cmdParamsList.takeLast();
@@ -641,7 +641,8 @@ QByteArray PackageCore::GetInfoData() const
   QByteArray data;
   for (auto itr = mCommands.begin(); itr != mCommands.end(); itr++) {
     const PackCommand& cmd = *itr;
-    data.append(cmd.Path + "\n");
+    data.append(cmd.Path.toUtf8());
+    data.append("\n");
   }
   return data;
 }

@@ -5,9 +5,9 @@
 #include "Tree/DbTreeSchema.h"
 
 
-DefineClassS(DbTreeSchema);
 DefineClassS(TreeModelB);
 DefineClassS(TreeItemB);
+DefineStructS(DbTreeSchema);
 class QSplitter;
 class QTreeView;
 class QToolButton;
@@ -48,11 +48,11 @@ public:
   void Reload();
 
 private:
-  void ReloadTable(const QList<DbTreeSchemaS>& schemaChilds, const QMap<qint64, TreeItemB*>& parentMap);
+  void ReloadTable(const QList<DbTreeSchemaS>& schemaChilds, const QMultiMap<qint64, TreeItemB*>& parentMap);
   void LoadRootTable(const DbTreeSchemaS& schema);
-  void LoadChildTable(const DbTreeSchemaS& schema, const QMap<qint64, TreeItemB*>& parentMap);
-  void LoadLinkTable(const DbTreeSchemaS& schema, const QMap<qint64, TreeItemB*>& parentMap);
-  void LoadMultiLinkTable(const DbTreeSchemaS& schema, const QMap<qint64, TreeItemB*>& parentMap);
+  void LoadChildTable(const DbTreeSchemaS& schema, const QMultiMap<qint64, TreeItemB*>& parentMap);
+  void LoadLinkTable(const DbTreeSchemaS& schema, const QMultiMap<qint64, TreeItemB*>& parentMap);
+  void LoadMultiLinkTable(const DbTreeSchemaS& schema, const QMultiMap<qint64, TreeItemB*>& parentMap);
 
   void AddCreateAction(DbTreeSchema* schema);
   void AddRemoveAction(DbTreeSchema* schema);

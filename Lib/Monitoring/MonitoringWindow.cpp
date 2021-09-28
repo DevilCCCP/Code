@@ -150,7 +150,7 @@ void MonitoringWindow::on_tabWidgetMain_currentChanged(int index)
 }
 
 
-MonitoringWindow::MonitoringWindow(Db &_Db, UpInfo* _UpInfo, bool _UseEvents, QWidget *parent)
+MonitoringWindow::MonitoringWindow(Db &_Db, UpInfo* _UpInfo, bool _UseEvents, QWidget* parent)
   : MainWindow2(parent), ui(new Ui::MonitoringWindow)
   , mCore(new Core(_Db)), mUpWaiter(new UpWaiter(_UpInfo, this))
   , mLoadSchema(false)

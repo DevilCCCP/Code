@@ -12,7 +12,7 @@ public:
   QString Descr;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const override;
 
   NamedItem();
   NamedItem(int _Id, const QString& _Name, const QString& _Descr);
@@ -22,14 +22,14 @@ public:
 
 class TableNamed: public Table
 {
-  bool                            mNameIndexed;
-  QMap<QString, const NamedItem*> mNameIndex;
+  bool                                 mNameIndexed;
+  QMultiMap<QString, const NamedItem*> mNameIndex;
 
 protected:
-  /*skip */virtual const char* Select() = 0;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
-  /*override */virtual void CreateIndexes() Q_DECL_OVERRIDE;
-  /*override */virtual void ClearIndexes() Q_DECL_OVERRIDE;
+  ///*skip */virtual const char* Select() = 0;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
+  /*override */virtual void CreateIndexes() override;
+  /*override */virtual void ClearIndexes() override;
 
 protected:
   void SelectOneByName(const QString& name, QString& queryText);

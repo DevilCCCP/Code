@@ -31,14 +31,14 @@ public:
   bool ListenFail() { return mListenFail; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Listener"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "L"; }
+  /*override */virtual const char* Name() override { return "Listener"; }
+  /*override */virtual const char* ShortName() override { return "L"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+  /*override */virtual void DoRelease() override;
 public:
-//  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+//  /*override */virtual void Stop() override;
 
 private:
   void ProcessNewConnections();

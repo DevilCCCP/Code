@@ -17,7 +17,7 @@ public:
   int       Condition;
 
 public:
-  /*override */virtual bool Equals(const TableItem&) const Q_DECL_OVERRIDE;
+  /*override */virtual bool Equals(const TableItem&) const override;
 
   DbIndexItem() { }
   /*override */virtual ~DbIndexItem() { }
@@ -33,9 +33,9 @@ public:
   bool Resize(int capacity);
 
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override */virtual const char* Select() override;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
 
 public:
   bool FindCell(const QDateTime& timestamp, int& cellId, QDateTime& startTimestamp);

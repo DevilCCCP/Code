@@ -20,7 +20,7 @@
 
 
 const int kWorkPeriodMs = 500;
-const QString kDateFormat("hh:mm");
+const QString kTimeFormat("hh:mm");
 const QString kFilenameFormat("yyyy-MM-dd hh-mm-ss");
 const QString kFilenamePattern("_\?\?\?\?-\?\?-\?\? \?\?-\?\?-\?\?.bak");
 const int     kFilenamePatternInd = kFilenamePattern.size() - 1;
@@ -33,7 +33,7 @@ bool BackupA::LoadSettings(SettingsA* settings)
   mAutoRestore  = settings->GetValue("AutoRestore", false).toBool();
   mBackupPeriod = settings->GetValue("Period", 0).toLongLong();
   QString  time = settings->GetValue("Time", "").toString();
-  mDaylyTime = QTime::fromString(time, kDateFormat);
+  mDaylyTime = QTime::fromString(time, kTimeFormat);
 
   if (!mVariables->Open(QString::number(GetOverseer()->Id()))) {
     return false;

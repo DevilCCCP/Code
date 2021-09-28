@@ -16,7 +16,6 @@ class Overseer: public CtrlManager
 {
   const char*   mDaemonName;
   const int     mId;
-  const bool    mDebug;
   const QString mParams;
   const QString mUri;
   const bool    mDetached;
@@ -34,18 +33,18 @@ public:
   bool           Quiet()    const { return mQuiet; }
 
 public:
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 protected:
   /// return continue or end work
-  /*override */virtual bool InitReport() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoReport() Q_DECL_OVERRIDE;
-  /*override */virtual void FinalReport() Q_DECL_OVERRIDE;
-  /*override */virtual void CriticalFail() Q_DECL_OVERRIDE;
+  /*override */virtual bool InitReport() override;
+  /*override */virtual bool DoReport() override;
+  /*override */virtual void FinalReport() override;
+  /*override */virtual void CriticalFail() override;
 
 protected:
-  /*override */virtual bool IsPublicStats() Q_DECL_OVERRIDE;
-  /*override */virtual void PublishStats(const QDateTime& startTime, const QDateTime& endTime, const QList<WorkerStatS>& statList) Q_DECL_OVERRIDE;
+  /*override */virtual bool IsPublicStats() override;
+  /*override */virtual void PublishStats(const QDateTime& startTime, const QDateTime& endTime, const QList<WorkerStatS>& statList) override;
 
 public:
   void Restart();

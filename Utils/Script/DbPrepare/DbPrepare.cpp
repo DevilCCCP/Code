@@ -12,7 +12,7 @@ const QStringList kEventTables = QStringList()
 const QStringList kReportTables = QStringList()
     << "report" << "report_files" << "report_send";
 const QStringList kJobTables = QStringList()
-    << "job" << "job_action" << "job_data" << "job_done" << "job_take" << "job_init";
+    << "job" << "job_action" << "job_data" << "job_cancel" << "job_done" << "job_take" << "job_init";
 const QStringList kVideoArmTables = QStringList()
     << "arm_monitors" << "arm_monitor_layouts" << "arm_monitor_lay_cameras";
 const QStringList kVaTables = QStringList()
@@ -105,6 +105,7 @@ int DbPrepare::LoadSettings()
   Log mLog(mInstDir.absoluteFilePath("DbPrepare.log"));
 
   mLocale = settings.value("Locale", "Ru").toString();
+  mExtantion = settings.value("Extantion", "").toString();
   mUseReport = settings.value("Report", false).toBool();
   mUseEvent = settings.value("Event", false).toBool();
   mUseJob = settings.value("Job", false).toBool();
@@ -112,6 +113,7 @@ int DbPrepare::LoadSettings()
   mUseVa = settings.value("Va", false).toBool();
 
   mLog.Trace(QString("Locale: '%1'").arg(mLocale));
+  mLog.Trace(QString("Extantion: '%1'").arg(mExtantion));
   mLog.Trace(QString("Report: %1").arg(mUseReport? "true": "false"));
   mLog.Trace(QString("Event: %1").arg(mUseEvent? "true": "false"));
   mLog.Trace(QString("Job: %1").arg(mUseJob? "true": "false"));
@@ -132,30 +134,13 @@ int DbPrepare::CreateScript(const QString& filename, bool isTable)
   fileStream.setCodec("UTF-8");
   fileStream << "-- AUTO generated script --\n\n";
 
-  QDir scriptDir(mDbGlobalDir);
+  QDir scriptDir = (mDbGlobalDir);
   if (!scriptDir.cd(filename) && !scriptDir.cd(filename + mLocale)) {
     return 1;
   }
 
   QStringList fileList = scriptDir.entryList(QDir::Files, QDir::Name);
-
-  if (true) {
-    if (!mUseReport) {
-      RemoveFiles(fileList, kReportTables);
-    }
-    if (!mUseEvent) {
-      RemoveFiles(fileList, kEventTables);
-    }
-    if (!mUseJob) {
-      RemoveFiles(fileList, kJobTables);
-    }
-    if (!mUseVideoArm) {
-      RemoveFiles(fileList, kVideoArmTables);
-    }
-    if (!mUseVa) {
-      RemoveFiles(fileList, kVaTables);
-    }
-  }
+  RemoveAllFiles(fileList);
 
   if (isTable) {
     OrderTableFiles(scriptDir, fileList);
@@ -164,6 +149,24 @@ int DbPrepare::CreateScript(const QString& filename, bool isTable)
   foreach (const QString& filename, fileList) {
     if (int ret = AddFile(fileStream, scriptDir, filename)) {
       return ret;
+    }
+  }
+
+  if (!mExtantion.isEmpty()) {
+    scriptDir = (mDbGlobalDir);
+    if (scriptDir.cd(filename + mExtantion)) {
+      QStringList fileList = scriptDir.entryList(QDir::Files, QDir::Name);
+      RemoveAllFiles(fileList);
+
+      if (isTable) {
+        OrderTableFiles(scriptDir, fileList);
+      }
+
+      foreach (const QString& filename, fileList) {
+        if (int ret = AddFile(fileStream, scriptDir, filename)) {
+          return ret;
+        }
+      }
     }
   }
 
@@ -211,6 +214,25 @@ int DbPrepare::CreateInstall()
 
   fileStream << "-- End of Install script --\nEND TRANSACTION;\n";
   return 0;
+}
+
+void DbPrepare::RemoveAllFiles(QStringList& fileList)
+{
+  if (!mUseReport) {
+    RemoveFiles(fileList, kReportTables);
+  }
+  if (!mUseEvent) {
+    RemoveFiles(fileList, kEventTables);
+  }
+  if (!mUseJob) {
+    RemoveFiles(fileList, kJobTables);
+  }
+  if (!mUseVideoArm) {
+    RemoveFiles(fileList, kVideoArmTables);
+  }
+  if (!mUseVa) {
+    RemoveFiles(fileList, kVaTables);
+  }
 }
 
 void DbPrepare::RemoveFiles(QStringList& fileList, const QStringList& removeList)

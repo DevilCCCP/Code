@@ -30,7 +30,7 @@ public:
   const QString& ErrorString() const { return mErrorString; }
 
 protected:
-  virtual void run() Q_DECL_OVERRIDE;
+  virtual void run() override;
 
 public:
   void Stop();

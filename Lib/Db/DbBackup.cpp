@@ -75,7 +75,11 @@ bool DbBackup::BackupList(const QStringList& tableList, QDataStream* writer)
 
   QStringList backupList = tableList;
   if (!mTableOrderList.isEmpty()) {
-    QSet<QString> backupSet = backupList.toSet();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+    QSet<QString> backupSet(backupList.begin(), backupList.end());
+#else
+    QSet<QString> backupSet = QSet<QString>::fromList(backupList);
+#endif
     for (auto itr = mTableOrderList.begin(); itr != mTableOrderList.end(); itr++) {
       const QString& nextTable = *itr;
       if (backupSet.remove(nextTable)) {

@@ -5,7 +5,6 @@
 #include "Responder.h"
 #include "Listener.h"
 
-const int kWorkCircleMs = 500;
 
 bool Responder::DoInit()
 {

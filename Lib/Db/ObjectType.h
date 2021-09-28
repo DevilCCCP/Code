@@ -19,9 +19,9 @@ public:
 class ObjectTypeTable: public TableNamed
 {
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override */virtual const char* Select() override;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
 
 public:
   ObjectTypeTable(const Db& _Db);
@@ -40,7 +40,7 @@ public:
   int      Status;
 
 public:
-  /*override*/virtual bool Equals(const TableItem &other) const Q_DECL_OVERRIDE;
+  /*override*/virtual bool Equals(const TableItem &other) const override;
 
 public:
   bool IsEqual(const ObjectItem& other);
@@ -52,12 +52,12 @@ public:
 
 class ObjectTable: public TableNamed
 {
-  QMap<int, int> mMasterConnection;
-  QMap<int, int> mSlaveConnection;
+  QMultiMap<int, int> mMasterConnection;
+  QMultiMap<int, int> mSlaveConnection;
 
 public:
-  const QMap<int, int>& MasterConnection() { return mMasterConnection; }
-  const QMap<int, int>& SlaveConnection() { return mSlaveConnection; }
+  const QMultiMap<int, int>& MasterConnection() { return mMasterConnection; }
+  const QMultiMap<int, int>& SlaveConnection() { return mSlaveConnection; }
   QString GetSetting(int objectId, const QString& settingName);
   bool GetObjectsByType(int objectTypeId, QList<ObjectItemS>& objects);
   bool GetObjectsRealByTypes(const QList<int>& objectTypeId, QList<ObjectItemS>& objects);
@@ -70,13 +70,13 @@ public:
   QString SelectColumns(const QString& prefix);
 
 protected:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Select() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Insert() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Update() Q_DECL_OVERRIDE;
-  /*override */virtual const char* Delete() Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnSetItem(QueryS& q, const TableItem& unit) Q_DECL_OVERRIDE;
+  /*override */virtual const char* Name() override;
+  /*override */virtual const char* Select() override;
+  /*override */virtual const char* Insert() override;
+  /*override */virtual const char* Update() override;
+  /*override */virtual const char* Delete() override;
+  /*override */virtual bool OnRowFillItem(QueryS& q, TableItemS& unit) override;
+  /*override */virtual bool OnSetItem(QueryS& q, const TableItem& unit) override;
 
 public:
   bool LoadSlaves(int id, QMap<int, ObjectItemS>& items);

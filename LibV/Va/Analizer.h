@@ -35,6 +35,9 @@ class Analizer: public ConveyorV
 
   QList<FrameS>          mSourceFrames;
   QList<FrameS>          mDecodedFrames;
+#ifdef ANAL_DEBUG
+  QList<QWidget*>        mWindowPool;
+#endif
 
   LICENSE_HEADER
 
@@ -53,6 +56,7 @@ private:
   bool ProcessCodedFrame(const FrameS& currentFrame);
 
 public:
+  void InitDebug();
   int LoadSettings(DbS& db, int vaId);
 private: /*internal*/
   void TriggerEvent(int detectorId, const char* eventType, const QDateTime& timestamp, qreal value);

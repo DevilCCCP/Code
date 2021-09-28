@@ -14,8 +14,8 @@ class TreeItemStandard: public TreeItemA
   QStringList  mText;
 
 protected:
-  /*override */virtual QString Text(int section) const Q_DECL_OVERRIDE;
-  /*override */virtual QIcon Icon() const Q_DECL_OVERRIDE;
+  /*override */virtual QString Text(int section) const override;
+  /*override */virtual QIcon Icon() const override;
 
 public:
   TreeItemStandard(const QIcon& _Icon, const QStringList& _Text, TreeItemA* parent = 0);

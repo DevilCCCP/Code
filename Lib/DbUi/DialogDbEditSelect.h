@@ -6,7 +6,7 @@
 
 
 class TreeModelB;
-class DbTreeSchema;
+struct DbTreeSchema;
 
 namespace Ui {
 class DialogDbEditSelect;

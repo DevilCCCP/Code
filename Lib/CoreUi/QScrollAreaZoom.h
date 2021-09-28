@@ -8,7 +8,7 @@ class QScrollAreaZoom: public QScrollArea
   Q_OBJECT
 
 protected:
-  /*override */virtual void wheelEvent(QWheelEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void wheelEvent(QWheelEvent* event) override;
 
 public:
   explicit QScrollAreaZoom(QWidget* parent = 0);

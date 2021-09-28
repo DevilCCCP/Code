@@ -7,8 +7,8 @@
 #include "TableEditSchema.h"
 
 
-DefineClassS(TableEditSchema);
 DefineClassS(TableModel);
+DefineStructS(TableEditSchema);
 class QSplitter;
 class QTreeView;
 class QToolButton;

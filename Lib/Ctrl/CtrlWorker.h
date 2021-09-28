@@ -92,7 +92,7 @@ public:
   /*new */virtual const char* Name() { return typeid(*this).name(); }
   /*new */virtual const char* ShortName() { return typeid(*this).name(); }
 private:
-  /*override */virtual void	run() Q_DECL_OVERRIDE;
+  /*override */virtual void	run() override;
 protected:
   /*new */virtual bool DoInit();
   /*new */virtual bool DoCircle() = 0;

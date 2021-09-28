@@ -28,7 +28,8 @@ HEADERS += \
     FilesPackage.h \
     HwId.h \
     FormatTr.h \
-    MedianValue.h
+    MedianValue.h \
+    TlvConstructor.h
 
 SOURCES += \
     FpsCalc.cpp \
@@ -53,7 +54,8 @@ SOURCES += \
     FilesPackage.cpp \
     HwId.cpp \
     FormatTr.cpp \
-    MedianValue.cpp
+    MedianValue.cpp \
+    TlvConstructor.cpp
 
 TRANSLATIONS += Common_ru.ts
 #"/usr/lib/qt5/bin/lrelease" '/home/devil/!Code/!Code/Lib/Common/Common.pro'

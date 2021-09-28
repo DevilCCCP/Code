@@ -24,7 +24,7 @@ public:
   const OverseerS& GetOverseer() { return mOverseer; }
 
 protected:
-  /*override */virtual void run() Q_DECL_OVERRIDE
+  /*override */virtual void run() override
   {
     mOverseer->Run();
     mOverseer.clear();

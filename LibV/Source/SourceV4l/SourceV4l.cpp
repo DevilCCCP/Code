@@ -65,18 +65,17 @@ void SourceV4l::Init(SettingsA& settings)
   const static QString kV4lPrefix("v4l://");
 
   QString uri = settings.GetMandatoryValue("Uri", true).toString();
-  QString devNumber = uri.mid(kV4lPrefix.size());
-  bool ok;
-  mUsbDevice = devNumber.toInt(&ok);
-  if (!ok) {
-    Log.Fatal(QString("Create resolve USB device number (device: %1)").arg(devNumber), true);
-  }
-  QString realFilename = LinuxUsbDevice(mUsbDevice);
-  if (!realFilename.isEmpty()) {
-    mFilename = realFilename;
-    Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbDevice).arg(mFilename));
-  } else {
-    Log.Info(QString("USB device not found (number %1)").arg(mUsbDevice));
+  mFilename = uri.mid(kV4lPrefix.size());
+  QRegExp usbHubPath("[\\d\\.\\*]+");
+  if (usbHubPath.exactMatch(mFilename) || mUsbHubPath == "-") {
+    mUsbHubPath = mFilename;
+    QString realFilename = LinuxUsbDevice(mUsbHubPath);
+    if (!realFilename.isEmpty()) {
+      mFilename = realFilename;
+      Log.Info(QString("V4l device found (pattern: '%1', path: '%2')").arg(mUsbHubPath).arg(mFilename));
+    } else {
+      Log.Warning(QString("V4l device not found (pattern: '%1')").arg(mUsbHubPath));
+    }
   }
   mResolution = settings.GetValue("Resolution", "").toString();
   mFps = settings.GetValue("Fps", "30").toInt();
@@ -128,7 +127,7 @@ void SourceV4l::CheckUsbDevice()
     mFirstFrame = false;
   }
   if (mFrameTimer.elapsed() > kCheckUsbMs) {
-    QString newFilename = LinuxUsbDevice(mUsbDevice);
+    QString newFilename = LinuxUsbDevice(mUsbHubPath);
     if (!newFilename.isEmpty() && mFilename != newFilename) {
       mFilename = newFilename;
       Reconnect();
@@ -139,9 +138,9 @@ void SourceV4l::CheckUsbDevice()
 
 bool SourceV4l::InitUsbDevice()
 {
-  mFilename = LinuxUsbDevice(mUsbDevice);
+  mFilename = LinuxUsbDevice(mUsbHubPath);
   if (!mFilename.isEmpty()) {
-    Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbDevice).arg(mFilename));
+    Log.Info(QString("USB device found (number %1, path: '%2')").arg(mUsbHubPath).arg(mFilename));
     return true;
   }
   return false;
@@ -150,7 +149,7 @@ bool SourceV4l::InitUsbDevice()
 
 SourceV4l::SourceV4l(SettingsA &settings)
   : Source()
-  , mUsbDevice(-1), mOpenFail(false), mPlayFile(false)
+  , mOpenFail(false), mPlayFile(false)
 {
   Init(settings);
 }

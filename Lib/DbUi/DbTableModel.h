@@ -23,21 +23,21 @@ protected:
   const QIcon& Icon() const { return mIcon; }
 
 public:
-  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE
+  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override
   {
     Q_UNUSED(parent);
 
     return mItems.size();
   }
 
-  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE
+  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override
   {
     Q_UNUSED(parent);
 
     return mHeaders.size();
   }
 
-  /*override */virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE
+  /*override */virtual QVariant data(const QModelIndex& index, int role) const override
   {
     if (index.isValid()) {
       if (index.row() >= 0 && index.row() < Items().size()) {
@@ -56,7 +56,7 @@ public:
     return QVariant();
   }
 
-  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) Q_DECL_OVERRIDE
+  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override
   {
     if (index.isValid()) {
       if (index.row() >= 0 && index.row() < Items().size()) {
@@ -70,7 +70,7 @@ public:
     return false;
   }
 
-  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE
+  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const override
   {
     if (role == Qt::DisplayRole && orientation == Qt::Horizontal
         && section >= 0 && section < mHeaders.size()) {

@@ -10,7 +10,6 @@
 #include "WorkerStat.h"
 
 
-const int kAliveReportMs = 500;
 const int kCriticalWarnMs = 5 * 1000;
 const int kCriticalFailMs = 30000;
 

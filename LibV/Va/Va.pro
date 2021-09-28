@@ -4,8 +4,9 @@
 
 QT += sql network core gui
 
-win32 {
+CONFIG(debug, debug|release) {
  QT += widgets
+ DEFINES += ANAL_DEBUG
 }
 
 contains(INCLUDE_LIB, Media) {
@@ -29,14 +30,23 @@ HEADERS += \
     Analizer.h \
     SceneAnalizer.h
 
-win32 {
+CONFIG(debug, debug|release) {
  SOURCES += \
-    DebugWnd.cpp \
-    Win/FrameWndWin.cpp
+    Wnd/DebugWnd.cpp \
+    Wnd/FrameWnd.cpp \
+    Wnd/FrameWindow.cpp \
+    Wnd/DialogFrame.cpp
+
 
  HEADERS += \
-    DebugWnd.h \
-    Win/FrameWndWin.h
+    Wnd/DebugWnd.h \
+    Wnd/FrameWnd.h \
+    Wnd/FrameWindow.h \
+    Wnd/DialogFrame.h
+
+FORMS += \
+    Wnd/DialogFrame.ui \
+    Wnd/FrameWindow.ui
 }
 
 
@@ -48,13 +58,6 @@ LIBS = \
     -lCommon \
     -lDb \
     -lLog
-
-win32 {
-LIBS += \
-    -luser32 \
-    -lGdi32
-} unix {
-}
 
 RESOURCES += \
     $$PROJECT_DIR/Local/Video.qrc

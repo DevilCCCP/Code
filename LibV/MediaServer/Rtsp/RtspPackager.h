@@ -17,7 +17,7 @@ class RtspPackager: public MediaPackager
   FpsCalc                 mFpsCalc;
 
 public:
-  /*override */virtual void InFrame(const qint64& timestamp, const char* data, int size) Q_DECL_OVERRIDE;
+  /*override */virtual void InFrame(const qint64& timestamp, const char* data, int size) override;
 
 public:
   void Init(const QByteArray& _SyncId);

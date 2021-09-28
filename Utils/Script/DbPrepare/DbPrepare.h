@@ -14,6 +14,7 @@ class DbPrepare
   QDir    mDbLocalDir;
 
   QString mLocale;
+  QString mExtantion;
   bool    mUseReport;
   bool    mUseEvent;
   bool    mUseJob;
@@ -31,6 +32,7 @@ private:
   int CreateScript(const QString& filename, bool isTable = false);
   int CreateTables(const QString& filename);
   int CreateInstall();
+  void RemoveAllFiles(QStringList& fileList);
   void RemoveFiles(QStringList& fileList, const QStringList& removeList);
   void OrderTableFiles(const QDir& scriptDir, QStringList& fileList);
 

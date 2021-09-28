@@ -10,7 +10,7 @@ DefineClassS(SettingsA);
 class UpDLoader: public ModuleLoaderA
 {
 protected:
-  /*override */virtual bool UpdateModules() Q_DECL_OVERRIDE;
+  /*override */virtual bool UpdateModules() override;
 
 public:
   UpDLoader(const SettingsAS&);

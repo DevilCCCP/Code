@@ -25,12 +25,12 @@ class LogPublisher: public ImpD
   qint64             mNextTrunc;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Logger"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Lg"; }
+  /*override */virtual const char* Name() override { return "Logger"; }
+  /*override */virtual const char* ShortName() override { return "Lg"; }
 protected:
-  /*override */virtual bool LoadSettings(SettingsA* settings) Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadSettings(SettingsA* settings) override;
+  /*override */virtual bool DoCircle() override;
+  /*override */virtual void DoRelease() override;
 
 public:
   void PushLog(const QDateTime& startTime, const QDateTime& endTime, const QList<WorkerStatS>& statList);

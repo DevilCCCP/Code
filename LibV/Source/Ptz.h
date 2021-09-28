@@ -58,14 +58,14 @@ class Ptz: public Imp
   PROPERTY_GET_SET(SourceS, Source)
   ;
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "PTZ"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Z"; }
+  /*override */virtual const char* Name() override { return "PTZ"; }
+  /*override */virtual const char* ShortName() override { return "Z"; }
 //protected:
-//  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-//  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+//  /*override */virtual bool DoInit() override;
+//  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 //public:
-//  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+//  /*override */virtual void Stop() override;
 
 public:
   /*new */virtual bool GetAbilities(int& _AbilityFlag);

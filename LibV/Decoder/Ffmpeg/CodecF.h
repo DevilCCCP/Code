@@ -14,12 +14,12 @@ class CodecF: public CodecA
   int            mDecodeFail;
 
 public:
-  /*override */virtual bool IsHardware() Q_DECL_OVERRIDE;
+  /*override */virtual bool IsHardware() override;
 
 protected:
-  /*override */virtual bool DecodeVideoFrame(const FrameS& frame, bool canSkip) Q_DECL_OVERRIDE;
-  /*override */virtual bool DecodeAudioFrame(const FrameS& frame, bool canSkip) Q_DECL_OVERRIDE;
-  /*override */virtual bool CanProfile() Q_DECL_OVERRIDE;
+  /*override */virtual bool DecodeVideoFrame(const FrameS& frame, bool canSkip) override;
+  /*override */virtual bool DecodeAudioFrame(const FrameS& frame, bool canSkip) override;
+  /*override */virtual bool CanProfile() override;
 
 public:
   CodecF(ECompression _DestCompression = eRawNv12, int _Fps = 0, bool _UseHardware = true);

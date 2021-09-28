@@ -17,8 +17,8 @@ private:
   FillStyle mFillStyle;
 
 protected:
-  /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void paintEvent(QPaintEvent* event) override;
+  /*override */virtual void resizeEvent(QResizeEvent* event) override;
 
 public:
   void SetFillStyle(FillStyle _FillStyle);

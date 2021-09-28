@@ -88,7 +88,7 @@ void FormKeyList::on_actionRemove_triggered()
   foreach (const QModelIndex& index, selIndexes) {
     rows.append(index.row());
   }
-  qSort(rows);
+  std::sort(rows.begin(), rows.end());
   for (int i = rows.size() - 1; i >= 0; i--) {
     mListModel->removeRow(rows.at(i));
   }

@@ -20,8 +20,6 @@ DefineClassS(QSqlQuery);
 class DbItemA
 {
 public:
-  /*new*/virtual bool Equals(const DbItemA& other) { Q_UNUSED(other); return false; }
-
   /*new */virtual qint64 Key(int index) const { Q_UNUSED(index); return 0; }
   /*new */virtual void SetKey(int index, qint64 id) { Q_UNUSED(index); Q_UNUSED(id); }
   /*new */virtual QString Text(int column) const { Q_UNUSED(column); return QString(); }
@@ -287,6 +285,29 @@ public:
     if (!mDb.ExecuteQuery(q)) {
       return false;
     }
+    return true;
+  }
+
+  QString GetColumnsWithTag(const QString& tag)
+  {
+    this->PrepareStrings();
+
+    QString columns = QString("%1._id").arg(tag);
+    for (int i = 0; i < this->getColumns().size(); i++) {
+      columns.append(QString(",%1.%2").arg(tag, this->getColumns().at(i)));
+    }
+    return columns + " ";
+  }
+
+  bool FillItem(QueryS& q, int& index, QSharedPointer<DbItemT<IntT> >& item)
+  {
+    IntT id = q->value(index++).toLongLong();
+    if (!this->OnRowRead(q, index, item)) {
+      item.clear();
+      return false;
+    }
+
+    item->Id = id;
     return true;
   }
 

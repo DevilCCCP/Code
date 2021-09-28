@@ -29,10 +29,10 @@ DefineClassS(Chater);
   QElapsedTimer      mWorkTimer;
 
 protected:
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoCircle() override;
+  /*override */virtual void DoRelease() override;
 public:
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 public:
   void StopChat();

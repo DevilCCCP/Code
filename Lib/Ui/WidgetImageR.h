@@ -14,7 +14,7 @@ class WidgetImageR: public QWidgetB
   int           mRectWidth;
 
 protected:
-  /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
+  /*override */virtual void paintEvent(QPaintEvent* event) override;
 
 public:
   void SetRectColor(const QColor& color);
@@ -28,5 +28,5 @@ public slots:
   void SetImageRectList(const QList<QRect>& rectList, const QList<QColor>& colorList);
 
 public:
-  explicit WidgetImageR(QWidget* parent = 0, Qt::WindowFlags f = 0);
+  explicit WidgetImageR(QWidget* parent = 0, Qt::WindowFlags f = Qt::Widget);
 };

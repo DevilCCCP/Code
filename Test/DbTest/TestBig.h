@@ -1,50 +1,51 @@
 #pragma once
 
 #include <QString>
+#include <QDateTime>
+#include <QPoint>
+#include <QRect>
 
 #include <Lib/Db/DbTable.h>
 
 
 DefineDbClassS(TestBig);
 
-class TestBig: public DbItemB
+class TestBig: public DbItemT<int>
 {
 public:
-  QString mData[16];
+  QString    BigData[16];
 
 public:
-  /*override */virtual bool Equals(const DbItemB& other)
-  {
-    const TestBig& vs = static_cast<const TestBig&>(other);
-    if (!DbItemB::Equals(other)) {
-      return false;
-    }
+  /*override */virtual bool Equals(const DbItemT<int>& other) const Q_DECL_OVERRIDE;
 
-    for (int i = 0; i < 16; i++) {
-      if (mData[i] != vs.mData[i]) {
-        return false;
-      }
-    }
-    return true;
-  }
+  /*override */virtual qint64 Key(int index) const Q_DECL_OVERRIDE;
+  /*override */virtual void SetKey(int index, qint64 id) Q_DECL_OVERRIDE;
+  /*override */virtual QString Text(int column) const Q_DECL_OVERRIDE;
+  /*override */virtual bool SetText(int column, const QString& text) Q_DECL_OVERRIDE;
+  /*override */virtual QVariant Data(int column) const Q_DECL_OVERRIDE;
+  /*override */virtual bool SetData(int column, const QVariant& data) Q_DECL_OVERRIDE;
 
 public:
-  TestBig(): DbItemB() { }
+  TestBig(): DbItemT<int>() { }
   /*override */virtual ~TestBig() { }
 };
 
-class TestBigTable: public DbTableT<qint64, TestBig>
+class TestBigTable: public DbTableT<int, TestBig>
 {
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemB>& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemB& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemB>& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemB& item) override;
+
+  /*override */virtual bool CreateDefaultItem(QSharedPointer<DbItemT<int> >& item) Q_DECL_OVERRIDE;
+  /*override */virtual void NewDefaultItem(QSharedPointer<DbItemT<int> >& item) Q_DECL_OVERRIDE;
 
 public:
-  int TotalSize();
+  /*override */virtual QStringList Headers() const Q_DECL_OVERRIDE;
+  /*override */virtual QString Icon() const Q_DECL_OVERRIDE;
 
 public:
-  TestBigTable(const DbS& _Db);
+  TestBigTable(const Db& _Db);
 };

@@ -35,12 +35,12 @@ protected:
   QByteArray CurrentJobData() { return mJobData; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "JobImp"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "J"; }
+  /*override */virtual const char* Name() override { return "JobImp"; }
+  /*override */virtual const char* ShortName() override { return "J"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 protected:
   /*new */virtual QString TableName();
   /*new */virtual QString FunctionName();

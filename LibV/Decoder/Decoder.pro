@@ -60,40 +60,45 @@ win32 {
    error(Could not find the Mfx.pri file!)
   }
  }
- }
-} else:system(dpkg -s libvdpau-dev>/dev/null 2>/dev/null) {
- # --- vdpau ----
- SOURCES +=  \
+ } # Mfx
+} linux {
+ contains(INCLUDE_LIB, Vdp) {
+ system(dpkg -s libvdpau-dev>/dev/null 2>/dev/null) {
+  # --- vdpau ----
+  SOURCES +=  \
     Vdp/VdpDec.cpp \
     Vdp/CodecP.cpp \
     Vdp/VdpContext.cpp
 
- HEADERS +=  \
+  HEADERS +=  \
     Vdp/VdpDec.h \
     Vdp/CodecP.h \
     Vdp/VdpContext.h \
     Vdp/VdpDef.h
 
- !include($$HEAD_DIR/LibV/Vdp.pri) {
-  error(Could not find the Vdp.pri file!)
+  !include($$HEAD_DIR/LibV/Vdp.pri) {
+   error(Could not find the Vdp.pri file!)
+  }
  }
-} else:exists(/opt/vc/lib) {
+ } # Vdp
+ exists(/opt/vc/lib) {
  # --- OMX ----
- DEFINES += USE_OMX
+  DEFINES += USE_OMX
 
- SOURCES +=  \
+  SOURCES +=  \
     Omx/OmxDec.cpp \
     Omx/CodecO.cpp \
     Omx/ilclient.c \
     Omx/ilcore.c
 
- HEADERS +=  \
+  HEADERS +=  \
     Omx/OmxDec.h \
     Omx/CodecO.h \
     Omx/IlDef.h \
     Omx/ilclient.h
 
- !include($$HEAD_DIR/LibV/Omx.pri) {
-  error(Could not find the Omx.pri file!)
- }
-}
+  !include($$HEAD_DIR/LibV/Omx.pri) {
+   error(Could not find the Omx.pri file!)
+  }
+ } # Omx
+} # linux

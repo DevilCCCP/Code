@@ -82,7 +82,12 @@ public:
   bool Reload()
   {
     bool reload = !mLoaded;
-    QSet<IntT> oldIds = mItems.keys().toSet();
+    QList<IntT> oldIdList = mItems.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+    QSet<IntT> oldIds(oldIdList.begin(), oldIdList.end());
+#else
+    QSet<IntT> oldIds = QSet<IntT>::fromList(oldIdList);
+#endif
 
     this->PrepareStrings();
     const Db& db = this->getDb();
@@ -413,6 +418,7 @@ public:
     for (const QSharedPointer<DbItemImpT>& item: itemList) {
       RemoveFromCache(item);
     }
+    return true;
   }
 
   bool InsertPack(const QList<QSharedPointer<DbItemImpT> >& itemList, int count = 100)

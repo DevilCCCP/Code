@@ -14,14 +14,14 @@ class PackLoaderHttp: public PackLoaderA
   bool                   mFatal;
 
 public:
-  /*override */virtual bool LoadVer(QByteArray& ver) Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadInfo(QByteArray& info) Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadExternalsVer(QByteArray& ver) Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadExternalsInfo(QByteArray& info) Q_DECL_OVERRIDE;
-  /*override */virtual bool LoadFile(const QString& path, QByteArray& data) Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadVer(QByteArray& ver) override;
+  /*override */virtual bool LoadInfo(QByteArray& info) override;
+  /*override */virtual bool LoadExternalsVer(QByteArray& ver) override;
+  /*override */virtual bool LoadExternalsInfo(QByteArray& info) override;
+  /*override */virtual bool LoadFile(const QString& path, QByteArray& data) override;
 
-  /*override */virtual void SetCtrl(CtrlWorker* ctrl) Q_DECL_OVERRIDE;
-  /*override */virtual void Abort() Q_DECL_OVERRIDE;
+  /*override */virtual void SetCtrl(CtrlWorker* ctrl) override;
+  /*override */virtual void Abort() override;
 
 private:
   bool UploadFile(const QUrl& url, QByteArray& data, bool full = true);

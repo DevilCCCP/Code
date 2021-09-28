@@ -20,9 +20,9 @@ class FormEditSize: public FormEditVariant
   Q_OBJECT
 
 public:
-  /*override */virtual void SetValues(const QString& _MinValue, const QString& _MaxValue) Q_DECL_OVERRIDE;
-  /*override */virtual void SetCurrent(const QVariant& data) Q_DECL_OVERRIDE;
-  /*override */virtual QVariant GetCurrent() Q_DECL_OVERRIDE;
+  /*override */virtual void SetValues(const QString& _MinValue, const QString& _MaxValue) override;
+  /*override */virtual void SetCurrent(const QVariant& data) override;
+  /*override */virtual QVariant GetCurrent() override;
 
 public:
   explicit FormEditSize(QWidget* parent = 0);

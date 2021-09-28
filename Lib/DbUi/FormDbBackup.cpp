@@ -77,7 +77,7 @@ void FormDbBackup::AddTable(const QString& tableInfo, const QIcon& tableIcon, co
   QStandardItem* root = new QStandardItem(!tableIcon.isNull()? tableIcon: mTableIcon, tableNameV);
   root->setCheckable(true);
   root->setCheckState(Qt::Checked);
-  mModelUseMap.insertMulti(tableNameV, root);
+  mModelUseMap.insert(tableNameV, root);
   if (roots.isEmpty()) {
     mModel->appendRow(root);
   }
@@ -88,7 +88,7 @@ void FormDbBackup::AddTable(const QString& tableInfo, const QIcon& tableIcon, co
       QList<QStandardItem*> rows;
       foreach (const QString& subTable, tableRef) {
         QStandardItem* item = CloneItemTree(subTable);
-        mModelUseMap.insertMulti(subTable, item);
+        mModelUseMap.insert(subTable, item);
         rows << item;
       }
       root->appendRows(rows);
@@ -371,14 +371,22 @@ void FormDbBackup::on_pushButtonStart_clicked()
     const QString& tableName = itr.key();
     QStandardItem* item = itr.value();
     if (item->checkState() == Qt::Checked) {
-      used.unite(mTableNames[tableName].split(';').toSet());
+      QStringList nameList = mTableNames[tableName].split(';');
+      foreach (const QString& name, nameList) {
+        used.insert(name);
+      }
     }
   }
 
   mBackupIndex = 0;
   mBackupPercent = 0;
   mLogText = QString(kFormatInfo).arg(backup? "Starting backup": "Starting restore");
-  mLogText.append(QString(kFormatInfo).arg(QString("Tables: ") + QStringList(used.toList()).join("; ")));
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+  QList<QString> usedList(used.begin(), used.end());
+#else
+  QList<QString> usedList = QList<QString>::fromSet(used);
+#endif
+  mLogText.append(QString(kFormatInfo).arg(QString("Tables: ") + QStringList(usedList).join("; ")));
   mLogText.append(QString(kFormatInfo).arg(QString("Order: ") + mTableOrder.join("; ")));
   ui->widgetResults->setVisible(true);
   ui->pushButtonStart->setVisible(false);

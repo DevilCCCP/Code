@@ -35,7 +35,8 @@ IF DEFINED DB_JOB (
 CALL %PWD%\db_process job_init
 CALL %PWD%\db_process job_take
 CALL %PWD%\db_process job_done
+CALL %PWD%\db_process job_cancel.sql
 ) ELSE (
-CALL %PWD%\db_skip          3
+CALL %PWD%\db_skip          4
 )
 CALL %PWD%\db_validate_count.bat

@@ -19,11 +19,11 @@ protected:
   const QList<DbItemBS>& Items() const { return mItems; }
 
 public:
-  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const Q_DECL_OVERRIDE;
-  /*override */virtual QVariant data(const QModelIndex& index, int role) const Q_DECL_OVERRIDE;
-  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) Q_DECL_OVERRIDE;
-  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const Q_DECL_OVERRIDE;
+  /*override */virtual int rowCount(const QModelIndex& parent = QModelIndex()) const override;
+  /*override */virtual int columnCount(const QModelIndex& parent = QModelIndex()) const override;
+  /*override */virtual QVariant data(const QModelIndex& index, int role) const override;
+  /*override */virtual bool setData(const QModelIndex& index, const QVariant& value, int role = Qt::EditRole) override;
+  /*override */virtual QVariant headerData(int section, Qt::Orientation orientation, int role) const override;
 
 protected:
   /*new */virtual QString Text(int row, int column) const;

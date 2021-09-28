@@ -2,7 +2,7 @@
   error(Could not find the Common.pri file!)
 }
 
-!include($$HEAD_DIR/Local/Icons.pri) {
+!include($$PROJECT_DIR/Local/Icons.pri) {
   error(Could not find the Icons.pri file!)
 }
 

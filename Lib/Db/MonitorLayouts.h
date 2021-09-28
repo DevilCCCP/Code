@@ -17,7 +17,7 @@ public:
   bool       CameraLoaded;
 
 public:
-  /*override */virtual bool Equals(const DbItem& other) const Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItem& other) const override
   {
     const MonitorLayouts& vs = static_cast<const MonitorLayouts&>(other);
     return DbItem::Equals(other) && Monitor == vs.Monitor && Place == vs.Place;// && Flag == vs.Flag;
@@ -31,11 +31,11 @@ public:
 class MonitorLayoutsTable: public DbTableT<int, MonitorLayouts>
 {
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItem>& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItem& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItem>& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItem& item) override;
 
 public:
   MonitorLayoutsTable(const Db& _Db);

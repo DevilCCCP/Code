@@ -27,12 +27,12 @@ public:
   ~FormImageView();
 
 protected:
-//  /*override */virtual void resizeEvent(QResizeEvent* event) Q_DECL_OVERRIDE;
-//  /*override */virtual void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
-  /*override */virtual void wheelEvent(QWheelEvent* event) Q_DECL_OVERRIDE;
+//  /*override */virtual void resizeEvent(QResizeEvent* event) override;
+//  /*override */virtual void mouseDoubleClickEvent(QMouseEvent* event) override;
+  /*override */virtual void mouseMoveEvent(QMouseEvent* event) override;
+  /*override */virtual void mousePressEvent(QMouseEvent* event) override;
+  /*override */virtual void mouseReleaseEvent(QMouseEvent* event) override;
+  /*override */virtual void wheelEvent(QWheelEvent* event) override;
 
 protected:
   void SetImageRegion(FormImageRegion* _ImageRegion);

@@ -2,7 +2,7 @@
   error(Could not find the Common.pri file!)
 }
 
-!include($$HEAD_DIR/Local/Icons.pri) {
+!include($$PROJECT_DIR/Local/Icons.pri) {
   error(Could not find the Common.pri file!)
 }
 
@@ -38,14 +38,13 @@ contains(INCLUDE_LIB, Analytics) {
 
 DEPEND_LIBS = \
     Storage \
-    Db \
     Ui \
     DbUi \
     Dispatcher \
     Settings \
     Updater \
-    Log \
-    Common
+    Db \
+    Log
 
 !include($$PRI_DIR/Dependencies.pri) {
   error(Could not find the Dependencies.pri file!)

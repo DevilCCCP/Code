@@ -152,6 +152,7 @@ void FormTable::SetReadOnly()
 void FormTable::SetViewMode()
 {
   ui->widgetControlsMain->setVisible(false);
+  ui->treeViewTable->setContextMenuPolicy(Qt::DefaultContextMenu);
 }
 
 void FormTable::SetLimit(int limit)

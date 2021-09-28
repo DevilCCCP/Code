@@ -5,9 +5,9 @@
 #include <Lib/Db/DbTable.h>
 
 
+DefineClassS(TreeValidator);
 DefineStructS(DbTreeSchema);
 DefineStructS(TableEditSchema);
-DefineStructS(TreeValidator);
 
 struct DbTreeSchema
 {

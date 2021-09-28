@@ -76,9 +76,9 @@ protected:
   const ObjectItemS& MainObject() const { return mMainModule; }
 
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-  /*override */virtual bool UpdateModules() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+  /*override */virtual bool UpdateModules() override;
+  /*override */virtual void DoRelease() override;
 
 protected:
   /*new */virtual bool IsNeedIp();

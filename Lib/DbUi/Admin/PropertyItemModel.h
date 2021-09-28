@@ -7,7 +7,7 @@ class PropertyItemModel: public QStandardItemModel
 {
 
 public:
-  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const Q_DECL_OVERRIDE;
+  QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
 
 public:
   explicit PropertyItemModel(QObject *parent = 0);

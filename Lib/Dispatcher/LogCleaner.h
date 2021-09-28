@@ -26,12 +26,12 @@ class LogCleaner: public ImpD
   QVector<ObjectLogInfoS> mCleanInfoList;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "LogCleaner"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "L"; }
+  /*override */virtual const char* Name() override { return "LogCleaner"; }
+  /*override */virtual const char* ShortName() override { return "L"; }
 protected:
-  /*override */virtual bool LoadSettings(SettingsA* settings) Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadSettings(SettingsA* settings) override;
+  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 
 private:
   bool Init();

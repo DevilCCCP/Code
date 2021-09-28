@@ -48,12 +48,12 @@ protected:
   PROPERTY_GET(int,             LoadIndex)
 
 public:
-  /*override */virtual QAbstractTableModel* Model() Q_DECL_OVERRIDE
+  /*override */virtual QAbstractTableModel* Model() override
   {
     return mModel.data();
   }
 
-  /*override */virtual DbItemAS GetItemA(int index) Q_DECL_OVERRIDE
+  /*override */virtual DbItemAS GetItemA(int index) override
   {
     if (index >= 0 && index < mItems.size()) {
       return mItems.at(index).template staticCast<DbItemA>();
@@ -61,7 +61,7 @@ public:
     return DbItemAS();
   }
 
-  /*override */virtual bool Load() Q_DECL_OVERRIDE
+  /*override */virtual bool Load() override
   {
     mItems.clear();
     if (!mTable->Select(Select(), mItems)) {
@@ -71,7 +71,7 @@ public:
     return true;
   }
 
-  /*override */virtual bool Clone(int index) Q_DECL_OVERRIDE
+  /*override */virtual bool Clone(int index) override
   {
     if (index >= 0 && index < mItems.size()) {
       return mTable->InsertCopy(mItems.at(index));
@@ -79,7 +79,7 @@ public:
     return false;
   }
 
-  /*override */virtual bool Delete(int index) Q_DECL_OVERRIDE
+  /*override */virtual bool Delete(int index) override
   {
     if (index >= 0 && index < mItems.size()) {
       return mTable->Delete(mItems.at(index)->Id);
@@ -87,7 +87,7 @@ public:
     return false;
   }
 
-  /*override */virtual bool ExportAll(CsvWriter* writer) Q_DECL_OVERRIDE
+  /*override */virtual bool ExportAll(CsvWriter* writer) override
   {
     int size = mModel->columnCount();
     for (int i = 0; i < size; i++) {
@@ -114,7 +114,7 @@ public:
     return true;
   }
 
-  /*override */virtual bool ImportAll(CsvReader* reader, QString* info = nullptr) Q_DECL_OVERRIDE
+  /*override */virtual bool ImportAll(CsvReader* reader, QString* info = nullptr) override
   {
     QStringList header;
     if (!reader->ReadLine(header)) {
@@ -193,7 +193,7 @@ public:
     return true;
   }
 
-  /*override */virtual void CreateEditControls(QWidget* parent) Q_DECL_OVERRIDE
+  /*override */virtual void CreateEditControls(QWidget* parent) override
   {
     QFormLayout* formLayoutEdit = new QFormLayout(parent);
     formLayoutEdit->setObjectName(QStringLiteral("formLayoutEdit"));
@@ -205,7 +205,7 @@ public:
     }
   }
 
-  /*override */virtual bool NewEditItem() Q_DECL_OVERRIDE
+  /*override */virtual bool NewEditItem() override
   {
     UpdateModels();
 
@@ -220,7 +220,7 @@ public:
     return true;
   }
 
-  /*override */virtual bool LoadEditItem(int index) Q_DECL_OVERRIDE
+  /*override */virtual bool LoadEditItem(int index) override
   {
     mLoadIndex = index;
     QVariantList values;
@@ -242,7 +242,7 @@ public:
     return true;
   }
 
-  /*override */virtual bool SaveEditItem() Q_DECL_OVERRIDE
+  /*override */virtual bool SaveEditItem() override
   {
     QVariantList values;
     TableEditSchema* schema = GetTableSchema();

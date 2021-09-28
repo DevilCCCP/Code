@@ -315,8 +315,8 @@ bool ObjectTable::ReloadConnections()
   while (q->next()) {
     int idM = q->value(0).toInt();
     int idS = q->value(1).toInt();
-    mMasterConnection.insertMulti(idS, idM);
-    mSlaveConnection.insertMulti(idM, idS);
+    mMasterConnection.insert(idS, idM);
+    mSlaveConnection.insert(idM, idS);
   }
   return true;
 }

@@ -113,7 +113,7 @@ bool Schedule::ParseTimePeriod(const QString& text, TimePeriod& period)
   period.FromMs = 0;
   period.ToMs   = kEndOfDay;
 
-  QStringList pair = text.split('-', QString::KeepEmptyParts);
+  QStringList pair = text.split('-', Qt::KeepEmptyParts);
   if (pair.size() != 2) {
     return false;
   }
@@ -194,7 +194,7 @@ bool Schedule::ParseDayWPeriod(const QString& text, DayWPeriod& period)
 
 bool Schedule::ParseTime(const QString& text, int& point, int defaultPoint)
 {
-  QStringList time = text.split(':', QString::KeepEmptyParts);
+  QStringList time = text.split(':', Qt::KeepEmptyParts);
   if (time.isEmpty()) {
     point = defaultPoint;
     return true;

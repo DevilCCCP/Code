@@ -14,8 +14,8 @@ class TreeItemObject: public TreeItemA
   PROPERTY_GET(ObjectItemS, Item)
   ;
 protected:
-  /*override */virtual QString Text(int section) const Q_DECL_OVERRIDE;
-  /*override */virtual QIcon Icon() const Q_DECL_OVERRIDE;
+  /*override */virtual QString Text(int section) const override;
+  /*override */virtual QIcon Icon() const override;
 
 public:
   TreeItemObject(ObjectModel* _Core, const ObjectItemS& _Item, TreeItemA* parent = nullptr);

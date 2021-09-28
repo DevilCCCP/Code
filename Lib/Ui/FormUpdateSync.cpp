@@ -7,8 +7,6 @@
 #include "ui_FormUpdateSync.h"
 
 
-const int kLockIntervalMs = 2 * 60 * 1000;
-
 FormUpdateSync::FormUpdateSync(QWidget* parent)
   : QWidget(parent), ui(new Ui::FormUpdateSync)
 {

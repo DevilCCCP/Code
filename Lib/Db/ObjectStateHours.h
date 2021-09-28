@@ -20,7 +20,7 @@ public:
   QDateTime  TriggeredHour;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) const Q_DECL_OVERRIDE
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const override
   {
     const ObjectStateHours& vs = static_cast<const ObjectStateHours&>(other);
     return DbItemT<qint64>::Equals(other) && ObjectId == vs.ObjectId && OstypeId == vs.OstypeId && StateGood == vs.StateGood && StateBad == vs.StateBad && TriggeredHour == vs.TriggeredHour;
@@ -34,11 +34,11 @@ public:
 class ObjectStateHoursTable: public DbTableT<qint64, ObjectStateHours>
 {
 protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<qint64> >& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<qint64>& item) Q_DECL_OVERRIDE;
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<qint64> >& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<qint64>& item) override;
 
 public:
   ObjectStateHoursTable(const Db& _Db);

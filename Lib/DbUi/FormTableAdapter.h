@@ -84,7 +84,7 @@ protected:
   PROPERTY_GET(QString,         BackupTable)
 
 public:
-  /*override */virtual int LoadQuery(const QString& where) Q_DECL_OVERRIDE
+  /*override */virtual int LoadQuery(const QString& where) override
   {
     mItems.clear();
     mTable->Select(where, mItems);
@@ -92,12 +92,12 @@ public:
     return mItems.size();
   }
 
-  /*override */virtual QAbstractTableModel* Model() Q_DECL_OVERRIDE
+  /*override */virtual QAbstractTableModel* Model() override
   {
     return mModel.data();
   }
 
-  /*override */virtual DbItemAS GetItemA(int index) Q_DECL_OVERRIDE
+  /*override */virtual DbItemAS GetItemA(int index) override
   {
     if (index >= 0 && index < mItems.size()) {
       return mItems.at(index).template staticCast<DbItemA>();
@@ -105,7 +105,7 @@ public:
     return DbItemAS();
   }
 
-  /*override */virtual bool Clone(int index) Q_DECL_OVERRIDE
+  /*override */virtual bool Clone(int index) override
   {
     if (index >= 0 && index < mItems.size()) {
       return mTable->InsertCopy(mItems.at(index));
@@ -113,7 +113,7 @@ public:
     return false;
   }
 
-  /*override */virtual bool Delete(int index) Q_DECL_OVERRIDE
+  /*override */virtual bool Delete(int index) override
   {
     if (index >= 0 && index < mItems.size()) {
       return mTable->Delete(mItems.at(index)->Id);
@@ -121,7 +121,7 @@ public:
     return false;
   }
 
-  /*override */virtual bool ExportAll(CsvWriter* writer) Q_DECL_OVERRIDE
+  /*override */virtual bool ExportAll(CsvWriter* writer) override
   {
     int size = mModel->columnCount();
     for (int i = 0; i < size; i++) {
@@ -148,7 +148,7 @@ public:
     return true;
   }
 
-  /*override */virtual bool ImportAll(CsvReader* reader, QString* info = nullptr) Q_DECL_OVERRIDE
+  /*override */virtual bool ImportAll(CsvReader* reader, QString* info = nullptr) override
   {
     QStringList header;
     if (!reader->ReadLine(header)) {
@@ -224,12 +224,12 @@ public:
     return true;
   }
 
-  /*override */virtual bool CanBackup() Q_DECL_OVERRIDE
+  /*override */virtual bool CanBackup() override
   {
     return !mBackupTable.isEmpty();
   }
 
-  /*override */virtual bool Backup(CsvWriter* writer) Q_DECL_OVERRIDE
+  /*override */virtual bool Backup(CsvWriter* writer) override
   {
     if (mBackupTable.isEmpty()) {
       Log.Warning(QString("Try backup non backupable model"));
@@ -331,7 +331,7 @@ public:
     return true;
   }
 
-  /*override */virtual bool Restore(CsvReader* reader) Q_DECL_OVERRIDE
+  /*override */virtual bool Restore(CsvReader* reader) override
   {
     if (mBackupTable.isEmpty()) {
       Log.Warning(QString("Try restore non backupable model"));

@@ -1,16 +1,11 @@
 #pragma once
 
+#include <QString>
+
 #include <Lib/Include/Common.h>
 
 #include "Db.h"
 
-
-class MapItem
-{
-  int Id;
-  int Key;
-  int Value;
-};
 
 class MapTable
 {

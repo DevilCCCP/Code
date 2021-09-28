@@ -75,14 +75,14 @@ public:
   QMutex* PtzMutex() { return &mPtzMutex; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Transmit"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "T"; }
+  /*override */virtual const char* Name() override { return "Transmit"; }
+  /*override */virtual const char* ShortName() override { return "T"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+//  /*override */virtual void DoRelease() override;
 
 protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
 
 public:
   bool GetMediaInfo(int& rspMsgId, QByteArray& rspMsgData);

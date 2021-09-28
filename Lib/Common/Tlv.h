@@ -17,12 +17,13 @@ public:
   QList<TlvS> Childs;
   Tlv*        Parent;
 
-  TlvS At(int typeA);
+public:
+  bool IsValid() const;
+  bool HasValue() const;
 
-  TlvS At(int typeA, int typeB);
-
-  TlvS At(int typeA, int typeB, int typeC);
-
+  TlvS At(int typeA) const;
+  TlvS At(int typeA, int typeB) const;
+  TlvS At(int typeA, int typeB, int typeC) const;
   TlvS AddChild();
 
   void Dump() { DumpAll(""); }

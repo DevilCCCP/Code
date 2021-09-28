@@ -11,8 +11,12 @@ QFile gLogFile;
 
 QString RandPass()
 {
-  qsrand(QDateTime::currentMSecsSinceEpoch());
-  return QString("%1-%2-%3").arg(qrand()).arg(QUuid::createUuid().toString()).arg(qrand());
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 11,0)
+  return QString("%1-%2").arg(QUuid::createUuid().toString(QUuid::WithoutBraces), QUuid::createUuid().toString(QUuid::WithoutBraces));
+#else
+  return QString("%1-%2").arg(QUuid::createUuid().toString().mid(1, 36), QUuid::createUuid().toString().mid(1, 36));
+#endif
 }
 
 void WriteFile(const char* filename, const QString& text)

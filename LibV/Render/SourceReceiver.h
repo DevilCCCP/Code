@@ -23,12 +23,12 @@ public:
   ~SourceReceiver();
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "SourceReceiver"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Sr"; }
+  /*override */virtual const char* Name() override { return "SourceReceiver"; }
+  /*override */virtual const char* ShortName() override { return "Sr"; }
 
-  /*override */virtual void Stop() Q_DECL_OVERRIDE;
+  /*override */virtual void Stop() override;
 
 protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
 };
 

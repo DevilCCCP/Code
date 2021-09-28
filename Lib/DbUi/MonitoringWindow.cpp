@@ -181,11 +181,16 @@ void MonitoringWindow::ReloadState()
   mStateModel->setHorizontalHeaderItem(0, new QStandardItem(QString::fromUtf8("Сервера")));
   mStateModel->setHorizontalHeaderItem(1, new QStandardItem(QString::fromUtf8("Состояние")));
   mStateModel->setHorizontalHeaderItem(2, new QStandardItem());
-  QSet<int> childs = mObjectTable->MasterConnection().keys().toSet();
+  QList<int> childList = mObjectTable->MasterConnection().keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+  QSet<int> childSet(childList.begin(), childList.end());
+#else
+  QSet<int> childSet = QSet<int>::fromList(childList);
+#endif
   const QMap<int, TableItemS>& items = mObjectTable->GetItems();
   for (auto itr = items.begin(); itr != items.end(); itr++) {
     const ObjectItem& item = static_cast<const ObjectItem&>(*itr.value());
-    if (mServerTypeIds.contains(item.Type) && !childs.contains(item.Id)) {
+    if (mServerTypeIds.contains(item.Type) && !childSet.contains(item.Id)) {
       QStandardItem* modelItem = new QStandardItem(QString("%1").arg(item.Name));
       if (const ObjectTypeItem* itemType = static_cast<const ObjectTypeItem*>(mObjectTypeTable->GetItem(item.Type).data())) {
         modelItem->setIcon(QIcon(QString(":/ObjTree/%1").arg(itemType->Name)));
@@ -617,7 +622,7 @@ bool MonitoringWindow::ImportEvent(const QString& path)
   while (!file.atEnd()) {
     QString line = QString::fromUtf8(file.readLine().trimmed());
     lineEnd++;
-    QStringList raw = line.split(';', QString::KeepEmptyParts);
+    QStringList raw = line.split(';', Qt::KeepEmptyParts);
     if (raw.size() == 4) {
       QString name = raw[0].mid(1, raw[0].size() - 2);
       QString evTypeName = raw[1].mid(1, raw[1].size() - 2);

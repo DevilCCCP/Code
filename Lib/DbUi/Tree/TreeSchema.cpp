@@ -12,9 +12,9 @@ void TreeSchema::Reload(const ObjectTypeTableS& objectTypeTable)
   for (int i = 0; i < mSchema.size(); i++) {
     const TreeRootItem& item = mSchema.at(i);
     if (item.getType() == "tmp") {
-      mTypeItemMap[0] = i;
+      mTypeItemMap.insert(0, i);
     } else if (const NamedItem* itemType = objectTypeTable->GetItemByName(item.getType())) {
-      mTypeItemMap.insertMulti(itemType->Id, i);
+      mTypeItemMap.insert(itemType->Id, i);
     } else {
       Log.Warning(QString("Schema type not found (type: '%1')").arg(item.getType()));
     }

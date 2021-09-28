@@ -240,9 +240,10 @@ bool ModuleLoaderD::DoInitialize()
     if (mRestartPostgresMs > 0 && mInitializeTimer.elapsed() > mRestartPostgresMs) {
       Log.Warning(QString("Postgres unavailable for %1, restarting...").arg(FormatTime(mRestartPostgresMs)));
 
-      QString cmd = QString("sudo service postgresql restart");
-      Log.Info(cmd);
-      QProcess::startDetached(cmd);
+      QString cmd = QString("sudo");
+      QStringList args = QStringList() << "service" << "postgresql" << "restart";
+      Log.Info(QString("%1 %2").arg(cmd, args.join(' ')));
+      QProcess::startDetached(cmd, args);
 
       mInitializeTimer.restart();
       mRestartPostgresMs *= 2;
@@ -341,24 +342,26 @@ void ModuleLoaderD::SwitchState(EModuleState state)
     }
   }
 
-  switch (mCurrentState) {
-  case eNormalState:
-    mInsertModules = mModuleDbMap.keys().toSet();
+  if (mCurrentState == eNormalState) {
+    QList<int> moduleList = mModuleDbMap.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+    mInsertModules = QSet<int>(moduleList.begin(), moduleList.end());
+#else
+    mInsertModules = QSet<int>::fromList(moduleList);
+#endif
     mUpdateModules.clear();
     mDisableModules.clear();
     mRemoveModules.clear();
-    break;
-
-  case eStandByState:
+  } else if (mCurrentState == eStandByState) {
+    QList<int> moduleList = mModuleDbMap.keys();
     mInsertModules.clear();
     mUpdateModules.clear();
-    mDisableModules = mModuleDbMap.keys().toSet();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+    mDisableModules = QSet<int>(moduleList.begin(), moduleList.end());
+#else
+    mDisableModules = QSet<int>::fromList(moduleList);
+#endif
     mRemoveModules.clear();
-    break;
-
-  case eUnknownState:
-  case eAllState:
-    break;
   }
 }
 
@@ -378,7 +381,12 @@ void ModuleLoaderD::PrepareLoad()
   mInsertModules.clear();
   mUpdateModules.clear();
   mDisableModules.clear();
-  mRemoveModules = mModuleDbMap.keys().toSet();
+  QList<int> moduleList = mModuleDbMap.keys();
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14,0)
+  mRemoveModules = QSet<int>(moduleList.begin(), moduleList.end());
+#else
+  mRemoveModules = QSet<int>::fromList(moduleList);
+#endif
 }
 
 void ModuleLoaderD::CommitUpdate()

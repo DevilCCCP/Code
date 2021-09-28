@@ -1,27 +1,29 @@
 #pragma once
 
 #include <Lib/Db/Db.h>
-#include <Lib/Dispatcher/JobImp.h>
+#include <Lib/Dispatcher/JobAImp.h>
 
 #include "Calc.h"
 
 
 DefineClassS(MultiProcessCalc);
 
-class MultiProcessCalc: public JobImp
+class MultiProcessCalc: public JobAImp
 {
-  Calc      mCalc;
+  DbTableBS     mJobTable;
+  Calc          mCalc;
 
 protected:
-//  /*override */virtual char* TableName() Q_DECL_OVERRIDE;
-//  /*override */virtual char* QuerySelect() Q_DECL_OVERRIDE;
-//  /*override */virtual char* QueryJoin() Q_DECL_OVERRIDE;
+  /*override */virtual QString JobName() override;
+  /*override */virtual DbTableBS JobTable() override;
 
-//  /*override */virtual int  WorkIterations() Q_DECL_OVERRIDE;
-//  /*override */virtual int  MaximumIteration() Q_DECL_OVERRIDE;
-//  /*override */virtual int  JobMaximumSecs() Q_DECL_OVERRIDE;
-//  /*override */virtual qint64 LoadJob(const QueryS& q) Q_DECL_OVERRIDE;
-  /*override */virtual bool DoJob() Q_DECL_OVERRIDE;
+  /*override */virtual qint64 IterationsPerAction() override;
+  /*override */virtual qint64 LastIteration() override;
+  /*override */virtual qint64 JobMaximumSecs() override;
+  /*override */virtual qint64 JobUpdateMs() override;
+
+  /*override */virtual bool DoJob(bool& result) override;
+  /*override */virtual bool UpdateJob() override;
 
 public:
   MultiProcessCalc(const Db& _Db);

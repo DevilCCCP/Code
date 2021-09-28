@@ -15,33 +15,46 @@ class Job: public DbItemT<qint64>
 public:
   QString    Name;
   QString    Descr;
-  QByteArray Data;
+  bool       IsActive;
   int        Priority;
-  int        Iter;
-  int        IterEnd;
-  int        Done;
-  int        Fail;
+  qint64     Iter;
+  qint64     IterEnd;
+  qint64     Done;
+  qint64     Fail;
+  QDateTime  ActiveTime;
 
 public:
-  /*override */virtual bool Equals(const DbItemT<qint64>& other) Q_DECL_OVERRIDE
-  {
-    const Job& vs = static_cast<const Job&>(other);
-    return DbItemT<qint64>::Equals(other) && Name == vs.Name && Descr == vs.Descr && Data == vs.Data && Priority == vs.Priority && Iter == vs.Iter && IterEnd == vs.IterEnd && Done == vs.Done && Fail == vs.Fail;
-  }
+  /*override */virtual bool Equals(const DbItemT<qint64>& other) const override;
+
+  /*override */virtual qint64 Key(int index) const override;
+  /*override */virtual void SetKey(int index, qint64 id) override;
+  /*override */virtual QString Text(int column) const override;
+  /*override */virtual bool SetText(int column, const QString& text) override;
+  /*override */virtual QVariant Data(int column) const override;
+  /*override */virtual bool SetData(int column, const QVariant& data) override;
 
 public:
-  Job(): DbItemT<qint64>() { }
+  Job(): DbItemT<qint64>(), IsActive(true), Priority(0), Iter(0), IterEnd(0), Done(0), Fail(0) { }
   /*override */virtual ~Job() { }
 };
 
 class JobTable: public DbTableT<qint64, Job>
 {
-protected:
-  /*override */virtual QString TableName() Q_DECL_OVERRIDE;
-  /*override */virtual QString Columns() Q_DECL_OVERRIDE;
+  qint64 mCounter;
 
-  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<qint64> >& item) Q_DECL_OVERRIDE;
-  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<qint64>& item) Q_DECL_OVERRIDE;
+protected:
+  /*override */virtual QString TableName() override;
+  /*override */virtual QString Columns() override;
+
+  /*override */virtual bool OnRowRead(QSqlQueryS& q, int& index, QSharedPointer<DbItemT<qint64> >& item) override;
+  /*override */virtual bool OnRowWrite(QSqlQueryS& q, int& index, const DbItemT<qint64>& item) override;
+
+  /*override */virtual bool CreateDefaultItem(QSharedPointer<DbItemT<qint64> >& item) override;
+  /*override */virtual void NewDefaultItem(QSharedPointer<DbItemT<qint64> >& item) override;
+
+public:
+  /*override */virtual QStringList Headers() const override;
+  /*override */virtual QString Icon() const override;
 
 public:
   JobTable(const Db& _Db);

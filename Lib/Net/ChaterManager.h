@@ -37,8 +37,8 @@ class ChaterManagerR: public ChaterManager
   ParentT* mParent;
 
 protected:
-  /*override */virtual ReceiverS NewReceiver() Q_DECL_OVERRIDE { return ReceiverS(new ReceiverT(mParent)); }
-//  /*override */virtual ChaterS NewChater(MessengerS& messenger) Q_DECL_OVERRIDE { }
+  /*override */virtual ReceiverS NewReceiver() override { return ReceiverS(new ReceiverT(mParent)); }
+//  /*override */virtual ChaterS NewChater(MessengerS& messenger) override { }
 
 public:
   static ChaterManagerS New(ParentT* _Parent) { return ChaterManagerS(new ChaterManagerR(_Parent)); }

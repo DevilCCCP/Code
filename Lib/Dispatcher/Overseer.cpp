@@ -285,7 +285,7 @@ int Overseer::ParseCmdLine(int argc, char* argv[], int& id, bool& debug, bool& d
 
 Overseer::Overseer(const char* _DaemonName, int _Id, bool _Debug, bool _Detached, bool _Quiet, const QString& _Params, const QString& _Uri)
   : CtrlManager(_Debug)
-  , mDaemonName(_DaemonName), mId(_Id), mDebug(_Debug), mParams(_Params), mUri(_Uri), mDetached(_Detached), mQuiet(_Quiet)
+  , mDaemonName(_DaemonName), mId(_Id), mParams(_Params), mUri(_Uri), mDetached(_Detached), mQuiet(_Quiet)
   , mProcessInfo(nullptr)
 {
   if (!mQuiet) {

@@ -12,10 +12,8 @@ SUBDIRS += \
     Monitoring \
     StorageUi
 
-win32 {
- contains(DEFINES, VIDEO_ARM) {
-  SUBDIRS += \
+contains(DEFINES, VIDEO_ARM) {
+ SUBDIRS += \
     ArmD \
     Player \
- }
 }

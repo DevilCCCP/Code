@@ -36,7 +36,7 @@ class DispatcherDaemon: public Dispatcher
   SettingsAS mSettings;
 
 private:
-  /*override */virtual QSharedPointer<ModuleLoaderA> GetModuleLoader() Q_DECL_OVERRIDE
+  /*override */virtual QSharedPointer<ModuleLoaderA> GetModuleLoader() override
   { return QSharedPointer<ModuleLoaderA>(new ModuleLoaderT(mSettings)); }
 
 public:

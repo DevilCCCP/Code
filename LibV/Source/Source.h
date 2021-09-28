@@ -37,18 +37,18 @@ public:
   const ThumbnailS& GetThumbnail() { return mThumbnail; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Source"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "S"; }
+  /*override */virtual const char* Name() override { return "Source"; }
+  /*override */virtual const char* ShortName() override { return "S"; }
 protected:
-  /*override */virtual bool DoInit() Q_DECL_OVERRIDE;
-//  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-//  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool DoInit() override;
+//  /*override */virtual bool DoCircle() override;
+//  /*override */virtual void DoRelease() override;
 
   /*new */virtual void Reconnect() = 0;
 
 public:
   /*new */virtual bool NeedDecoder() { return true; }
-//  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE { return false; }
+//  /*override */virtual bool ProcessFrame() override { return false; }
 
 public:
   void OnStatus(Connection::EStatus status);

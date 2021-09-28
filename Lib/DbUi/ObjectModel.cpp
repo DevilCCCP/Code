@@ -181,7 +181,7 @@ void ObjectModel::AddChildObjects(int rootId, TreeItemA* rootItem)
     childs.append(slaveId);
   }
 
-  qSort(childs);
+  std::sort(childs.begin(), childs.end());
   for (auto itr = childs.begin(); itr != childs.end(); itr++) {
     int slaveId = *itr;
     TableItemS item = mObjectTable->GetItem(slaveId);

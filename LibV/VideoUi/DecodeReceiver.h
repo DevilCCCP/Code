@@ -23,11 +23,11 @@ public:
   FrameS LastFrame() { return mLastFrame; }
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "DecodeReceiver"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "Dr"; }
+  /*override */virtual const char* Name() override { return "DecodeReceiver"; }
+  /*override */virtual const char* ShortName() override { return "Dr"; }
 
 protected:
-  /*override */virtual bool ProcessFrame() Q_DECL_OVERRIDE;
+  /*override */virtual bool ProcessFrame() override;
 
 public:
   void SetPause(bool pause);

@@ -45,41 +45,41 @@ protected:
   typedef QList<Range> Ranges;
 
 private:
-  QMap<int, int>    mAccountMap;
-  QMap<int, SmtpS>  mAccounts;
-  QMap<int, Email>  mEmails;
+  QMultiMap<int, int> mAccountMap;
+  QMap<int, SmtpS>    mAccounts;
+  QMap<int, Email>    mEmails;
 
-  TimePeriod        mPeriodDay;
-  DayWPeriod        mPeriodWeek;
-  QString           mReporterName;
-  bool              mIsDayly;
-  bool              mIsWeekly;
-  QDate             mStartDay;
-  int               mCreateDaylyMs;
-  int               mCreateWeeklyMs;
+  TimePeriod          mPeriodDay;
+  DayWPeriod          mPeriodWeek;
+  QString             mReporterName;
+  bool                mIsDayly;
+  bool                mIsWeekly;
+  QDate               mStartDay;
+  int                 mCreateDaylyMs;
+  int                 mCreateWeeklyMs;
 
-  QDateTime         mStartTime;
-  QDateTime         mNextDaylyBegin;
-  QDateTime         mNextDaylyEnd;
-  QDateTime         mNextDaylyCreate;
-  QDateTime         mNextWeeklyBegin;
-  QDateTime         mNextWeeklyEnd;
-  QDateTime         mNextWeeklyCreate;
-  bool              mInit;
+  QDateTime           mStartTime;
+  QDateTime           mNextDaylyBegin;
+  QDateTime           mNextDaylyEnd;
+  QDateTime           mNextDaylyCreate;
+  QDateTime           mNextWeeklyBegin;
+  QDateTime           mNextWeeklyEnd;
+  QDateTime           mNextWeeklyCreate;
+  bool                mInit;
 
-  qint64            mLatestReportId;
-  QByteArray        mReportData;
-  QList<FilesS>     mReportFiles;
-  ReportS           mCurrentReport;
-  QList<FilesS>     mCurrentReportFiles;
+  qint64              mLatestReportId;
+  QByteArray          mReportData;
+  QList<FilesS>       mReportFiles;
+  ReportS             mCurrentReport;
+  QList<FilesS>       mCurrentReportFiles;
 
 public:
-  /*override */virtual const char* Name() Q_DECL_OVERRIDE { return "Reporter"; }
-  /*override */virtual const char* ShortName() Q_DECL_OVERRIDE { return "R"; }
+  /*override */virtual const char* Name() override { return "Reporter"; }
+  /*override */virtual const char* ShortName() override { return "R"; }
 protected:
-  /*override */virtual bool LoadSettings(SettingsA* settings) Q_DECL_OVERRIDE;
-  /*override */virtual bool DoCircle() Q_DECL_OVERRIDE;
-  /*override */virtual void DoRelease() Q_DECL_OVERRIDE;
+  /*override */virtual bool LoadSettings(SettingsA* settings) override;
+  /*override */virtual bool DoCircle() override;
+  /*override */virtual void DoRelease() override;
 
 protected:
   /*new */virtual bool InitReport(QDateTime& startTime);

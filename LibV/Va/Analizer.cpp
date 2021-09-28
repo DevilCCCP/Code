@@ -11,6 +11,9 @@
 #include <Lib/Common/Profiler.h>
 
 #include "Analizer.h"
+#ifdef ANAL_DEBUG
+#include "Wnd/FrameWindow.h"
+#endif
 
 
 AnalyticsAS CreateAnalytics(const QString& vaType);
@@ -22,17 +25,17 @@ const int kOptimizePeriodRetryMs = 30 * 1000;
 struct DbTriggeredDetector: public Detector {
   Analizer* Parent;
 
-  /*override */virtual void Hit(const qint64& time, const char* type, qreal value) Q_DECL_OVERRIDE
+  /*override */virtual void Hit(const qint64& time, const char* type, qreal value) override
   {
     Parent->TriggerEvent(Id, type, QDateTime::fromMSecsSinceEpoch(time), value);
   }
 
-  /*override */virtual void Hit(const qint64& time, const char* type, qreal value, const QByteArray& img) Q_DECL_OVERRIDE
+  /*override */virtual void Hit(const qint64& time, const char* type, qreal value, const QByteArray& img) override
   {
     Parent->TriggerEvent(Id, type, QDateTime::fromMSecsSinceEpoch(time), value, img);
   }
 
-  /*override */virtual void Stat(const qint64& time, const char* type, qreal value, int periodMs) Q_DECL_OVERRIDE
+  /*override */virtual void Stat(const qint64& time, const char* type, qreal value, int periodMs) override
   {
     Parent->StatEvent(Id, type, QDateTime::fromMSecsSinceEpoch(time), value, periodMs);
   }
@@ -52,7 +55,9 @@ bool Analizer::DoInit()
   mAnalytics->SetId(mVaId);
   mAnalytics->SetDb(mDb);
   if (mDebug) {
-    mAnalytics->SetDebug(GetManager());
+#ifdef ANAL_DEBUG
+    mAnalytics->SetDebug(GetManager(), mWindowPool);
+#endif
   }
   return mAnalytics;
 }
@@ -166,6 +171,15 @@ bool Analizer::ProcessCodedFrame(const FrameS& currentFrame)
     }
   }
   return false;
+}
+
+void Analizer::InitDebug()
+{
+#ifdef ANAL_DEBUG
+  for (int i = 0; i < 10; i++) {
+    mWindowPool.append(new FrameWindow());
+  }
+#endif
 }
 
 int Analizer::LoadSettings(DbS& db, int vaId)
@@ -385,4 +399,9 @@ Analizer::Analizer(DbS& _Db, int _VaId, const QString& _VaType, bool _HasCodec, 
 
 Analizer::~Analizer()
 {
+#ifdef ANAL_DEBUG
+  foreach (QWidget* w, mWindowPool) {
+    w->deleteLater();
+  }
+#endif
 }
