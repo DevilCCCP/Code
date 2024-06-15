@@ -6,8 +6,10 @@
 #include <QImage>
 
 #include <Lib/Include/Common.h>
-#include <LibV/Include/Hyst.h>
-#include <LibV/Include/Region.h>
+
+#include "Hyst.h"
+#include "ByteRegion.h"
+#include "Region.h"
 
 
 class Analyser;
@@ -24,21 +26,21 @@ class Uin
   };
   struct CharInfo {
     QChar          Char;
-    Region<uchar>  Source;
-    Region<uchar>  Value;
+    ByteRegion     Source;
+    ByteRegion     Value;
     QVector<Color> HorzColor;
     QVector<Color> VertColor;
   };
   QList<CharInfo>           mCharInfoList;
   CharInfo*                 mCurrentCharInfo;
 
-  Region<uchar>*            mSourceData;
+  ByteRegion*               mSourceData;
   int                       mQuality;
   QChar                     mChar;
 
   typedef QMap<QChar, qreal> CharMatchMap;
   struct TestInfo {
-    Region<uchar>  Value;
+    ByteRegion  Value;
     int            WhiteMin;
     int            BlackMax;
     QVector<Color> HorzColor;
@@ -55,7 +57,7 @@ public:
   void AddChar(const QChar& _Char, const QImage& _Image);
 
   void BeginTest();
-  void BeginChar(const Region<uchar>& region, int whiteMin = 170, int blackMax = 85);
+  void BeginChar(const ByteRegion& region, int whiteMin = 170, int blackMax = 85);
   void TrimChar(QRect* rect = nullptr);
   void TrimCharVert(int* left = nullptr, int* right = nullptr);
   void TrimCharHorz(int* top = nullptr, int* bottom = nullptr);
@@ -65,9 +67,9 @@ public:
   qreal GetBestMatch();
   QChar GetBestChar();
 
-  bool DumpBase(Region<uchar>* debug);
-  bool DumpTest(Region<uchar>* debug);
-  bool DumpDigits(Region<uchar>* debug);
+  bool DumpBase(ByteRegion* debug);
+  bool DumpTest(ByteRegion* debug);
+  bool DumpDigits(ByteRegion* debug);
 
 private:
   void Recalc();

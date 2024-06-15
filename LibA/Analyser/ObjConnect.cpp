@@ -1,21 +1,21 @@
 #include "ObjConnect.h"
 
 
-void ObjConnect::ConnectAny(const Region<uchar>& region)
+void ObjConnect::ConnectAny(const ByteRegion& region)
 {
   SetAny(region);
   Connect();
   Construct();
 }
 
-void ObjConnect::ConnectBlack(const Region<uchar>& region, int maxValue)
+void ObjConnect::ConnectBlack(const ByteRegion& region, int maxValue)
 {
   SetBlack(region, maxValue);
   Connect();
   Construct();
 }
 
-bool ObjConnect::FillObjectBlack(int index, const QRect& rect, Region<uchar>* region)
+bool ObjConnect::FillObjectBlack(int index, const QRect& rect, ByteRegion* region)
 {
   if (index >= mObjIds.size()) {
     return false;
@@ -41,7 +41,7 @@ bool ObjConnect::FillObjectBlack(int index, const QRect& rect, Region<uchar>* re
   return true;
 }
 
-void ObjConnect::SetAny(const Region<uchar>& region)
+void ObjConnect::SetAny(const ByteRegion& region)
 {
   mRegionMark.SetSize(region.Width(), region.Height());
   mRegionMark.ZeroData();
@@ -72,7 +72,7 @@ void ObjConnect::SetAny(const Region<uchar>& region)
   }
 }
 
-void ObjConnect::SetBlack(const Region<uchar>& region, int maxValue)
+void ObjConnect::SetBlack(const ByteRegion& region, int maxValue)
 {
   mRegionMark.SetSize(region.Width(), region.Height());
   mRegionMark.ZeroData();

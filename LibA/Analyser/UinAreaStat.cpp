@@ -64,9 +64,13 @@ void UinAreaStat::Calc()
   CalcObjPlates();
 }
 
-void UinAreaStat::DumpRaw(Region<uchar>* debug, int minDiff)
+void UinAreaStat::DumpRaw(ByteRegion* debug, int minDiff)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     const uchar* src = Source().Line(j);
@@ -100,9 +104,13 @@ void UinAreaStat::DumpRaw(Region<uchar>* debug, int minDiff)
   }
 }
 
-void UinAreaStat::DumpRaw2(Region<uchar>* debug, int minDiff)
+void UinAreaStat::DumpRaw2(ByteRegion* debug, int minDiff)
 {
   PrepareDump(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     int jCell = j / mCellHeight;
@@ -133,9 +141,13 @@ void UinAreaStat::DumpRaw2(Region<uchar>* debug, int minDiff)
   }
 }
 
-void UinAreaStat::DumpRaw23(Region<uchar>* debug, int minDiff)
+void UinAreaStat::DumpRaw23(ByteRegion* debug, int minDiff)
 {
   PrepareDump(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     int jCell = j / mCellHeight;
@@ -166,9 +178,13 @@ void UinAreaStat::DumpRaw23(Region<uchar>* debug, int minDiff)
   }
 }
 
-void UinAreaStat::DumpSignal(Region<uchar>* debug)
+void UinAreaStat::DumpSignal(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mPackRegion.isEmpty() || mSignalRegion.isEmpty()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -196,9 +212,13 @@ void UinAreaStat::DumpSignal(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpSignalLevel(Region<uchar>* debug, int level)
+void UinAreaStat::DumpSignalLevel(ByteRegion* debug, int level)
 {
   PrepareDumpWhite(debug);
+
+  if (mSignalRegion.isEmpty()) {
+    return;
+  }
 
   int minWidth = level - 1;
   int maxWidth = 2*level + 1;
@@ -216,9 +236,13 @@ void UinAreaStat::DumpSignalLevel(Region<uchar>* debug, int level)
   }
 }
 
-void UinAreaStat::DumpThickness2(Region<uchar>* debug, int level, int threshold)
+void UinAreaStat::DumpThickness2(ByteRegion* debug, int level, int threshold)
 {
   PrepareDumpWhite(debug);
+
+  if (mThicknessRegion2.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     const uchar* thick  = mThicknessRegion2.Data(1, j);
@@ -245,9 +269,13 @@ void UinAreaStat::DumpThickness2(Region<uchar>* debug, int level, int threshold)
   }
 }
 
-void UinAreaStat::DumpThickness23(Region<uchar>* debug, int level, int threshold)
+void UinAreaStat::DumpThickness23(ByteRegion* debug, int level, int threshold)
 {
   PrepareDumpWhite(debug);
+
+  if (mThicknessRegion.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     const uchar* thick  = mThicknessRegion.Data(1, j);
@@ -274,9 +302,13 @@ void UinAreaStat::DumpThickness23(Region<uchar>* debug, int level, int threshold
   }
 }
 
-void UinAreaStat::DumpThicknessEdge(Region<uchar>* debug)
+void UinAreaStat::DumpThicknessEdge(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mThicknessEdge.IsNull()) {
+    return;
+  }
 
   uchar color = 0;
   for (int j = 0; j < Height(); j++) {
@@ -296,9 +328,13 @@ void UinAreaStat::DumpThicknessEdge(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpThicknessEdgeFiltered(Region<uchar>* debug)
+void UinAreaStat::DumpThicknessEdgeFiltered(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mThicknessEdge.IsNull()) {
+    return;
+  }
 
   uchar color = 0;
   foreach (const QRect& obj, mObjList) {
@@ -320,9 +356,13 @@ void UinAreaStat::DumpThicknessEdgeFiltered(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpBlack(Region<uchar> *debug)
+void UinAreaStat::DumpBlack(ByteRegion *debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -338,9 +378,13 @@ void UinAreaStat::DumpBlack(Region<uchar> *debug)
   }
 }
 
-void UinAreaStat::DumpWhite(Region<uchar> *debug)
+void UinAreaStat::DumpWhite(ByteRegion *debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -377,9 +421,13 @@ void UinAreaStat::DumpWhite(Region<uchar> *debug)
 //  }
 }
 
-void UinAreaStat::DumpCountBlack(Region<uchar>* debug)
+void UinAreaStat::DumpCountBlack(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull() || mCell4Hyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -412,9 +460,13 @@ void UinAreaStat::DumpCountBlack(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpCountWhite(Region<uchar>* debug)
+void UinAreaStat::DumpCountWhite(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull() || mCell4Hyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -447,9 +499,13 @@ void UinAreaStat::DumpCountWhite(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpWhiteLevel(Region<uchar>* debug, int level, int diffLevel)
+void UinAreaStat::DumpWhiteLevel(ByteRegion* debug, int level, int diffLevel)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull() || mCell4Hyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -492,9 +548,13 @@ void UinAreaStat::DumpWhiteLevel(Region<uchar>* debug, int level, int diffLevel)
   }
 }
 
-void UinAreaStat::DumpBothLevel(Region<uchar>* debug, int whiteLevel, int blackLevel)
+void UinAreaStat::DumpBothLevel(ByteRegion* debug, int whiteLevel, int blackLevel)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull() || mCell4Hyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -536,9 +596,13 @@ void UinAreaStat::DumpBothLevel(Region<uchar>* debug, int whiteLevel, int blackL
   }
 }
 
-void UinAreaStat::DumpWhiteLevelCut(Region<uchar>* debug, int level)
+void UinAreaStat::DumpWhiteLevelCut(ByteRegion* debug, int level)
 {
   PrepareDumpBlack(debug);
+
+  if (mCellHyst.IsNull() || mCell4Hyst.IsNull()) {
+    return;
+  }
 
   int cutValue = ((level << kHystFastShift) - kBlackWhiteDiffMin);
 
@@ -587,7 +651,7 @@ void UinAreaStat::DumpWhiteLevelCut(Region<uchar>* debug, int level)
   }
 }
 
-void UinAreaStat::DumpCutLevel(Region<uchar>* debug, int whiteLevel, int blackLevel)
+void UinAreaStat::DumpCutLevel(ByteRegion* debug, int whiteLevel, int blackLevel)
 {
   PrepareDumpWhite(debug);
 
@@ -612,7 +676,7 @@ void UinAreaStat::DumpCutLevel(Region<uchar>* debug, int whiteLevel, int blackLe
   }
 }
 
-void UinAreaStat::DumpCutLevel2(Region<uchar>* debug, int blackWhiteLevel)
+void UinAreaStat::DumpCutLevel2(ByteRegion* debug, int blackWhiteLevel)
 {
   PrepareDumpWhite(debug);
 
@@ -632,7 +696,7 @@ void UinAreaStat::DumpCutLevel2(Region<uchar>* debug, int blackWhiteLevel)
   }
 }
 
-void UinAreaStat::DumpColorLevel(Region<uchar>* debug, int level)
+void UinAreaStat::DumpColorLevel(ByteRegion* debug, int level)
 {
   PrepareDumpWhite(debug);
 
@@ -655,9 +719,13 @@ void UinAreaStat::DumpColorLevel(Region<uchar>* debug, int level)
   }
 }
 
-void UinAreaStat::DumpMiddle(Region<uchar>* debug)
+void UinAreaStat::DumpMiddle(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -673,9 +741,13 @@ void UinAreaStat::DumpMiddle(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpDiff(Region<uchar>* debug)
+void UinAreaStat::DumpDiff(ByteRegion* debug)
 {
   PrepareDumpWhite(debug);
+
+  if (mCellHyst.IsNull()) {
+    return;
+  }
 
   for (int j = 0; j < Height(); j++) {
     uchar* dst = debug->Line(j);
@@ -690,7 +762,7 @@ void UinAreaStat::DumpDiff(Region<uchar>* debug)
   }
 }
 
-void UinAreaStat::DumpPlate(Region<uchar>* debug, int index)
+void UinAreaStat::DumpPlate(ByteRegion* debug, int index)
 {
   if (index < 0 || index >= mObjLineList.size()) {
     PrepareDumpBlack(debug);
@@ -710,7 +782,7 @@ void UinAreaStat::DumpPlate(Region<uchar>* debug, int index)
   debug->FillRectBorder(objPack->Area, 127);
 }
 
-void UinAreaStat::DumpPlateUinTest(Region<uchar>* debug, int index)
+void UinAreaStat::DumpPlateUinTest(ByteRegion* debug, int index)
 {
   if (index < 0 || index >= mObjPlateList.size()) {
     PrepareDumpBlack(debug);
@@ -721,7 +793,7 @@ void UinAreaStat::DumpPlateUinTest(Region<uchar>* debug, int index)
   objPlate->UinTest->DumpTest(debug);
 }
 
-void UinAreaStat::DumpPlateUinDigits(Region<uchar>* debug, int index)
+void UinAreaStat::DumpPlateUinDigits(ByteRegion* debug, int index)
 {
   if (index < 0 || index >= mObjPlateList.size()) {
     PrepareDumpBlack(debug);
@@ -732,7 +804,7 @@ void UinAreaStat::DumpPlateUinDigits(Region<uchar>* debug, int index)
   objPlate->UinTest->DumpDigits(debug);
 }
 
-void UinAreaStat::DumpPlateNormal(Region<uchar>* debug, int indexPlate, int indexChar)
+void UinAreaStat::DumpPlateNormal(ByteRegion* debug, int indexPlate, int indexChar)
 {
   if (indexPlate < 0 || indexPlate >= mObjPlateList.size()) {
     PrepareDumpBlack(debug);
@@ -1257,7 +1329,7 @@ void UinAreaStat::CalcPlateOne(int whiteIndex, int blackIndex)
   }
 }
 
-void UinAreaStat::CalcThickness(const QVector<SignalLine>& signalRegion, Region<uchar>& thicknessRegion)
+void UinAreaStat::CalcThickness(const QVector<SignalLine>& signalRegion, ByteRegion& thicknessRegion)
 {
   thicknessRegion.SetSize(Source().Width(), Source().Height());
   thicknessRegion.ZeroData();
@@ -1330,7 +1402,7 @@ void UinAreaStat::CalcThickness(const QVector<SignalLine>& signalRegion, Region<
   //  }
 }
 
-void UinAreaStat::CalcThicknessEdge(const Region<uchar>& thicknessRegion)
+void UinAreaStat::CalcThicknessEdge(const ByteRegion& thicknessRegion)
 {
   int minThickness = (mUinMetrics.CharThick() - 1)/2;
   int maxThickness = (mUinMetrics.DigitThick() + 1)/2 + 2;
@@ -1758,7 +1830,7 @@ void UinAreaStat::CalcObjPlateUinTestPossible()
 void UinAreaStat::CalcObjPlateUinTestPossibleOne(const QRect& rect, QRect* trimmedRect)
 {
   QRect bestRect(rect);
-  mUin->BeginChar(Region<uchar>(*mObjPlateRegion, rect));
+  mUin->BeginChar(ByteRegion(*mObjPlateRegion, rect));
   mUin->TrimChar(&bestRect);
   mUin->TestChar();
   qreal normalMatch = mUin->GetBestMatch();
@@ -1766,8 +1838,8 @@ void UinAreaStat::CalcObjPlateUinTestPossibleOne(const QRect& rect, QRect* trimm
   int moveStep = qMax(2, mObjPlate->NormalMetrics.DigitThick()/2);
   qreal lastMatch = normalMatch;
   for (int step = moveStep; step < mObjPlate->NormalMetrics.DigitWidth()/2; step += moveStep) {
-    mUinRegionStore.append(Region<uchar>(rect.size()));
-    Region<uchar>& nextRegion = mUinRegionStore.last();
+    mUinRegionStore.append(ByteRegion(rect.size()));
+    ByteRegion& nextRegion = mUinRegionStore.last();
     for (int j = 0; j < nextRegion.Height(); j++) {
       int l = step - 2*step*j/(nextRegion.Height() - 1);
       l = qBound(0, rect.left() + l, mObjPlateRegion->Width() - nextRegion.Width() - 1);
@@ -1791,8 +1863,8 @@ void UinAreaStat::CalcObjPlateUinTestPossibleOne(const QRect& rect, QRect* trimm
     }
   }
   for (int step = moveStep; step < mObjPlate->NormalMetrics.DigitWidth()/2; step += moveStep) {
-    mUinRegionStore.append(Region<uchar>(rect.size()));
-    Region<uchar>& nextRegion = mUinRegionStore.last();
+    mUinRegionStore.append(ByteRegion(rect.size()));
+    ByteRegion& nextRegion = mUinRegionStore.last();
     for (int j = 0; j < nextRegion.Height(); j++) {
       int l = -step + 2*step*j/(nextRegion.Height() - 1);
       l = qBound(0, rect.left() + l, mObjPlateRegion->Width() - nextRegion.Width() - 1);
@@ -1849,7 +1921,7 @@ void UinAreaStat::CalcObjPlateUinEasy()
       }
 
       QRect rect(left + 1, 0, right - left - 1, mObjPlateRegion->Height());
-      mUin->BeginChar(Region<uchar>(*mObjPlateRegion, rect));
+      mUin->BeginChar(ByteRegion(*mObjPlateRegion, rect));
       mUin->TrimChar(&rect);
 //      mObjPlate->UinList.append(rect);
       mUin->TestChar();
@@ -1863,7 +1935,7 @@ void UinAreaStat::CalcObjPlateUinEasy()
       }
 
       QRect rect2(left + 1, disp, right - left - 1, mObjPlateRegion->Height() - disp);
-      mUin->BeginChar(Region<uchar>(*mObjPlateRegion, rect2));
+      mUin->BeginChar(ByteRegion(*mObjPlateRegion, rect2));
       mUin->TrimChar(&rect2);
       if (rect2 == rect) {
         continue;
@@ -1899,7 +1971,7 @@ void UinAreaStat::CalcObjPlateUinBase()
     for (auto itr = rightItr; itr != mObjPlate->SpaceList.end() && *itr < rightMax; itr++) {
       int right = *itr;
       QRect rect(left + 1, 0, right - left, mObjPlateRegion->Height());
-      mUin->BeginChar(Region<uchar>(*mObjPlateRegion, rect));
+      mUin->BeginChar(ByteRegion(*mObjPlateRegion, rect));
       mUin->TrimChar(&rect);
 //      mObjPlate->UinList.append(rect);
       mUin->TestChar();
@@ -1916,7 +1988,7 @@ void UinAreaStat::CalcObjPlateUinBase()
       }
 
       rect = QRect(left + 1, mObjPlate->NormalMetrics.DigitThick(), right - left, mObjPlateRegion->Height() - mObjPlate->NormalMetrics.DigitThick());
-      mUin->BeginChar(Region<uchar>(*mObjPlateRegion, rect));
+      mUin->BeginChar(ByteRegion(*mObjPlateRegion, rect));
       mUin->TrimChar(&rect);
 //      mObjPlate->UinList.append(rect);
       mUin->TestChar();
@@ -1933,7 +2005,7 @@ void UinAreaStat::CalcObjPlateUinBase()
       }
 
       rect = QRect(left + 1, 0, right - left, mObjPlateRegion->Height() - mObjPlate->NormalMetrics.DigitThick());
-      mUin->BeginChar(Region<uchar>(*mObjPlateRegion, rect));
+      mUin->BeginChar(ByteRegion(*mObjPlateRegion, rect));
       mUin->TrimChar(&rect);
 //      mObjPlate->UinList.append(rect);
       mUin->TestChar();
@@ -2175,26 +2247,26 @@ bool UinAreaStat::FilterPlateOne(UinAreaStat::Plate* plate)
   return true;
 }
 
-void UinAreaStat::PrepareDump(Region<uchar>* debug)
+void UinAreaStat::PrepareDump(ByteRegion* debug)
 {
   if (debug->Width() != Width() || debug->Height() != Height()) {
     debug->SetSize(Width(), Height());
   }
 }
 
-void UinAreaStat::PrepareDumpWhite(Region<uchar>* debug)
+void UinAreaStat::PrepareDumpWhite(ByteRegion* debug)
 {
   PrepareDump(debug);
   debug->FillData(255);
 }
 
-void UinAreaStat::PrepareDumpBlack(Region<uchar>* debug)
+void UinAreaStat::PrepareDumpBlack(ByteRegion* debug)
 {
   PrepareDump(debug);
   debug->FillData(0);
 }
 
-UinAreaStat::UinAreaStat(Analyser* _Analyser)
+UinAreaStat::UinAreaStat(AnalyserOld* _Analyser)
   : mAnalyser(_Analyser), mCellWidth(0), mCellHeight(0), mSignalLengthMax(0), mSignalLengthGood(0)
 {
 }

@@ -16,6 +16,8 @@ class MainWindow: public QMainWindow
   QSettings*      mSettings;
   QStringList     mOnceList;
   QStringList     mPeriodList;
+  int             mProxyType;
+  QString         mProxyUri;
 
   QNetworkAccessManager* mNetManager;
   QTimer*                mTimer;
@@ -31,6 +33,7 @@ private:
   void UpdateLog();
   void AddToOnceRecent();
   void AddToPeriodRecent();
+  bool SetProxy();
 
 private:
   void OnFinished(QNetworkReply* netReply);

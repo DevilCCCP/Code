@@ -36,17 +36,17 @@ void RenameWorker::Prepare()
 
 void RenameWorker::Do()
 {
-  for (int i = 0; i < mFileList.size(); i++) {
+  for (mCurrentFileIndex = 0; mCurrentFileIndex < mFileList.size(); mCurrentFileIndex++) {
     if (mStop) {
       return;
     }
-    int newProgress = 1 + 99 * i / mFileList.size();
+    int newProgress = 1 + 99 * mCurrentFileIndex / mFileList.size();
     if (newProgress > mProgress) {
       mProgress = newProgress;
       emit Progress(mProgress);
     }
 
-    mCurrentFilePath = mFileList.at(i);
+    mCurrentFilePath = mFileList.at(mCurrentFileIndex);
     mNewFilePath = mCurrentFilePath;
     DoFile();
   }
@@ -97,13 +97,13 @@ void RenameWorker::DoNumbers()
     parts.append(fileName.mid(iNumber, len));
     i = iNumber + len;
   }
-  int firstIndex = -1;
+  int firstIndex = -2;
   DoNumbersAssign(mFirstNumber, numberIndex.size(), firstIndex);
-  int secondIndex = -1;
+  int secondIndex = -2;
   if (mSecondNumber) {
     DoNumbersAssign(mSecondNumber, numberIndex.size(), secondIndex);
   }
-  if (firstIndex < 0 && secondIndex < 0) {
+  if (firstIndex < -1 && secondIndex < 0) {
     return;
   }
 
@@ -126,6 +126,11 @@ void RenameWorker::DoNumbers()
     qSwap(parts[numberIndex[firstIndex]], parts[numberIndex[secondIndex]]);
   }
   QString newFileName = parts.join("") + fileExt;
+  if (firstIndex == -1) {
+    int number = mResizeNumbers > 0? mResizeNumbers: 6;
+    QString name = QString("%1").arg(mCurrentFileIndex + 1, number, 10, QChar('0'));
+    newFileName = name + "." + fileExt;
+  }
   QDir dir = info.dir();
   mNewFilePath = dir.absoluteFilePath(newFileName);
 }
@@ -133,9 +138,7 @@ void RenameWorker::DoNumbers()
 void RenameWorker::DoNumbersAssign(int number, int size, int& index)
 {
   if (number == 0) {
-    if (size == 1) {
-      index = 0;
-    }
+    index = -1;
   } else if (number > 0) {
     if (number <= size) {
       index = number - 1;

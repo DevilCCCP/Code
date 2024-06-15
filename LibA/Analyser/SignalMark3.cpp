@@ -189,7 +189,7 @@ void SignalMark3::DumpRegionPack(Region<uchar>* debug)
   if (debug->Width() != mSrc->Width() || debug->Height() != mSrc->Height()) {
     debug->SetSize(mSrc->Width(), mSrc->Height());
   }
-  debug->SetData(255);
+  debug->FillData(255);
 
   for (int j = 0; j < mSrc->Height(); j++) {
     mCurrentLinePack = &mRegionPack[j];
@@ -225,7 +225,7 @@ void SignalMark3::DumpRegionArea(Region<uchar>* debug)
   if (debug->Width() != mSrc->Width() || debug->Height() != mSrc->Height()) {
     debug->SetSize(mSrc->Width(), mSrc->Height());
   }
-  debug->SetData(255);
+  debug->FillData(255);
 
   foreach (const QRect& rect, mRegionArea) {
     debug->Copy(*mSrc, rect);

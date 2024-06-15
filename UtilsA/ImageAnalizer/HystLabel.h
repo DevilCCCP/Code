@@ -3,7 +3,7 @@
 #include <QList>
 #include <QLabel>
 
-#include <LibV/Include/Hyst.h>
+#include <LibA/Analyser/Hyst.h>
 
 
 class HystLabel: public QLabel

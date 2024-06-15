@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>745</width>
-    <height>450</height>
+    <height>479</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -169,7 +169,7 @@
          <item>
           <widget class="QLabel" name="label_4">
            <property name="text">
-            <string>* zero meens the only number, negative - the number from the end</string>
+            <string>* zero meens create number, negative - the number from the end</string>
            </property>
           </widget>
          </item>

@@ -10,7 +10,7 @@ TARGET = WebClient
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
+SOURCES += Main.cpp\
         MainWindow.cpp
 
 HEADERS  += MainWindow.h

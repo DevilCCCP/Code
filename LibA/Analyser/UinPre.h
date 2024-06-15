@@ -4,9 +4,10 @@
 #include <QLinkedList>
 
 #include <Lib/Include/Common.h>
-#include <LibV/Include/Hyst.h>
 #include <LibV/Include/Rect.h>
-#include <LibV/Include/Region.h>
+
+#include "Hyst.h"
+#include "Region.h"
 
 
 DefineClassS(UinPre);

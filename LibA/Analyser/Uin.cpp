@@ -85,7 +85,7 @@ void Uin::BeginTest()
   mTestInfoList.clear();
 }
 
-void Uin::BeginChar(const Region<uchar>& region, int whiteMin, int blackMax)
+void Uin::BeginChar(const ByteRegion& region, int whiteMin, int blackMax)
 {
   mTestInfoList.append(TestInfo());
   mCurrentTestInfo = &mTestInfoList.back();
@@ -288,7 +288,7 @@ QChar Uin::GetBestChar()
   return mCurrentTestInfo->BestChar;
 }
 
-bool Uin::DumpBase(Region<uchar>* debug)
+bool Uin::DumpBase(ByteRegion* debug)
 {
   if (mCharInfoList.isEmpty()) {
     return false;
@@ -303,7 +303,7 @@ bool Uin::DumpBase(Region<uchar>* debug)
     height = qMax(height, 2*mCharInfoList.at(i).Value.Height());
   }
   debug->SetSize(m * width, n * height);
-  debug->SetData(255);
+  debug->FillData(255);
 
   m = 0;
   n = 0;
@@ -364,7 +364,7 @@ bool Uin::DumpBase(Region<uchar>* debug)
   return true;
 }
 
-bool Uin::DumpTest(Region<uchar>* debug)
+bool Uin::DumpTest(ByteRegion* debug)
 {
   int width = 0;
   int height = 0;
@@ -376,7 +376,7 @@ bool Uin::DumpTest(Region<uchar>* debug)
   int n = 4;
   int m = (mTestInfoList.size() + 3) / 4;
   debug->SetSize(m * width, n * height);
-  debug->SetData(255);
+  debug->FillData(255);
   for (int i = 0; i < mTestInfoList.size(); i++) {
     const TestInfo& info = mTestInfoList.at(i);
     m = i / 4;
@@ -453,7 +453,7 @@ bool Uin::DumpTest(Region<uchar>* debug)
   return true;
 }
 
-bool Uin::DumpDigits(Region<uchar>* debug)
+bool Uin::DumpDigits(ByteRegion* debug)
 {
   int width = 0;
   int height = 0;
@@ -465,7 +465,7 @@ bool Uin::DumpDigits(Region<uchar>* debug)
   int columns = qMax(12, mTestInfoList.size() / 4);
   int rows = (mTestInfoList.size() + columns - 1) / columns;
   debug->SetSize(columns * width, rows * 3*height);
-  debug->SetData(128);
+  debug->FillData(128);
   for (int i = 0; i < mTestInfoList.size(); i++) {
     const TestInfo& info = mTestInfoList.at(i);
     qreal bestMatch = 0;
@@ -506,7 +506,7 @@ bool Uin::DumpDigits(Region<uchar>* debug)
 
 void Uin::Recalc()
 {
-  const Region<uchar>& region = mCurrentTestInfo->Value;
+  const ByteRegion& region = mCurrentTestInfo->Value;
 
   mCurrentTestInfo->HorzColor.resize(region.Height());
   mCurrentTestInfo->VertColor.resize(region.Width());

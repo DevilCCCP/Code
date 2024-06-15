@@ -33,9 +33,6 @@ public:
   UinMetrics()
     : mBaseWidth(0)
   { }
-  UinMetrics(const UinMetrics& other)
-    : mBaseWidth(other.mBaseWidth)
-  { }
   UinMetrics(int _BaseWidth)
     : mBaseWidth(_BaseWidth)
   { }

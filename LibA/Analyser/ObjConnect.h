@@ -3,7 +3,10 @@
 #include <QVector>
 #include <QRect>
 
+
 #include "Analyser.h"
+#include "Region.h"
+#include "ByteRegion.h"
 
 
 class ObjConnect
@@ -20,13 +23,13 @@ public:
   int GetObjCount() const { return mObjCount; }
 
 public:
-  void ConnectAny(const Region<uchar>& region);
-  void ConnectBlack(const Region<uchar>& region, int maxValue);
-  bool FillObjectBlack(int index, const QRect& rect, Region<uchar>* region);
+  void ConnectAny(const ByteRegion& region);
+  void ConnectBlack(const ByteRegion& region, int maxValue);
+  bool FillObjectBlack(int index, const QRect& rect, ByteRegion* region);
 
 private:
-  void SetAny(const Region<uchar>& region);
-  void SetBlack(const Region<uchar>& region, int maxValue);
+  void SetAny(const ByteRegion& region);
+  void SetBlack(const ByteRegion& region, int maxValue);
   void Connect();
   void Construct();
 

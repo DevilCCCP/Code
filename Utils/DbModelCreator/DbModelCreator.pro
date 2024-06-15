@@ -7,4 +7,3 @@ SUBDIRS += \
     DbmCreatorUi
 
 DbmCreatorUi.depends = Core
-DbmCreatorUi.depends = DbmCreator

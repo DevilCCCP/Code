@@ -6,6 +6,17 @@ QT += gui
 
 
 SOURCES +=\
+    ByteRegion.cpp \
+    CellStatFtr.cpp \
+    DigitFtr.cpp \
+    Hyst.cpp \
+    HystFast.cpp \
+    ImageFilter.cpp \
+    ImageStatFtr.cpp \
+    PlateCalcFtr.cpp \
+    PlateFindFtr.cpp \
+    SignalMarkFtr.cpp \
+    SymbolMarkFtr.cpp \
     UinPre.cpp \
     Uin.cpp \
     SignalMark.cpp \
@@ -17,6 +28,22 @@ SOURCES +=\
     UinAreaStat.cpp
 
 HEADERS  +=\
+    ByteRegion.h \
+    Cell.h \
+    CellStatFtr.h \
+    DigitFtr.h \
+    FilterInfo.h \
+    Hyst.h \
+    HystFast.h \
+    ImageFilter.h \
+    ImageStatFtr.h \
+    PlateCalcFtr.h \
+    PlateFindFtr.h \
+    Region.h \
+    Signal.h \
+    SignalMarkFtr.h \
+    Symbol.h \
+    SymbolMarkFtr.h \
     UinPre.h \
     Uin.h \
     SignalMark.h \

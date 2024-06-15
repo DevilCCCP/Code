@@ -12,13 +12,14 @@ class FormImageLineRegion: public FormImageRegion
   FormImageLineView::EMode       mMode;
   PROPERTY_GET(QVector<QPointF>, LinePoints)
   int                            mCurrentPoint;
+  QPoint                         mMousePressPos;
 
   Q_OBJECT
 
 protected:
   /*override */virtual void paintEvent(QPaintEvent* event) Q_DECL_OVERRIDE;
 
-  /*override */virtual void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
+//  /*override */virtual void mouseDoubleClickEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
   /*override */virtual void mouseMoveEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
   /*override */virtual void mousePressEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
   /*override */virtual void mouseReleaseEvent(QMouseEvent* event) Q_DECL_OVERRIDE;
@@ -35,6 +36,8 @@ public:
   void MoveLineY(int y);
 
 private:
+  void SetPoint(const QPointF& p);
+
   QPointF ToScreen(const QPointF& p) const;
   QPointF FromScreen(const QPointF& p) const;
   QPoint  ToSource(const QPointF& p) const;

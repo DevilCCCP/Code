@@ -18,6 +18,8 @@ public:
   int  Width()  const { return mWidth; }
   int  Height() const { return mHeight; }
   int  Stride() const { return mStride; }
+  bool IsValid() const { return mData && mWidth > 0 && mHeight > 0; }
+  bool IsNull() const { return !IsValid(); }
 
   void SetSource(DataT* _SourceData, int _Width, int _Height, int _Stride)
   {
@@ -80,10 +82,10 @@ public:
   void ZeroData()
   {
     if (mWidth == mStride) {
-      memset(mData, 0, mWidth * mHeight * sizeof(DataT));
+      memset((void*)mData, 0, mWidth * mHeight * sizeof(DataT));
     } else {
       for (int j = 0; j < Height(); j++) {
-        memset(Line(j), 0, mWidth * sizeof(DataT));
+        memset((void*)Line(j), 0, mWidth * sizeof(DataT));
       }
     }
   }
@@ -91,21 +93,10 @@ public:
   void FillData(int value)
   {
     if (mWidth == mStride) {
-      memset(mData, value, mWidth * mHeight * sizeof(DataT));
+      memset((void*)mData, value, mWidth * mHeight * sizeof(DataT));
     } else {
       for (int j = 0; j < Height(); j++) {
-        memset(Line(j), value, mWidth * sizeof(DataT));
-      }
-    }
-  }
-
-  void SetData(int val)
-  {
-    if (mWidth == mStride) {
-      memset(mData, val, mWidth * mHeight * sizeof(DataT));
-    } else {
-      for (int j = 0; j < Height(); j++) {
-        memset(Line(j), val, mWidth * sizeof(DataT));
+        memset((void*)Line(j), value, mWidth * sizeof(DataT));
       }
     }
   }
@@ -115,7 +106,7 @@ public:
     for (int j = sourceRect.top(); j <= sourceRect.bottom(); j++) {
       const DataT* src = source.Data(sourceRect.left(), j);
       DataT* dst = Data(sourceRect.left(), j);
-      memcpy(dst, src, sourceRect.width() * sizeof(DataT));
+      memcpy((void*)dst, (void*)src, sourceRect.width() * sizeof(DataT));
     }
   }
 
@@ -292,5 +283,15 @@ public:
       mInternalSource = other.mInternalSource;
       mData = mInternalSource.data();
     }
+  }
+
+  Region<DataT>& operator=(const Region<DataT>& other)
+  {
+    SetSource(other);
+    if (!other.mInternalSource.isEmpty()) {
+      mInternalSource = other.mInternalSource;
+      mData = mInternalSource.data();
+    }
+    return *this;
   }
 };

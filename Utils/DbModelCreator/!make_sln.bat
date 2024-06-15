@@ -5,7 +5,6 @@ SET PWD=%~dp0
 SET MakeProj=:make_proj
 
 call %MakeProj% Core
-call %MakeProj% DbmCreator
 call %MakeProj% DbmCreatorUi
 
 %Qt%\bin\qmake -spec win32-msvc2010 -tp vc

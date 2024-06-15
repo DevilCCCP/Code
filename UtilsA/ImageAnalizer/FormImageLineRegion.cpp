@@ -50,42 +50,17 @@ void FormImageLineRegion::paintEvent(QPaintEvent* event)
   }
 }
 
-void FormImageLineRegion::mouseDoubleClickEvent(QMouseEvent* event)
-{
-  switch (mMode) {
-  case FormImageLineView::eSelect:
-    break;
-
-  case FormImageLineView::eLine:
-    if (mLinePoints.size() > 1) {
-      mLinePoints.first() = mLinePoints.takeLast();
-    }
-    mLinePoints.append(FromScreen(QPointF(event->pos())));
-    break;
-
-  case FormImageLineView::eRectangle:
-    if (mLinePoints.size() >= 1) {
-      if (mLinePoints.size() > 1) {
-        mLinePoints.first() = mLinePoints.takeLast();
-        mLinePoints.remove(1, 2);
-      }
-      const QPointF& point1 = mLinePoints.first();
-      QPointF point2 = FromScreen(QPointF(event->pos()));
-      mLinePoints.append(QPointF(point2.x(), point1.y()));
-      mLinePoints.append(QPointF(point1.x(), point2.y()));
-      mLinePoints.append(point2);
-    } else {
-      mLinePoints.append(FromScreen(QPointF(event->pos())));
-    }
-    break;
-  }
-
-  update();
-  emit LineChanged();
-}
+//void FormImageLineRegion::mouseDoubleClickEvent(QMouseEvent* event)
+//{
+//  SetPoint(FromScreen(QPointF(event->pos())));
+//}
 
 void FormImageLineRegion::mouseMoveEvent(QMouseEvent* event)
 {
+  if (mMousePressPos != event->pos()) {
+    mMousePressPos = QPoint();
+  }
+
   if (mCurrentPoint >= 0 && mCurrentPoint < mLinePoints.size()) {
     mLinePoints[mCurrentPoint] = FromScreen(event->pos());
     if (mMode == FormImageLineView::eLine) {
@@ -119,6 +94,7 @@ void FormImageLineRegion::mouseMoveEvent(QMouseEvent* event)
 
 void FormImageLineRegion::mousePressEvent(QMouseEvent* event)
 {
+  mMousePressPos = event->pos();
   if (event->buttons() == Qt::LeftButton) {
     for (int i = 0; i < mLinePoints.size(); i++) {
       QPointF p1 = ToScreen(mLinePoints.at(i));
@@ -148,6 +124,8 @@ void FormImageLineRegion::mouseReleaseEvent(QMouseEvent* event)
     update();
 
     emit LineChanged();
+  } else if (mMousePressPos == event->pos()) {
+    SetPoint(FromScreen(QPointF(event->pos())));
   }
 
   FormImageRegion::mouseReleaseEvent(event);
@@ -272,6 +250,40 @@ void FormImageLineRegion::MoveLineY(int y)
 
   mLinePoints[0].setY(y - 0.5*height()/getScale());
   mLinePoints[1].setY(y - 0.5*height()/getScale());
+}
+
+void FormImageLineRegion::SetPoint(const QPointF& p)
+{
+  switch (mMode) {
+  case FormImageLineView::eSelect:
+    break;
+
+  case FormImageLineView::eLine:
+    if (mLinePoints.size() > 1) {
+      mLinePoints.first() = mLinePoints.takeLast();
+    }
+    mLinePoints.append(p);
+    break;
+
+  case FormImageLineView::eRectangle:
+    if (mLinePoints.size() >= 1) {
+      if (mLinePoints.size() > 1) {
+        mLinePoints.first() = mLinePoints.takeLast();
+        mLinePoints.remove(1, 2);
+      }
+      const QPointF& point1 = mLinePoints.first();
+      const QPointF& point2 = p;
+      mLinePoints.append(QPointF(point2.x(), point1.y()));
+      mLinePoints.append(QPointF(point1.x(), point2.y()));
+      mLinePoints.append(point2);
+    } else {
+      mLinePoints.append(p);
+    }
+    break;
+  }
+
+  update();
+  emit LineChanged();
 }
 
 QPointF FormImageLineRegion::ToScreen(const QPointF& p) const

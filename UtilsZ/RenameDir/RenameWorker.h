@@ -34,6 +34,7 @@ class RenameWorker: public QThread
   QRegExp                   mRenRegExp;
   QRegExp                   mNumberRegExp;
 
+  int                       mCurrentFileIndex;
   QString                   mCurrentFilePath;
   QString                   mNewFilePath;
 

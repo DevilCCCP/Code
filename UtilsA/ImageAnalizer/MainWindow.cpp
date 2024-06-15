@@ -7,9 +7,8 @@
 
 #include <Lib/CoreUi/Icon.h>
 #include <LibA/Analyser/Analyser.h>
-#include <LibA/Analyser/SignalMark.h>
-#include <LibA/Analyser/SignalMark2.h>
-#include <LibA/Analyser/SignalMark3.h>
+#include <LibA/Analyser/ImageStatFtr.h>
+#include <LibA/Analyser/SignalMarkFtr.h>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
@@ -24,17 +23,19 @@ MainWindow::MainWindow(QWidget* parent)
   : MainWindow2(parent), ui(new Ui::MainWindow)
   , mClipboard(QApplication::clipboard())
   , mFileDialog(new QFileDialog(this))
-  , mSignalMark(new SignalMark(kSignalLengthMax)), mSignalMark2(new SignalMark2()), mSignalMark3(new SignalMark3()), mAnalyser(new Analyser(true))
+  , mAnalyser(new Analyser(true))
+  , mMaxDumpIndex(0), mCurrentLineIndex(2), mCurrentDumpIndex(0), mCurrentDumpParam1(0), mCurrentDumpParam2(0), mLineChanged(false)
 {
   ui->setupUi(this);
 
   mDumpCombo = ui->mainToolBar->addWidget(ui->widgetFilterControl);
 
-  mCurrentActions = -1;
+  mCurrentActions = eTabIllegal;
   ui->mainToolBar->setContextMenuPolicy(Qt::PreventContextMenu);
 
   mLoadedTabs.fill(false, (int)eTabIllegal);
   mCurrentTab = eTabImage;
+  PrepareTab();
   ui->tabWidgetMain->setCurrentIndex(mCurrentTab);
   ui->tabWidgetMain->setTabIcon(eTabGrayscale, GrayIcon(ui->tabWidgetMain->tabIcon(eTabImage)));
   mSelect = FormImageLineView::eLine;
@@ -46,14 +47,14 @@ MainWindow::MainWindow(QWidget* parent)
   ui->tabImage->addAction(ui->actionPrevFile);
   ui->tabImage->addAction(ui->actionNextFile);
   ui->tabImage->addAction(ui->actionLineStats);
-  ui->tabImage->addAction(ui->actionLineStats2);
   ui->tabImage->addAction(ui->actionAreaStats);
   ui->tabImage->addAction(ui->actionFilter);
-  ui->tabImage->addAction(ui->actionFilter2);
-  ui->tabImage->addAction(ui->actionFilterMk3Color);
-  ui->tabImage->addAction(ui->actionErosionBlack);
-  ui->tabImage->addAction(ui->actionErosionWhite);
+//  ui->tabImage->addAction(ui->actionFilterMk3Color);
+//  ui->tabImage->addAction(ui->actionErosionBlack);
+//  ui->tabImage->addAction(ui->actionErosionWhite);
   ui->tabImage->setContextMenuPolicy(Qt::ActionsContextMenu);
+
+  UpdateActions();
 
   ui->toolButtonDumpFilterPrev->setDefaultAction(ui->actionPrevFilterImage);
   ui->toolButtonDumpFilterNext->setDefaultAction(ui->actionNextFilterImage);
@@ -63,21 +64,11 @@ MainWindow::MainWindow(QWidget* parent)
   }
   ui->mainToolBar->setVisible(true);
 
-  QString iniFilePath = QDir(QStandardPaths::writableLocation(
-#if (QT_VERSION >= QT_VERSION_CHECK(5, 4, 0))
-                               QStandardPaths::AppDataLocation
-#else
-                               QStandardPaths::DataLocation
-#endif
-                               )).absoluteFilePath("main.ini");
-  mSettings = new QSettings(iniFilePath, QSettings::IniFormat, this);
-  mSettings->setIniCodec("UTF-8");
-
-  mImageSource = mSettings->value("ImageFile").toString();
-  mCurrentDir = QDir(mSettings->value("FilesPath").toString());
+  mImageSource = GetSettings()->value("ImageFile").toString();
+  mCurrentDir = QDir(GetSettings()->value("FilesPath").toString());
   mFileDialog->setDirectory(mCurrentDir);
   mCurrentImage = QImage(mCurrentDir.filePath(mImageSource));
-  ui->tabImage->RestoreSettings(mSettings);
+  ui->tabImage->RestoreSettings(GetSettings());
   SetImageAuto();
   OnLineChanged();
   UpdateTab();
@@ -109,6 +100,38 @@ bool MainWindow::SetImage(const QImage& img, const QString& name)
   return true;
 }
 
+void MainWindow::UpdateActions()
+{
+  bool hasLineActions = false;
+  bool hasRectActions = false;
+  if (mSelect == FormImageLineView::eLine) {
+    hasLineActions = ui->tabImage->LinePoints().size() >= 2;
+  } else if (mSelect == FormImageLineView::eRectangle) {
+    hasRectActions = ui->tabImage->LinePoints().size() >= 4;
+  }
+
+  ui->actionLineStats->setEnabled(hasLineActions);
+  ui->actionAreaStats->setEnabled(hasRectActions);
+}
+
+void MainWindow::UpdateLineXy()
+{
+  QVector<QPoint> points = ui->tabImage->LinePoints();
+  bool hasPoints = points.size() >= 2;
+  ui->spinBoxLineX->setEnabled(hasPoints);
+  ui->spinBoxLineY->setEnabled(hasPoints);
+  if (hasPoints) {
+    QSignalBlocker bx(ui->spinBoxLineX);
+    QSignalBlocker by(ui->spinBoxLineY);
+    int d = points.at(1).x() - points.at(0).x();
+    ui->spinBoxLineX->setMinimum(d >= 0? 0: -d);
+    ui->spinBoxLineX->setMaximum(d >= 0? mCurrentImage.width() - 1: mCurrentImage.width() - 1  + d);
+    ui->spinBoxLineY->setRange(0, mCurrentImage.height() - 1);
+    ui->spinBoxLineX->setValue(points.at(0).x());
+    ui->spinBoxLineY->setValue(points.at(0).y());
+  }
+}
+
 void MainWindow::ApplyDir()
 {
   mDirFiles = mCurrentDir.entryList(QDir::Files, QDir::Name);
@@ -120,7 +143,7 @@ void MainWindow::ApplyDir()
 void MainWindow::ApplyImage()
 {
   mLoadedTabs.fill(false, (int)eTabIllegal);
-  ui->tabImage->SetScale(0);
+  ui->tabImage->SetBestScale();
   mCurrentValue.clear();
   ui->tabImage->SetImage(mCurrentImage);
 
@@ -131,6 +154,17 @@ void MainWindow::ApplyImage()
   setWindowTitle(QString("Analize '%1'").arg(mImageSource));
 }
 
+bool MainWindow::PrepareLine()
+{
+  mLineValues = ui->tabImage->LineValues().toVector();
+  if (mLineValues.size() < 2) {
+    return false;
+  }
+
+  mAnalyser->LineInit(mLineValues.constData(), mLineValues.size());
+  return true;
+}
+
 bool MainWindow::PrepareData()
 {
   if (mCurrentValue.isEmpty()) {
@@ -139,13 +173,14 @@ bool MainWindow::PrepareData()
       return false;
     }
   }
+
+  ByteRegion sourceRegion(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
+  mAnalyser->RegionInit(sourceRegion);
   return true;
 }
 
-void MainWindow::PrepareLineActions(const QList<MainWindow::DumpLine>& infoList, int defaultIndex)
+void MainWindow::PrepareLineActions()
 {
-  mDumpList.clear();
-
   ui->tabStats->setContextMenuPolicy(Qt::ActionsContextMenu);
   auto oldActionsList = ui->tabStats->actions();
   foreach (auto action, oldActionsList) {
@@ -153,22 +188,26 @@ void MainWindow::PrepareLineActions(const QList<MainWindow::DumpLine>& infoList,
     action->deleteLater();
   }
 
-  mDumpLine = infoList;
-  for (int i = 0; i < mDumpLine.size(); i++) {
-    const DumpLine& info = mDumpLine.at(i);
-    mDumpList << info.Name;
-    QAction* action = new QAction(QIcon("Icons/Stats.png"), info.Name, this);
+  QStringList nameList;
+  mMaxDumpIndex = mAnalyser->LineFilterCount();
+  for (int i = 0; i < mMaxDumpIndex; i++) {
+    QString name = mAnalyser->LineFilterName(i);
+    nameList << name;
+    QAction* action = new QAction(QIcon("Icons/Stats.png"), name, this);
     action->setData(i);
     ui->tabStats->addAction(action);
     connect(action, &QAction::triggered, this, &MainWindow::OnDumpLineTriggered);
   }
-  PrepareDump(&MainWindow::OnDumpLineChanged, defaultIndex);
+
+  PrepareDump(nameList);
+  ui->comboBoxFilterDump->setCurrentIndex(mCurrentLineIndex);
+  connect(ui->comboBoxFilterDump, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
+          , this, &MainWindow::OnDumpLineChanged);
+  OnDumpLineChanged(mCurrentLineIndex);
 }
 
-void MainWindow::PrepareFilterActions(const QList<MainWindow::DumpRegion>& infoList, int defaultIndex)
+void MainWindow::PrepareFilterActions()
 {
-  mDumpList.clear();
-
   ui->tabFilter->setContextMenuPolicy(Qt::ActionsContextMenu);
   auto oldActionsList = ui->tabFilter->actions();
   foreach (auto action, oldActionsList) {
@@ -176,27 +215,29 @@ void MainWindow::PrepareFilterActions(const QList<MainWindow::DumpRegion>& infoL
     action->deleteLater();
   }
 
-  mDumpRegion = infoList;
-  for (int i = 0; i < mDumpRegion.size(); i++) {
-    const DumpRegion& info = mDumpRegion.at(i);
-    mDumpList << info.Name;
-    QAction* action = new QAction(QIcon("Icons/Stats.png"), info.Name, this);
+  QStringList nameList;
+  mMaxDumpIndex = mAnalyser->RegionFilterCount();
+  for (int i = 0; i < mMaxDumpIndex; i++) {
+    QString name = mAnalyser->RegionFilterName(i);
+    nameList << name;
+    QAction* action = new QAction(QIcon("Icons/Stats.png"), name, this);
     action->setData(i);
     ui->tabFilter->addAction(action);
     connect(action, &QAction::triggered, this, &MainWindow::OnDumpRegionTriggered);
   }
-  PrepareDump(&MainWindow::OnDumpRegionChanged, defaultIndex);
+
+  PrepareDump(nameList);
+  ui->comboBoxFilterDump->setCurrentIndex(mCurrentDumpIndex);
+  connect(ui->comboBoxFilterDump, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
+          , this, &MainWindow::OnDumpRegionChanged);
+  OnDumpRegionChanged(mCurrentDumpIndex);
 }
 
-void MainWindow::PrepareDump(OnDumpTriggerFunc onDumpTriggerFunc, int defaultIndex)
+void MainWindow::PrepareDump(const QStringList& nameList)
 {
   ui->comboBoxFilterDump->disconnect();
   ui->comboBoxFilterDump->clear();
-  ui->comboBoxFilterDump->addItems(mDumpList);
-  ui->comboBoxFilterDump->setCurrentIndex(-1);
-  connect(ui->comboBoxFilterDump, static_cast<void (QComboBox::*)(int)>(&QComboBox::currentIndexChanged)
-          , this, onDumpTriggerFunc);
-  ui->comboBoxFilterDump->setCurrentIndex(defaultIndex);
+  ui->comboBoxFilterDump->addItems(nameList);
 }
 
 void MainWindow::SetGrayscale()
@@ -204,7 +245,7 @@ void MainWindow::SetGrayscale()
   if (!PrepareData()) {
     return;
   }
-  Region<uchar> sourceRegion(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
+  ByteRegion sourceRegion(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
   ui->tabGrayscale->SetImage(ImageFromRegion(sourceRegion));
 }
 
@@ -214,31 +255,19 @@ void MainWindow::SetDiff()
     return;
   }
 
-  mAnalyser->Init(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  mAnalyser->MakeGrad();
+  mAnalyser->GetImageStatFtr()->MakeGrad();
 
-  const Region<uchar>& markRegion = mAnalyser->Result();
+  const ByteRegion& markRegion = mAnalyser->Result();
   ui->tabDiff->SetImage(ImageFromRegion(markRegion));
 }
 
 void MainWindow::FilterLine()
 {
-  mLineValues = ui->tabImage->LineValues().toVector();
-  mLineMarks = QVector<uchar>(mLineValues.size(), (uchar)0);
-  mSignalMark->CalcLine(mLineValues.constData(), mLineValues.size(), 0);
-  mSignalMark->FillLineMark(mLineMarks.data(), mLineMarks.size());
-  ui->graphLabel->SetLineValues(mLineValues, mLineMarks);
+  if (!PrepareLine()) {
+    return;
+  }
 
-  mLoadedTabs[eTabLineStats] = true;
-}
-
-void MainWindow::FilterLine2()
-{
-  mLineValues = ui->tabImage->LineValues().toVector();
-  mSignalMark3->CalcLine(mLineValues.constData(), mLineValues.size());
-  mLoadedTabs[eTabLineStats] = true;
-
-  PrepareLineFilters();
+  DumpLine();
 }
 
 void MainWindow::FilterRect()
@@ -259,28 +288,7 @@ void MainWindow::FilterImage()
     return;
   }
 
-  Region<uchar> sourceRegion(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  mSignalMark->Calc(&sourceRegion, 0);
-
-  Region<uchar> markRegion(mCurrentImage.width(), mCurrentImage.height());
-  mSignalMark->FillRegionMark(&markRegion);
-  ui->tabFilter->SetImage(ImageFromRegion(markRegion));
-  mLoadedTabs[eTabFilter] = true;
-  return;
-}
-
-void MainWindow::FilterImage2()
-{
-  if (!PrepareData()) {
-    return;
-  }
-
-  mSourceRegion.SetSource(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  int plateWidth = mCurrentImage.width() > 1000? 250: mCurrentImage.width() > 800? 150: mCurrentImage.width() > 400? 100: 60;
-  mAnalyser->FindUinRu(mSourceRegion, plateWidth);
-  mLoadedTabs[eTabFilter] = true;
-
-  PrepareImageFilters();
+  DumpRegion();
 }
 
 void MainWindow::FilterImageMk3Color()
@@ -289,20 +297,13 @@ void MainWindow::FilterImageMk3Color()
     return;
   }
 
-  Region<uchar> sourceRegion;
-  sourceRegion.SetSource(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  mSignalMark->Calc(&sourceRegion, 0);
+//  mAnalyser->MakeHigher(1);
 
+//  ByteRegion debugRegion = sourceRegion;
+////  mUinPre->Calc3Color(sourceRegion, debugRegion);
 
-  mAnalyser->Init(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  mAnalyser->MakeHigher(1);
-
-  Region<uchar> debugRegion = sourceRegion;
-//  mUinPre->Calc3Color(sourceRegion, debugRegion);
-
-  ui->tabFilter->SetImage(ImageFromRegion(debugRegion));
+//  ui->tabFilter->SetImage(ImageFromRegion(debugRegion));
   mLoadedTabs[eTabFilter] = true;
-  return;
 }
 
 void MainWindow::FilterFindNumbers()
@@ -320,9 +321,9 @@ void MainWindow::FilterErosionBlack()
     return;
   }
 
-  Region<uchar> sourceRegion;
+  ByteRegion sourceRegion;
   sourceRegion.SetSource(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  Region<uchar> debugRegion;
+  ByteRegion debugRegion;
   debugRegion.SetSize(sourceRegion.Width() - 2, sourceRegion.Height() - 2);
   for (int j = 1; j < sourceRegion.Height() - 1; j++) {
     const uchar* src1 = sourceRegion.Data(0, j);
@@ -353,9 +354,9 @@ void MainWindow::FilterErosionWhite()
     return;
   }
 
-  Region<uchar> sourceRegion;
+  ByteRegion sourceRegion;
   sourceRegion.SetSource(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  Region<uchar> debugRegion;
+  ByteRegion debugRegion;
   debugRegion.SetSize(sourceRegion.Width() - 2, sourceRegion.Height() - 2);
   for (int j = 1; j < sourceRegion.Height() - 1; j++) {
     const uchar* src1 = sourceRegion.Data(0, j);
@@ -397,65 +398,16 @@ void MainWindow::DataFromImage()
 
 void MainWindow::PrepareLineFilters()
 {
-  if (mCurrentActions == 1) {
-    OnDumpLineChanged(mCurrentDumpIndex);
-    return;
-  }
-  mCurrentActions = 1;
+  mCurrentActions = eTabLineStats;
 
-  PrepareLineActions(QList<DumpLine>()
-                     << DumpLine("Extrem", &SignalMark3::DumpLineExtrem)
-                     << DumpLine("Move", &SignalMark3::DumpLineMove)
-                     << DumpLine("Signal", &SignalMark3::DumpLineSignal)
-                     , 2
-                     );
+  PrepareLineActions();
 }
 
 void MainWindow::PrepareImageFilters()
 {
-  if (mCurrentActions == 2) {
-    OnDumpRegionChanged(mCurrentDumpIndex);
-    return;
-  }
-  mCurrentActions = 2;
+  mCurrentActions = eTabFilter;
 
-  PrepareFilterActions(QList<DumpRegion>()
-                       << DumpRegion("Stat raw", &Analyser::DumpUinStatRaw, 1, 64, 8)
-                       << DumpRegion("Stat raw 2", &Analyser::DumpUinStatRaw2, 1, 64, 8)
-                       << DumpRegion("Stat raw 2/3", &Analyser::DumpUinStatRaw23, 1, 64, 8)
-                       << DumpRegion("Stat signal", &Analyser::DumpUinStatSignal)
-                       << DumpRegion("Stat signal level", &Analyser::DumpUinStatSignalLevel, 1, 40, 2)
-                       << DumpRegion("Stat thickness 2", &Analyser::DumpUinStatThickness2, 1, 20, 4, 1, 10, 2)
-                       << DumpRegion("Stat thickness 2/3", &Analyser::DumpUinStatThickness23, 1, 20, 4, 1, 10, 2)
-                       << DumpRegion("Stat edge", &Analyser::DumpUinStatEdge)
-                       << DumpRegion("Stat edge filtered", &Analyser::DumpUinStatEdgeFiltered)
-                       << DumpRegion("Stat black", &Analyser::DumpUinStatBlack)
-                       << DumpRegion("Stat white", &Analyser::DumpUinStatWhite)
-                       << DumpRegion("Stat middle", &Analyser::DumpUinStatMiddle)
-                       << DumpRegion("Stat black count", &Analyser::DumpUinStatCountBlack)
-                       << DumpRegion("Stat white count", &Analyser::DumpUinStatCountWhite)
-                       << DumpRegion("Stat diff", &Analyser::DumpUinStatDiff)
-                       << DumpRegion("Stat white level", &Analyser::DumpUinStatWhiteLevel, 1, 15, 15, 0, 4, 1)
-                       << DumpRegion("Stat both level", &Analyser::DumpUinStatBothLevel, 1, 15, 15, 1, 15, 1)
-                       << DumpRegion("White level cut", &Analyser::DumpUinStatWhiteLevelCut, 1, 15, 15)
-                       << DumpRegion("Cut level", &Analyser::DumpUinCutLevel, 1, 15, 15, 1, 15, 1)
-                       << DumpRegion("Cut level 2", &Analyser::DumpUinCutLevel2, 1, 15, 7)
-                       << DumpRegion("Color level", &Analyser::DumpUinColorLevel, 0, 15)
-                       << DumpRegion("Plate", &Analyser::DumpUinStatPlate, 0, 999)
-                       << DumpRegion("Plate Normal", &Analyser::DumpUinStatPlateNormal, 0, 999, 0, 0, 99, 0)
-
-//                       << DumpRegion("Signal height", &Analyser::DumpSignalHeight)
-//                       << DumpRegion("Signal pack", &Analyser::DumpSignalPack)
-//                       << DumpRegion("Signal area", &Analyser::DumpSignalArea)
-//                       << DumpRegion("Uin solid", &Analyser::DumpUinSolids)
-//                       << DumpRegion("Uin symbol", &Analyser::DumpUinSymbols)
-//                       << DumpRegion("Uin places", &Analyser::DumpUinSymbolsFixed)
-//                       << DumpRegion("Uin plate", &Analyser::DumpPlate)
-                       << DumpRegion("Uin test", &Analyser::DumpUinTest, 0, 999)
-                       << DumpRegion("Uin digits", &Analyser::DumpUinDigits, 0, 999)
-                       << DumpRegion("Uin base", &Analyser::DumpUinPrepare)
-                       , 0
-                       );
+  PrepareFilterActions();
 }
 
 QImage MainWindow::ImageFromData()
@@ -520,7 +472,7 @@ QImage MainWindow::IndexFromData()
   return img;
 }
 
-QImage MainWindow::ImageFromRegion(const Region<uchar>& region)
+QImage MainWindow::ImageFromRegion(const ByteRegion& region)
 {
   QImage img(region.Width(), region.Height(), QImage::Format_ARGB32);
   for (int j = 0; j < region.Height(); j++) {
@@ -537,7 +489,7 @@ QImage MainWindow::ImageFromRegion(const Region<uchar>& region)
   return img;
 }
 
-QImage MainWindow::IndexFromRegion(const Region<uchar>& region)
+QImage MainWindow::IndexFromRegion(const ByteRegion& region)
 {
   uchar maxValue = MaxRegion(region);
   uchar v1 = qMax(maxValue/2, 1);
@@ -583,7 +535,7 @@ uchar MainWindow::MaxData()
   return maxValue;
 }
 
-uchar MainWindow::MaxRegion(const Region<uchar>& region)
+uchar MainWindow::MaxRegion(const ByteRegion& region)
 {
   uchar maxValue = 0;
   for (int j = 0; j < region.Height(); j++) {
@@ -599,8 +551,45 @@ uchar MainWindow::MaxRegion(const Region<uchar>& region)
   return maxValue;
 }
 
+void MainWindow::ResetPointsView()
+{
+  mLoadedTabs[eTabLineStats] = false;
+  mLoadedTabs[eTabRectStats] = false;
+}
+
+void MainWindow::PrepareTab()
+{
+  switch (mCurrentTab) {
+  case eTabLineStats:
+    PrepareLineFilters();
+    break;
+
+  case eTabFilter:
+    PrepareImageFilters();
+    break;
+
+  default:
+    break;
+  }
+
+  switch (mCurrentTab) {
+  case eTabImage    : mDumpCombo->setVisible(false); break;
+  case eTabLineStats: mDumpCombo->setVisible(true); break;
+  case eTabRectStats: mDumpCombo->setVisible(false); break;
+  case eTabGrayscale: mDumpCombo->setVisible(false); break;
+  case eTabDiff     : mDumpCombo->setVisible(false); break;
+  case eTabFilter   : mDumpCombo->setVisible(true); break;
+  case eTabIllegal  : mDumpCombo->setVisible(false); break;
+  }
+}
+
 void MainWindow::UpdateTab(bool force)
 {
+  if (mLineChanged) {
+    ui->tabImage->SyncSettings(GetSettings());
+    mLineChanged = false;
+  }
+
   if (force || !mLoadedTabs.at(mCurrentTab)) {
     mLoadedTabs[mCurrentTab] = true;
     switch (mCurrentTab) {
@@ -608,7 +597,7 @@ void MainWindow::UpdateTab(bool force)
       break;
 
     case eTabLineStats:
-      FilterLine2();
+      FilterLine();
       break;
 
     case eTabRectStats:
@@ -624,42 +613,24 @@ void MainWindow::UpdateTab(bool force)
       break;
 
     case eTabFilter:
-      FilterImage2();
+      FilterImage();
       break;
 
     case eTabIllegal:
       break;
     }
-  } else {
-    switch (mCurrentTab) {
-    case eTabLineStats:
-      PrepareLineFilters();
-      break;
-
-    case eTabFilter:
-      PrepareImageFilters();
-      break;
-
-    default:
-      break;
-    }
-  }
-
-  switch (mCurrentTab) {
-  case eTabImage    : mDumpCombo->setVisible(false); break;
-  case eTabLineStats: mDumpCombo->setVisible(true); break;
-  case eTabRectStats: mDumpCombo->setVisible(false); break;
-  case eTabGrayscale: mDumpCombo->setVisible(false); break;
-  case eTabDiff     : mDumpCombo->setVisible(false); break;
-  case eTabFilter   : mDumpCombo->setVisible(true); break;
-  case eTabIllegal  : mDumpCombo->setVisible(false); break;
   }
 }
 
 void MainWindow::UpdateDumpActionsView()
 {
-  ui->actionNextFilterImage->setEnabled(mCurrentDumpIndex < mDumpList.size() - 1);
-  ui->actionPrevFilterImage->setEnabled(mCurrentDumpIndex > 0);
+  if (ui->tabWidgetMain->currentIndex() == eTabLineStats) {
+    ui->actionNextFilterImage->setEnabled(mCurrentLineIndex < mMaxDumpIndex - 1);
+    ui->actionPrevFilterImage->setEnabled(mCurrentLineIndex > 0);
+  } else if (ui->tabWidgetMain->currentIndex() == eTabFilter) {
+    ui->actionNextFilterImage->setEnabled(mCurrentDumpIndex < mMaxDumpIndex - 1);
+    ui->actionPrevFilterImage->setEnabled(mCurrentDumpIndex > 0);
+  }
 }
 
 void MainWindow::SwitchSelect(int select, bool checked)
@@ -669,120 +640,120 @@ void MainWindow::SwitchSelect(int select, bool checked)
     mSelect = newSelect;
     ui->tabImage->SetMode(newSelect);
   }
-  ui->actionViewSelect->blockSignals(true);
+  QSignalBlocker b1(ui->actionViewSelect);
+  QSignalBlocker b2(ui->actionViewLine);
+  QSignalBlocker b3(ui->actionViewRectangle);
   ui->actionViewSelect->setChecked(mSelect == FormImageLineView::eSelect);
-  ui->actionViewSelect->blockSignals(false);
-  ui->actionViewLine->blockSignals(true);
   ui->actionViewLine->setChecked(mSelect == FormImageLineView::eLine);
-  ui->actionViewLine->blockSignals(false);
-  ui->actionViewRectangle->blockSignals(true);
   ui->actionViewRectangle->setChecked(mSelect == FormImageLineView::eRectangle);
-  ui->actionViewRectangle->blockSignals(false);
+
+  ResetPointsView();
+  if (mSelect == FormImageLineView::eLine) {
+    UpdateLineXy();
+  }
+  UpdateActions();
+}
+
+void MainWindow::DumpLine()
+{
+  if (!mAnalyser->LineFilterTest(mCurrentLineIndex, mLineMarks)) {
+    return;
+  }
+
+  ui->widgetParam1->setVisible(false);
+  ui->widgetParam2->setVisible(false);
+
+  ui->graphLabel->SetLineValues(mLineValues, mLineMarks);
+  mLoadedTabs[eTabLineStats] = true;
+
+  UpdateDumpActionsView();
+}
+
+void MainWindow::DumpRegion()
+{
+  PrepareData();
+  mAnalyser->RegionFilterTest(mCurrentDumpIndex, mCurrentDumpParam1, mCurrentDumpParam2);
+  ui->tabFilter->SetImage(ImageFromRegion(mAnalyser->Result()));
+  mLoadedTabs[eTabFilter] = true;
 }
 
 void MainWindow::OnLineChanged()
 {
+  ResetPointsView();
+
   if (mSelect == FormImageLineView::eLine) {
-    mLoadedTabs[eTabLineStats] = false;
-    QVector<QPoint> points = ui->tabImage->LinePoints();
-    if (points.size() >= 2) {
-      ui->spinBoxLineX->blockSignals(true);
-      ui->spinBoxLineY->blockSignals(true);
-      int d = points.at(1).x() - points.at(0).x();
-      ui->spinBoxLineX->setMinimum(d >= 0? 0: -d);
-      ui->spinBoxLineX->setMaximum(d >= 0? mCurrentImage.width() - 1: mCurrentImage.width() - 1  + d);
-      ui->spinBoxLineY->setRange(0, mCurrentImage.height() - 1);
-      ui->spinBoxLineX->setValue(points.at(0).x());
-      ui->spinBoxLineY->setValue(points.at(0).y());
-      ui->spinBoxLineX->blockSignals(false);
-      ui->spinBoxLineY->blockSignals(false);
-      ui->spinBoxLineX->setEnabled(true);
-      ui->spinBoxLineY->setEnabled(true);
-    } else {
-      ui->spinBoxLineX->setEnabled(false);
-      ui->spinBoxLineY->setEnabled(false);
-    }
-  } else if (mSelect == FormImageLineView::eRectangle) {
-    mLoadedTabs[eTabRectStats] = false;
+    UpdateLineXy();
   }
+
+  mLineChanged = true;
+  UpdateActions();
 }
 
 void MainWindow::OnDumpLineChanged(int index)
 {
-  mCurrentDumpIndex = index;
-  if (index >= 0 && index < mDumpLine.size()) {
-    DumpLineFunc f = mDumpLine.at(index).Function;
-    ((*mSignalMark3).*f)(mLineMarks);
-    ui->graphLabel->SetLineValues(mLineValues, mLineMarks);
-    mLoadedTabs[eTabLineStats] = true;
-  }
-  UpdateDumpActionsView();
+  mCurrentLineIndex = index;
 
-  ui->spinBoxFilterParam1->setVisible(false);
-  ui->spinBoxFilterParam2->setVisible(false);
+  FilterLine();
 }
 
 void MainWindow::OnDumpLineTriggered()
 {
   if (QAction* action = qobject_cast<QAction*>(sender())) {
     int index = action->data().toInt();
-    OnDumpLineChanged(index);
+    ui->comboBoxFilterDump->setCurrentIndex(index);
   }
 }
 
 void MainWindow::OnDumpRegionChanged(int index)
 {
+  bool setDefault = mCurrentDumpIndex != index;
   mCurrentDumpIndex = index;
-  if (index >= 0 && index < mDumpRegion.size()) {
-    const DumpRegion& dumpRegion = mDumpRegion.at(index);
-    mCurrentDumpParam1 = dumpRegion.Param1Default;
-    mCurrentDumpParam2 = dumpRegion.Param2Default;
-    ui->spinBoxFilterParam1->setMinimum(dumpRegion.Param1Min);
-    ui->spinBoxFilterParam1->setMaximum(dumpRegion.Param1Max);
-    ui->spinBoxFilterParam1->setValue(dumpRegion.Param1Default);
-    ui->spinBoxFilterParam1->disconnect();
-    ui->spinBoxFilterParam2->setMinimum(dumpRegion.Param2Min);
-    ui->spinBoxFilterParam2->setMaximum(dumpRegion.Param2Max);
-    ui->spinBoxFilterParam2->setValue(dumpRegion.Param2Default);
-    ui->spinBoxFilterParam2->setVisible(dumpRegion.Param2Max > dumpRegion.Param2Min);
-    ui->spinBoxFilterParam2->disconnect();
-    if (dumpRegion.Param1Max > dumpRegion.Param1Min) {
-      ui->spinBoxFilterParam1->setVisible(true);
-      connect(ui->spinBoxFilterParam1, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged)
-              , this, &MainWindow::OnDumpRegionParamsChanged);
-    } else {
-      ui->spinBoxFilterParam1->setVisible(false);
-    }
-    if (dumpRegion.Param2Max > dumpRegion.Param2Min) {
-      ui->spinBoxFilterParam2->setVisible(true);
-      connect(ui->spinBoxFilterParam2, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged)
-              , this, &MainWindow::OnDumpRegionParamsChanged);
-    } else {
-      ui->spinBoxFilterParam2->setVisible(false);
-    }
 
-    OnDumpRegionParamsChanged(0);
-  } else {
-    ui->spinBoxFilterParam1->setVisible(false);
-    ui->spinBoxFilterParam2->setVisible(false);
+  FilterInfo filterInfo;
+  if (!mAnalyser->RegionFilterInfo(index, &filterInfo)) {
+    return;
   }
 
+  if (setDefault) {
+    mCurrentDumpParam1 = filterInfo.Param1Default;
+    mCurrentDumpParam2 = filterInfo.Param2Default;
+  } else {
+    mCurrentDumpParam1 = qBound(filterInfo.Param1Min, mCurrentDumpParam1, filterInfo.Param1Max);
+    mCurrentDumpParam2 = qBound(filterInfo.Param2Min, mCurrentDumpParam2, filterInfo.Param2Max);
+  }
+
+  ui->widgetParam1->setVisible(filterInfo.Param1Max > filterInfo.Param1Min);
+  ui->labelParam1->setText(filterInfo.Param1Name);
+  ui->spinBoxFilterParam1->disconnect();
+  ui->spinBoxFilterParam1->setMinimum(filterInfo.Param1Min);
+  ui->spinBoxFilterParam1->setMaximum(filterInfo.Param1Max);
+  ui->spinBoxFilterParam1->setValue(mCurrentDumpParam1);
+  if (filterInfo.Param1Max > filterInfo.Param1Min) {
+    connect(ui->spinBoxFilterParam1, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged)
+            , this, &MainWindow::OnDumpRegionParamsChanged);
+  }
+
+  ui->widgetParam2->setVisible(filterInfo.Param2Max > filterInfo.Param2Min);
+  ui->labelParam2->setText(filterInfo.Param2Name);
+  ui->spinBoxFilterParam2->disconnect();
+  ui->spinBoxFilterParam2->setMinimum(filterInfo.Param2Min);
+  ui->spinBoxFilterParam2->setMaximum(filterInfo.Param2Max);
+  ui->spinBoxFilterParam2->setValue(mCurrentDumpParam2);
+  if (filterInfo.Param2Max > filterInfo.Param2Min) {
+    connect(ui->spinBoxFilterParam2, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged)
+            , this, &MainWindow::OnDumpRegionParamsChanged);
+  }
+
+  OnDumpRegionParamsChanged(0);
   UpdateDumpActionsView();
 }
 
 void MainWindow::OnDumpRegionParamsChanged(int)
 {
-  int index = ui->comboBoxFilterDump->currentIndex();
-  if (index >= 0 && index < mDumpRegion.size()) {
-    const DumpRegion& dumpRegion = mDumpRegion.at(index);
-    Region<uchar> markRegion;
-    DumpRegionFunc f = dumpRegion.Function;
-    mCurrentDumpParam1 = qBound(dumpRegion.Param1Min, ui->spinBoxFilterParam1->value(), dumpRegion.Param1Max);
-    mCurrentDumpParam2 = qBound(dumpRegion.Param2Min, ui->spinBoxFilterParam2->value(), dumpRegion.Param2Max);
-    ((*mAnalyser).*f)(&markRegion, mCurrentDumpParam1, mCurrentDumpParam2);
-    ui->tabFilter->SetImage(ImageFromRegion(markRegion));
-    mLoadedTabs[eTabFilter] = true;
-  }
+  mCurrentDumpParam1 = ui->spinBoxFilterParam1->value();
+  mCurrentDumpParam2 = ui->spinBoxFilterParam2->value();
+
+  FilterImage();
 }
 
 void MainWindow::OnDumpRegionTriggered()
@@ -813,9 +784,9 @@ void MainWindow::on_actionOpenFile_triggered()
       SetImage(img, info.fileName());
       ApplyDir();
 
-      mSettings->setValue("FilesPath", mCurrentDir.absolutePath());
-      mSettings->setValue("ImageFile", mImageSource);
-      mSettings->sync();
+      GetSettings()->setValue("FilesPath", mCurrentDir.absolutePath());
+      GetSettings()->setValue("ImageFile", mImageSource);
+      GetSettings()->sync();
     }
   }
 }
@@ -892,28 +863,17 @@ void MainWindow::on_horizontalSliderFiles_sliderMoved(int position)
 void MainWindow::on_tabWidgetMain_currentChanged(int index)
 {
   mCurrentTab = (ETab)index;
+  PrepareTab();
   UpdateTab();
 }
 
 void MainWindow::on_actionLineStats_triggered()
 {
-  ui->tabImage->SyncSettings(mSettings);
-
-  FilterLine();
   ui->tabWidgetMain->setCurrentIndex(eTabLineStats);
 }
 
 void MainWindow::on_actionFilter_triggered()
 {
-  FilterImage();
-
-  ui->tabWidgetMain->setCurrentIndex(eTabFilter);
-}
-
-void MainWindow::on_actionFilter2_triggered()
-{
-  FilterImage2();
-
   ui->tabWidgetMain->setCurrentIndex(eTabFilter);
 }
 
@@ -921,21 +881,15 @@ void MainWindow::on_actionFilterMk3Color_triggered()
 {
   FilterImageMk3Color();
 
+  QSignalBlocker b(ui->tabWidgetMain);
   ui->tabWidgetMain->setCurrentIndex(eTabFilter);
-}
-
-void MainWindow::on_actionLineStats2_triggered()
-{
-  ui->tabImage->SyncSettings(mSettings);
-
-  FilterLine2();
-  ui->tabWidgetMain->setCurrentIndex(eTabLineStats);
 }
 
 void MainWindow::on_actionErosionBlack_triggered()
 {
   FilterErosionBlack();
 
+  QSignalBlocker b(ui->tabWidgetMain);
   ui->tabWidgetMain->setCurrentIndex(eTabFilter);
 }
 
@@ -943,6 +897,7 @@ void MainWindow::on_actionErosionWhite_triggered()
 {
   FilterErosionWhite();
 
+  QSignalBlocker b(ui->tabWidgetMain);
   ui->tabWidgetMain->setCurrentIndex(eTabFilter);
 }
 
@@ -960,15 +915,25 @@ void MainWindow::on_spinBoxLineY_valueChanged(int value)
 
 void MainWindow::on_actionNextFilterImage_triggered()
 {
-  if (mCurrentDumpIndex < mDumpList.size() - 1) {
-    mCurrentDumpIndex++;
-    ui->comboBoxFilterDump->setCurrentIndex(mCurrentDumpIndex);
+  if (ui->tabWidgetMain->currentIndex() == eTabLineStats) {
+    if (mCurrentLineIndex < mMaxDumpIndex - 1) {
+      mCurrentLineIndex++;
+      ui->comboBoxFilterDump->setCurrentIndex(mCurrentLineIndex);
+    }
+  } else if (ui->tabWidgetMain->currentIndex() == eTabFilter) {
+    if (mCurrentDumpIndex < mMaxDumpIndex - 1) {
+      mCurrentDumpIndex++;
+      ui->comboBoxFilterDump->setCurrentIndex(mCurrentDumpIndex);
+    }
   }
 }
 
 void MainWindow::on_actionPrevFilterImage_triggered()
 {
-  if (mCurrentDumpIndex > 0) {
+  if (ui->tabWidgetMain->currentIndex() == eTabLineStats) {
+    mCurrentLineIndex--;
+    ui->comboBoxFilterDump->setCurrentIndex(mCurrentLineIndex);
+  } else if (ui->tabWidgetMain->currentIndex() == eTabFilter) {
     mCurrentDumpIndex--;
     ui->comboBoxFilterDump->setCurrentIndex(mCurrentDumpIndex);
   }
@@ -991,7 +956,7 @@ void MainWindow::on_actionViewRectangle_toggled(bool checked)
 
 void MainWindow::on_actionAreaStats_triggered()
 {
-  ui->tabImage->SyncSettings(mSettings);
+  ui->tabImage->SyncSettings(GetSettings());
 
   FilterRect();
   ui->tabWidgetMain->setCurrentIndex(eTabRectStats);
@@ -1002,10 +967,9 @@ void MainWindow::on_actionWhiteBallance_triggered()
   if (!PrepareData()) {
     return;
   }
-  Region<uchar> sourceRegion(mCurrentValue.data(), mCurrentImage.width(), mCurrentImage.height(), mCurrentImage.width());
-  mAnalyser->Init(sourceRegion);
-  mAnalyser->MakeWhiteBallance();
-  const Region<uchar>& markRegion = mAnalyser->Result();
+
+  mAnalyser->GetImageStatFtr()->MakeWhiteBallance();
+  const ByteRegion& markRegion = mAnalyser->Result();
   QImage image = ImageFromRegion(markRegion);
   SetImage(image, "White black ballanced image");
 }

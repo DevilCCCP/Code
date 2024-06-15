@@ -234,7 +234,7 @@ void UinPre::CalcStage2(const Rectangle& rect)
 #ifndef QT_NO_DEBUG
   // debug
   mObjValue.SetSize(400, 200);
-  mObjValue.SetData(0x40);
+  mObjValue.FillData(0x40);
   mDebugDigitPos = 0;
 #endif
 
@@ -742,7 +742,7 @@ void UinPre::CalcDigitSpaces()
 
 #ifndef QT_NO_DEBUG
   // debug
-  mObjValue.SetData(0xcf);
+  mObjValue.FillData(0xcf);
   for (int i = 0; i < mObjSource.Width(); i++) {
     Front& front = mObjFront[i];
     if (front.Ok) {
@@ -1027,7 +1027,7 @@ void UinPre::DebugHyst(const Hyst& hyst, Region<uchar>& debugRegion)
   }
 
   debugRegion.SetSize(256, mObjSource.Height() + 1 + values.size());
-  debugRegion.SetData(0x7f7f7f7f);
+  debugRegion.FillData(0x7f7f7f7f);
   for (int i = 0; i < values.size(); i++) {
     int v = values.at(i) * 255 / maxValue;
     uchar* dst = debugRegion.Line(mObjSource.Height() + 1 + i);

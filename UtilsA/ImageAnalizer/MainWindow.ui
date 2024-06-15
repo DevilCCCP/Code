@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>541</width>
-    <height>412</height>
+    <width>1005</width>
+    <height>739</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -40,7 +40,7 @@
     <item>
      <widget class="QTabWidget" name="tabWidgetMain">
       <property name="currentIndex">
-       <number>2</number>
+       <number>1</number>
       </property>
       <widget class="FormImageLineView" name="tabImage">
        <attribute name="icon">
@@ -250,7 +250,7 @@
        <item>
         <widget class="QComboBox" name="comboBoxFilterDump">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
+          <sizepolicy hsizetype="Maximum" vsizetype="Ignored">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
@@ -281,23 +281,97 @@
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBoxFilterParam1">
+        <widget class="QWidget" name="widgetParam1" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelParam1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Param1</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBoxFilterParam1">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Ignored">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
        <item>
-        <widget class="QSpinBox" name="spinBoxFilterParam2">
+        <widget class="QWidget" name="widgetParam2" native="true">
          <property name="sizePolicy">
-          <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+          <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
            <horstretch>0</horstretch>
            <verstretch>0</verstretch>
           </sizepolicy>
          </property>
+         <layout class="QHBoxLayout" name="horizontalLayout_4">
+          <property name="leftMargin">
+           <number>0</number>
+          </property>
+          <property name="topMargin">
+           <number>0</number>
+          </property>
+          <property name="rightMargin">
+           <number>0</number>
+          </property>
+          <property name="bottomMargin">
+           <number>0</number>
+          </property>
+          <item>
+           <widget class="QLabel" name="labelParam2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Preferred">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+            <property name="text">
+             <string>Param2</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="spinBoxFilterParam2">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Maximum" vsizetype="Ignored">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+          </item>
+         </layout>
         </widget>
        </item>
       </layout>
@@ -310,8 +384,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>541</width>
-     <height>31</height>
+     <width>1005</width>
+     <height>38</height>
     </rect>
    </property>
   </widget>
@@ -399,10 +473,10 @@
      <normaloff>:/Icons/Stats.png</normaloff>:/Icons/Stats.png</iconset>
    </property>
    <property name="text">
-    <string>Show line stats</string>
+    <string>Show line filters</string>
    </property>
    <property name="toolTip">
-    <string>Show line stats</string>
+    <string>Show line filters</string>
    </property>
   </action>
   <action name="actionFilter">
@@ -411,10 +485,10 @@
      <normaloff>:/Icons/Image Filter.png</normaloff>:/Icons/Image Filter.png</iconset>
    </property>
    <property name="text">
-    <string>Filter image</string>
+    <string>Show image filters</string>
    </property>
    <property name="toolTip">
-    <string>Filter image</string>
+    <string>Show image filters</string>
    </property>
   </action>
   <action name="actionFilterMk3Color">
@@ -427,30 +501,6 @@
    </property>
    <property name="toolTip">
     <string>Make 3 color</string>
-   </property>
-  </action>
-  <action name="actionLineStats2">
-   <property name="icon">
-    <iconset resource="ImageAnalizer.qrc">
-     <normaloff>:/Icons/Stats.png</normaloff>:/Icons/Stats.png</iconset>
-   </property>
-   <property name="text">
-    <string>Show line stats v2</string>
-   </property>
-   <property name="toolTip">
-    <string>Show line stats v2</string>
-   </property>
-  </action>
-  <action name="actionFilter2">
-   <property name="icon">
-    <iconset resource="ImageAnalizer.qrc">
-     <normaloff>:/Icons/Image Filter.png</normaloff>:/Icons/Image Filter.png</iconset>
-   </property>
-   <property name="text">
-    <string>Filter image v2</string>
-   </property>
-   <property name="toolTip">
-    <string>Filter image v2</string>
    </property>
   </action>
   <action name="actionErosionBlack">
