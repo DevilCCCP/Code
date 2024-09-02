@@ -204,8 +204,8 @@ void MapGenerator::CreateSuperPlate()
 
   QVector<QPointF> border;
   QPointF center(0, 0);
-  for (int j = 180; j >= -180; j--) {
-    qreal alpha = j * M_PI / 180.0;
+  for (int j = 18; j >= -18; j--) {
+    qreal alpha = j * M_PI / 18.0;
     QPointF p = center + theta * QPointF(sin(alpha), cos(alpha));
     border.append(QPointF(j, 60));
   }

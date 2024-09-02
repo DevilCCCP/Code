@@ -24,7 +24,7 @@ void LogMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
 int main(int argc, char *argv[])
 {
   QApplication app(argc, argv);
-//  qInstallMessageHandler(LogMessageHandler);
+  qInstallMessageHandler(LogMessageHandler);
 
   MainWindow w;
   w.show();

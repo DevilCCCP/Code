@@ -6,6 +6,7 @@ QT += network gui
 
 
 HEADERS += \
+    DMath.h \
     FpsCalc.h \
     TrafficCalc.h \
     Format.h \
@@ -32,6 +33,7 @@ HEADERS += \
     TlvConstructor.h
 
 SOURCES += \
+    DMath.cpp \
     FpsCalc.cpp \
     TrafficCalc.cpp \
     Format.cpp \
