@@ -20,14 +20,16 @@ const int kMaxCutCount = 1000;
 const qreal kDeformPlateValue = 0.05;
 
 enum Stage {
-  eSuperPlateStage = 1,
-  ePlateCutStage,
-  ePlateMoveStage,
-  eCutWorldStage,
-  eHeightStage,
-  eWaterMoveStage,
+  ePlateStage = 1,
+//  eSuperPlateStage = 1,
+//  ePlateCutStage,
+//  ePlateMoveStage,
+//  eCutWorldStage,
+//  eHeightStage,
+//  eWaterMoveStage,
   eUserStage,
-  eStartStage = eSuperPlateStage,
+  eFinished,
+  eStartStage = ePlateStage,
   eFinalStage = eUserStage,
 };
 
@@ -44,13 +46,15 @@ int MapGenerator::GetCompleteStage()
 QString MapGenerator::GetStageName()
 {
   switch (mCurrentStage) {
-  case eSuperPlateStage: return "Создание суперматерика";
-  case ePlateCutStage  : return "Отделение тектонических плит";
-  case ePlateMoveStage : return "Движение тектонических плит";
-  case eCutWorldStage  : return "Обрезка лишних частей";
-  case eHeightStage    : return "Создание ландшафта";
-  case eWaterMoveStage : return "Создание водоёмов и рек";
+  case ePlateStage: return "Создание материков";
+//  case eSuperPlateStage: return "Создание суперматерика";
+//  case ePlateCutStage  : return "Отделение тектонических плит";
+//  case ePlateMoveStage : return "Движение тектонических плит";
+//  case eCutWorldStage  : return "Обрезка лишних частей";
+//  case eHeightStage    : return "Создание ландшафта";
+//  case eWaterMoveStage : return "Создание водоёмов и рек";
   case eUserStage      : return "Подтверждение пользователем";
+  case eFinished       : return "Завершение";
   }
   return "<Некорректная операция>";
 }
@@ -62,13 +66,15 @@ const EarthLandscape& MapGenerator::GetEarthLandscape()
   }
 
   switch (mCurrentStage) {
-  case eSuperPlateStage: CreatePreviewSuperPlate(); break;
-  case ePlateCutStage  : CreatePreviewStartPlates(); break;
-  case ePlateMoveStage : CreatePreviewMovedPlates(); break;
-  case eCutWorldStage  : CreatePreviewWorldPlates(); break;
-  case eHeightStage    : CreatePreviewHeights(); break;
-  case eWaterMoveStage : CreatePreviewWater(); break;
+  case ePlateStage     : CreatePreviewPlates(); break;
+//  case eSuperPlateStage: CreatePreviewSuperPlate(); break;
+//  case ePlateCutStage  : CreatePreviewStartPlates(); break;
+//  case ePlateMoveStage : CreatePreviewMovedPlates(); break;
+//  case eCutWorldStage  : CreatePreviewWorldPlates(); break;
+//  case eHeightStage    : CreatePreviewHeights(); break;
+//  case eWaterMoveStage : CreatePreviewWater(); break;
   case eUserStage      : CreatePreviewFinal(); break;
+  case eFinished       : break;
   }
   return mEarthLandscape;
 }
@@ -134,6 +140,15 @@ void MapGenerator::Forward()
   mCurrentStage = qMin(qMin(mStageMax, mCompleteStage + 1), mCurrentStage + 1);
 }
 
+void MapGenerator::Finish()
+{
+  if (mGenerateWatcher->isRunning()) {
+    return;
+  }
+
+  mCurrentStage = eFinished;
+}
+
 bool MapGenerator::UpdatePercent(int perc)
 {
   if (perc > mGeneratePercent) {
@@ -145,6 +160,14 @@ bool MapGenerator::UpdatePercent(int perc)
 
 void MapGenerator::DoGenerate(bool autoGenerate)
 {
+#ifdef RandomSeed
+  mRand.seed(RandomSeed);
+#else
+  int seed = (int)QDateTime::currentMSecsSinceEpoch() % 1000;
+  qDebug() << seed;
+  mRand.seed(seed);
+#endif
+
   if (autoGenerate) {
     while (mCurrentStage <= mStageMax) {
       DoGenerateStage();
@@ -154,7 +177,6 @@ void MapGenerator::DoGenerate(bool autoGenerate)
   } else {
     DoGenerateStage();
   }
-  emit Percent(mCurrentStage, mGeneratePercent);
 }
 
 void MapGenerator::DoGenerateStage()
@@ -163,23 +185,14 @@ void MapGenerator::DoGenerateStage()
   mGeneratePercent = 0;
 
   switch (mCurrentStage) {
-  case eSuperPlateStage: CreateSuperPlate(); break;
-  case ePlateCutStage  : CutSuperPlate(); break;
-  case ePlateMoveStage : MovePlates(); break;
-  case eCutWorldStage  : CutWorldPlates(); break;
-  case eHeightStage    : CreateHeight(); break;
-  case eWaterMoveStage : MoveWater(); break;
+  case ePlateStage     : CreatePlate(); break;
+//  case eSuperPlateStage: CreateSuperPlate(); break;
+//  case ePlateCutStage  : CutSuperPlate(); break;
+//  case ePlateMoveStage : MovePlates(); break;
+//  case eCutWorldStage  : CutWorldPlates(); break;
+//  case eHeightStage    : CreateHeight(); break;
+//  case eWaterMoveStage : MoveWater(); break;
   case eUserStage      : break;
-  default:
-    for (; mGeneratePercent < 100; mGeneratePercent++) {
-      emit Percent(mCurrentStage, mGeneratePercent);
-      QThread::msleep(10);
-
-      if (mCancel) {
-        return;
-      }
-    }
-    break;
   }
 
   mGeneratePercent = 100;
@@ -191,22 +204,33 @@ void MapGenerator::CreateWorld()
 {
 }
 
+void MapGenerator::CreatePlate()
+{
+  mMainHill.clear();
+//  int count = mMapParameters.getWorldPlateCount();
+//  for (int i = 0; i < count; i++) {
+//    CreateNextPlate();
+//  }
+  CreateNextPlate();
+}
+
+void MapGenerator::CreateNextPlate()
+{
+  int perc = mRand.bounded(100);
+  int partCount = perc < 10? 1: perc < 30? 2: 3;
+
+}
+
 void MapGenerator::CreateSuperPlate()
 {
-#ifdef RandomSeed
-  qsrand(RandomSeed);
-#else
-  qsrand((int)QDateTime::currentMSecsSinceEpoch());
-#endif
-
-  qreal h = 0.02 * getMapParameters().getGroundPercent();
-  qreal theta = qAcos(1 - h) * 180.0 / M_PI;
+//  qreal h = 0.02 * getMapParameters().getGroundPercent();
+//  qreal theta = qAcos(1 - h) * 180.0 / M_PI;
 
   QVector<QPointF> border;
   QPointF center(0, 0);
   for (int j = 18; j >= -18; j--) {
-    qreal alpha = j * M_PI / 18.0;
-    QPointF p = center + theta * QPointF(sin(alpha), cos(alpha));
+//    qreal alpha = j * M_PI / 18.0;
+//    QPointF p = center + theta * QPointF(sin(alpha), cos(alpha));
     border.append(QPointF(j, 60));
   }
 
@@ -307,12 +331,6 @@ void MapGenerator::CreateNewCentralPlate(Plate* plate, qreal scale, qreal sector
 
 void MapGenerator::CutSuperPlate()
 {
-#ifdef RandomSeed
-  qsrand(RandomSeed);
-#else
-  qsrand((int)QDateTime::currentMSecsSinceEpoch());
-#endif
-
   mInitPlateList.clear();
   int count = mMapParameters.getGlobePlateCount();
   mCutCounter = 0;
@@ -356,6 +374,7 @@ void MapGenerator::MovePlates()
 
 void MapGenerator::MovePlatesOne(qreal length)
 {
+  Q_UNUSED(length);
 //  QVector<QPointF> step;
 //  step.resize(mMovedPlateList.size());
 //  step.fill(QPointF(0, 0));
@@ -413,8 +432,8 @@ void MapGenerator::CutPlate(const Plate& mainPlate, int count)
     int i1 = 0;
     int i2 = mainPlate.Border().size()/2;
     for (int i = 0; i < 100; i++) {
-      i1 = qrand() % mainPlate.Border().size();
-      i2 = qrand() % mainPlate.Border().size();
+      i1 = mRand.bounded(mainPlate.Border().size());
+      i2 = mRand.bounded(mainPlate.Border().size());
       int iDelta1 = i1 - i2;
       int iDelta2 = i2 - i1;
       if (iDelta1 < 0) {
@@ -434,7 +453,7 @@ void MapGenerator::CutPlate(const Plate& mainPlate, int count)
     Plate plate1, plate2;
     int count1 = 0;
     int count2 = 0;
-    if (!mainPlate.CreateCut(i1, i2, count, &plate1, &plate2, count1, count2)) {
+    if (!mainPlate.CreateCut(&mRand, i1, i2, count, &plate1, &plate2, count1, count2)) {
       continue;
     }
 
@@ -511,6 +530,37 @@ void MapGenerator::CreatePreviewEmpty()
 {
   mEarthLandscape.clear();
   mEarthLandscape.append(EarthLevel());
+}
+
+void MapGenerator::CreatePreviewPlates()
+{
+  CreatePreviewEmpty();
+
+  EarthLevel* landLevel = &mEarthLandscape.front();
+  for (const Hill& hill: qAsConst(mMainHill)) {
+    EarthPlate earthPlate;
+    earthPlate.Color = QColor(Qt::lightGray);
+    earthPlate.Border = hill.High;
+    landLevel->append(earthPlate);
+  }
+
+  mEarthLandscape.append(EarthLevel());
+  landLevel = &mEarthLandscape.front();
+  for (const Hill& hill: qAsConst(mMainHill)) {
+    EarthPlate earthPlate;
+    earthPlate.Color = QColor(Qt::darkYellow);
+    earthPlate.Border = hill.Middle;
+    landLevel->append(earthPlate);
+  }
+
+  mEarthLandscape.append(EarthLevel());
+  landLevel = &mEarthLandscape.front();
+  for (const Hill& hill: qAsConst(mMainHill)) {
+    EarthPlate earthPlate;
+    earthPlate.Color = QColor(Qt::darkGreen);
+    earthPlate.Border = hill.Low;
+    landLevel->append(earthPlate);
+  }
 }
 
 void MapGenerator::CreatePreviewWorldPlate()

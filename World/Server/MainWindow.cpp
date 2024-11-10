@@ -1,5 +1,5 @@
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QMessageBox>
 #include <QDateTime>
 #include <QtMath>
@@ -25,9 +25,8 @@ MainWindow::MainWindow(QWidget* parent)
   setWindowTitle(qCore->getProgramName());
 
   if (!Restore()) {
-    QDesktopWidget* desktop = qApp->desktop();
-    int primaryScreen = desktop->primaryScreen();
-    QRect geometry = desktop->availableGeometry(primaryScreen);
+    QScreen* screen = qApp->primaryScreen();
+    QRect geometry = screen->availableGeometry();
     move(geometry.topLeft());
     resize(geometry.size() - (frameSize() - size()));
     setWindowState(windowState() | Qt::WindowMaximized);

@@ -29,6 +29,6 @@ protected:
   void DrawRectCopy(const QRectF& rect);
 
 public:
-  explicit QWidgetB(QWidget* parent = 0, Qt::WindowFlags f = 0);
+  explicit QWidgetB(QWidget* parent = 0, Qt::WindowFlags f = Qt::WindowFlags());
   /*override */ virtual ~QWidgetB();
 };

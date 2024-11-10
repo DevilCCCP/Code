@@ -10,7 +10,7 @@ void LogMessageHandler(QtMsgType type, const QMessageLogContext &context, const 
     //known Qt 5.5 bug
     return;
   }
-  QString info = QString("Qt message (text: '%1', file: '%2', line: %3, func: '%4')").arg(msg).arg(context.file).arg(context.line).arg(context.function);
+  QString info = QString("Qt message (text: '%1', file: '%2', line: %4, func: '%3')").arg(msg, context.file, context.function).arg(context.line);
 
   switch (type) {
   case QtDebugMsg   : printf("Debug: %s\n", info.toLatin1().constData()); break;

@@ -3,6 +3,7 @@
 #include <QWheelEvent>
 #include <QPaintEvent>
 #include <QPainter>
+#include <QDateTime>
 #include <QtMath>
 #include <QDebug>
 
@@ -15,13 +16,15 @@ const int kMoveThreshold = 5;
 const qreal kThetaMoveStep = 0.25;
 const qreal kPhiMoveStep = 1.0;
 const qreal kCamViewAngel = 0.3 * M_PI;
+int gDebug = 0;
 
 FormEarth::FormEarth(QWidget* parent)
   : QWidget(parent), ui(new Ui::FormEarth)
   , mShowAxes(true), mMinScale(true)
   , mDefaultCamTheta(90.0), mDefaultCamPhi(-90.0), mDefaultCamH(1.0)
-  , mMainColor(QColor(Qt::blue)), mAxeColor(QColor(Qt::darkGray))
+  , mMainColor(QColor(Qt::darkBlue)), mAxeColor(QColor(Qt::darkGray))
   , mCamTheta(90.0), mCamPhi(-90.0), mCamH(1.0), mZoomDelta(0), mMoving(false)
+  , mUpdated(false)
 //  , mCamTheta(90.0), mCamPhi(0.0), mCamH(0.003), mZoomDelta(0), mMoving(false)
 {
   Q_INIT_RESOURCE(LibZ);
@@ -45,7 +48,7 @@ FormEarth::FormEarth(QWidget* parent)
 //  addAction(ui->actionMoveDown);
 //  setContextMenuPolicy(Qt::ActionsContextMenu);
 
-  DrawPrepare(100, 100);
+  UpdatePrepare(100, 100);
 }
 
 FormEarth::~FormEarth()
@@ -60,7 +63,7 @@ void FormEarth::resizeEvent(QResizeEvent* event)
   int h = event->size().height();
   ui->widgetControls->move(w - ui->widgetControls->width() - kControlMargin, kControlMargin);
 
-  DrawPrepare(w, h);
+  UpdatePrepare(w, h);
 
   update();
 }
@@ -76,16 +79,10 @@ void FormEarth::mouseMoveEvent(QMouseEvent* event)
   if (newMoved != mMoved) {
     mMoved = newMoved;
     qreal scale = mCamH;
-    mCamTheta = qBound(10.0, mCamAnchor.x() - mMoved.y() * scale * kThetaMoveStep, 170.0);
-    mCamPhi = mCamAnchor.y() + mMoved.x() * scale * kPhiMoveStep;
-    while (mCamPhi < 0) {
-      mCamPhi += 360.0;
-    }
-    while (mCamPhi >= 360.0) {
-      mCamPhi -= 360.0;
-    }
+    UpdateValue(mCamTheta, qBound(10.0, mCamAnchor.x() - mMoved.y() * scale * kThetaMoveStep, 170.0));
+    MovePhi(mCamAnchor.y() + mMoved.x() * scale * kPhiMoveStep);
 
-    Draw();
+    Update();
   }
 }
 
@@ -97,11 +94,11 @@ void FormEarth::mousePressEvent(QMouseEvent* event)
     mMoveAnchor = event->pos();
     mMoving = true;
   } else if (mMoving) {
-    mCamTheta = mCamAnchor.x();
-    mCamPhi = mCamAnchor.y();
+    UpdateValue(mCamTheta, mCamAnchor.x());
+    UpdateValue(mCamPhi, mCamAnchor.y());
     mMoving = false;
 
-    Draw();
+    Update();
 
     event->accept();
   }
@@ -126,40 +123,40 @@ void FormEarth::wheelEvent(QWheelEvent* event)
 
 void FormEarth::paintEvent(QPaintEvent* event)
 {
-  Q_UNUSED(event);
+  if (mUpdated) {
+    Draw();
+    mUpdated = false;
+  }
 
   QPainter painter(this);
-  painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
-  painter.fillRect(rect(), Qt::black);
-
-  DrawBackground(&painter);
-  DrawLandscape(&painter, mLandscape);
-  if (mShowAxes) {
-    DrawAxes(&painter);
-  }
+  painter.drawPixmap(event->rect().topLeft(), mBackBuffer, event->rect());
 }
 
-void FormEarth::Draw()
+void FormEarth::Update()
 {
-  DrawPrepare(size().width(), size().height());
+  if (!mUpdated) {
+    return;
+  }
+
+  UpdatePrepare(size().width(), size().height());
 
   qDebug() << mCamTheta << mCamPhi << mCamH;
   update();
 }
 
-void FormEarth::DrawPrepare(int w, int h)
+void FormEarth::UpdatePrepare(int w, int h)
 {
   qreal screen = mMinScale? qMin(w, h): qMax(w, h);
   qreal d = screen / qTan(kCamViewAngel);
-  mPlaneScale = d;
-  mCenter.setX(0.5 * w);
-  mCenter.setY(0.5 * h);
+  UpdateValue(mPlaneScale, d);
+  UpdateValue(mCenter.rx(), 0.5 * w);
+  UpdateValue(mCenter.ry(), 0.5 * h);
 
   mZ0 = 1.0 / (1.0 + mCamH);
   qreal r = sqrt(1.0 - mZ0 * mZ0);
   mPlaneRadius = mPlaneScale * r / (mCamH + 1.0 - mZ0);
   mPlaneBorder.clear();
-  const int kBorderPrecission = 2;
+  const int kBorderPrecission = 1;
   for (int i = 0; i < kBorderPrecission*360; i++) {
     qreal alpha = i * (M_PI / (kBorderPrecission*180.0));
     mPlaneBorder.append(mCenter + QPointF(-cos(alpha) * mPlaneRadius, sin(alpha) * mPlaneRadius));
@@ -171,6 +168,41 @@ void FormEarth::DrawPrepare(int w, int h)
   mPhiD = 1.0;
 }
 
+void FormEarth::UpdateValue(int& value, int newValue)
+{
+  if (value != newValue) {
+    value = newValue;
+    mUpdated = true;
+  }
+}
+
+void FormEarth::UpdateValue(qreal& value, qreal newValue)
+{
+  if (value != newValue) {
+    value = newValue;
+    mUpdated = true;
+  }
+}
+
+void FormEarth::Draw()
+{
+  if (mBackBuffer.isNull() || mBackBuffer.width() != width() || mBackBuffer.height() != height()) {
+    mBackBuffer = QPixmap(width(), height());
+  }
+
+  QPainter painter;
+  painter.begin(&mBackBuffer);
+  painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing | QPainter::SmoothPixmapTransform);
+  painter.fillRect(rect(), Qt::black);
+
+  DrawBackground(&painter);
+  DrawLandscape(&painter, mLandscape);
+  if (mShowAxes) {
+    DrawAxes(&painter);
+  }
+  painter.end();
+}
+
 void FormEarth::DrawBackground(QPainter* painter)
 {
   painter->setPen(QPen(QBrush(Qt::black), 1.0));
@@ -179,8 +211,10 @@ void FormEarth::DrawBackground(QPainter* painter)
   painter->drawEllipse(mCenter, mPlaneRadius, mPlaneRadius);
 }
 
+static int gDrawPlateCounter = 0;
 void FormEarth::DrawLandscape(QPainter* painter, const EarthLandscape& landscape)
 {
+  gDrawPlateCounter = 0;
   for (const EarthLevel& level: landscape) {
     for (const EarthPlate& plate: level) {
       painter->setPen(QPen(plate.Color));
@@ -225,9 +259,9 @@ void FormEarth::DrawPlate(QPainter* painter, const QVector<QPointF>& border)
   }
 
   if (!hasVisible) {
-    if ((rotateBorder.x() % 2) == 0 && rotateBorder.x() > 0) {
-      painter->drawPolygon(mPlaneBorder.constData(), mPlaneBorder.size());
-    }
+//    if ((rotateBorder.x() % 2) == 0 && rotateBorder.x() > 0) {
+//      painter->drawPolygon(mPlaneBorder.constData(), mPlaneBorder.size());
+//    }
     return;
   }
 
@@ -237,17 +271,17 @@ void FormEarth::DrawPlate(QPainter* painter, const QVector<QPointF>& border)
     arcList.removeFirst();
   }
 
-  QVector<QVector<QPointF> > sborderList;
+  QList<QVector<QPointF> > sborderList;
   if (!hasInvisible) {
     sborderList.append(arcList.first());
     arcList.clear();
   }
 
-  QMap<int, const QVector<QPointF>*> arcStartMap;
+  QMultiMap<int, const QVector<QPointF>*> arcStartMap;
   for (int i = 0; i < arcList.size(); i++) {
     const QVector<QPointF>* arc = &arcList.at(i);
     int firstIndex = FindBorderIndex(arc->first());
-    arcStartMap.insertMulti(firstIndex, arc);
+    arcStartMap.insert(firstIndex, arc);
   }
   while (!arcStartMap.isEmpty()) {
     const QVector<QPointF>* arc = arcStartMap.first();
@@ -284,7 +318,7 @@ void FormEarth::DrawPlate(QPainter* painter, const QVector<QPointF>& border)
     sborderList.append(sborder);
   }
 
-  for (const QVector<QPointF> sborder: sborderList) {
+  for (const QVector<QPointF>& sborder: qAsConst(sborderList)) {
     if (sborder.size() >= 2) {
       painter->drawPolygon(sborder.constData(), sborder.size());
     }
@@ -293,6 +327,13 @@ void FormEarth::DrawPlate(QPainter* painter, const QVector<QPointF>& border)
 
 void FormEarth::PlateConnectBorder(int fromIndex, int toIndex, QVector<QPointF>& sborder)
 {
+  int delta = toIndex - fromIndex;
+  if (delta < 0) {
+    delta += mPlaneBorder.size();
+  }
+  if (delta > mPlaneBorder.size()/2) {
+    return;
+  }
   if (fromIndex <= toIndex) {
     for (int j = fromIndex; j < toIndex; j++) {
       sborder.append(mPlaneBorder.at(j));
@@ -458,11 +499,22 @@ void FormEarth::Zoom(int k)
     newCamH += qMin(newCamH, 1.0);
   }
   newCamH = qBound(0.0001, newCamH, 2.0);
+  UpdateValue(mCamH, newCamH);
 
-  if (newCamH != mCamH) {
-    mCamH = newCamH;
-    Draw();
+  Update();
+}
+
+void FormEarth::MovePhi(qreal newCamPhi)
+{
+  if (newCamPhi >= 360) {
+    newCamPhi -= 360;
   }
+  if (newCamPhi < 0) {
+    newCamPhi += 360;
+  }
+  UpdateValue(mCamPhi, newCamPhi);
+
+  Update();
 }
 
 void FormEarth::on_actionZoomIn_triggered()
@@ -477,43 +529,44 @@ void FormEarth::on_actionZoomOut_triggered()
 
 void FormEarth::on_actionZoomDefault_triggered()
 {
-  mCamH = mDefaultCamH;
-  mCamTheta = mDefaultCamTheta;
-  mCamPhi = mDefaultCamPhi;
+  UpdateValue(mCamH, mDefaultCamH);
+  UpdateValue(mCamTheta, mDefaultCamTheta);
+  UpdateValue(mCamPhi, mDefaultCamPhi);
 
-  Draw();
+  Update();
 }
 
 void FormEarth::on_actionMoveLeft_triggered()
 {
-  mCamPhi += 10.0;
-  if (mCamPhi > 360) {
-    mCamPhi -= 360;
-  }
-
-  Draw();
+  MovePhi(mCamPhi + 10.0);
 }
 
 void FormEarth::on_actionMoveRight_triggered()
 {
-  mCamPhi -= 10.0;
-  if (mCamPhi < 0) {
-    mCamPhi += 360;
-  }
-
-  Draw();
+  MovePhi(mCamPhi - 10.0);
 }
 
 void FormEarth::on_actionMoveUp_triggered()
 {
-  mCamTheta = qMax(10.0, mCamTheta - 10.0);
+  UpdateValue(mCamTheta, qMax(10.0, mCamTheta - 10.0));
 
-  Draw();
+  Update();
 }
 
 void FormEarth::on_actionMoveDown_triggered()
 {
-  mCamTheta = qMin(170.0, mCamTheta + 10.0);
+  UpdateValue(mCamTheta, qMin(170.0, mCamTheta + 10.0));
 
-  Draw();
+  Update();
+}
+
+void FormEarth::on_toolButtonMoveDebug_clicked()
+{
+  mCamTheta = 53.25;
+  mCamPhi   = 63;
+  mCamH     = 1;
+  mUpdated  = true;
+  gDebug = 1;
+
+  Update();
 }

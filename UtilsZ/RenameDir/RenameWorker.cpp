@@ -1,6 +1,8 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QProcess>
+#include <QFile>
+#include <QStringList>
 
 #include "RenameWorker.h"
 
@@ -152,9 +154,71 @@ void RenameWorker::DoNumbersAssign(int number, int size, int& index)
 
 void RenameWorker::DoImageResize()
 {
-  QString convert = QString("convert %1 -resize %2x%3 -quality %4 > %1")
-      .arg(mCurrentFilePath).arg(mImageWidth).arg(mImageHeight).arg(mImageQuality).arg(mCurrentFilePath);
-  QProcess::execute(convert);
+  const QString kProg("/usr/bin/identify");
+  QProcess procTest;
+  procTest.setProgram(kProg);
+  QStringList args = { "-format", "%m %w %h\\n", mCurrentFilePath };
+  procTest.setArguments(args);
+  procTest.start();
+  if (!procTest.waitForFinished()) {
+    procTest.kill();
+    return;
+  }
+  QString out = QString::fromUtf8(procTest.readAllStandardOutput());
+  QStringList whList = out.split(QChar(' '));
+  QString type = whList.value(0);
+  int w = whList.value(1).toInt();
+  int h = whList.value(2).toInt();
+
+  bool reType = type != "JPEG";
+  bool reSize = w > mImageWidth || h > mImageHeight;
+  if (!reType && !reSize) {
+    return;
+  }
+
+  QString outFilePath = mCurrentFilePath;
+  if (reType) {
+    int ind = mCurrentFilePath.lastIndexOf(".");
+    if (ind > 0) {
+      outFilePath = mCurrentFilePath.mid(0, ind) + ".jpg";
+    } else {
+      reType = false;
+    }
+  }
+
+  const QString kProg2("/usr/bin/convert");
+  QProcess procResize;
+  procResize.setProgram(kProg2);
+  QStringList args2;
+  if (reSize) {
+    args2.append("-resize");
+    args2.append(QString("%1x%2").arg(mImageWidth).arg(mImageHeight));
+  }
+  args2.append("-quality");
+  args2.append(QString::number(mImageQuality));
+  args2.append(mCurrentFilePath);
+  args2.append(outFilePath);
+
+  procResize.setArguments(args2);
+  procResize.start();
+  procResize.waitForFinished();
+//  QByteArray data = procResize.readAllStandardOutput();
+//  if (data.isEmpty()) {
+//    return;
+//  }
+
+//  QFile file(mCurrentFilePath);
+//  if (file.size() < data.size()) {
+//    return;
+//  }
+
+//  if (file.open(QFile::WriteOnly)) {
+//    file.write(data);
+//    file.close();
+//  }
+  if (procResize.exitStatus() == QProcess::NormalExit && procResize.exitCode() == 0 && reType) {
+    QFile::remove(mCurrentFilePath);
+  }
 }
 
 void RenameWorker::Start()

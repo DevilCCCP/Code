@@ -77,9 +77,9 @@ void FormImageView::mouseReleaseEvent(QMouseEvent* event)
 void FormImageView::wheelEvent(QWheelEvent* event)
 {
   if (event->modifiers().testFlag(Qt::ControlModifier)) {
-    QPointF deltaScaled = (QPointF)event->pos() - 0.5 * QPointF(width(), height());
+    QPointF deltaScaled = (QPointF)event->position() - 0.5 * QPointF(width(), height());
     QPointF deltaReal = deltaScaled / mScale;
-    int scale = ui->horizontalSliderScale->value() + event->delta() / 120;
+    int scale = ui->horizontalSliderScale->value() + event->angleDelta().y() / 120;
     ui->horizontalSliderScale->setValue(scale);
     on_horizontalSliderScale_sliderMoved(ui->horizontalSliderScale->value());
     QPointF deltaScaled2 = deltaReal * mScale;

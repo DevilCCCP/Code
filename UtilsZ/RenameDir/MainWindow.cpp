@@ -1,4 +1,6 @@
+#include <QApplication>
 #include <QDir>
+#include <QScreen>
 #include <QFileDialog>
 
 #include "MainWindow.h"
@@ -12,6 +14,10 @@ MainWindow::MainWindow(QWidget* parent)
   ui->setupUi(this);
 
   ui->toolButtonBrowse->setDefaultAction(ui->actionBrowseFolder);
+
+  QScreen* screen = qApp->primaryScreen();
+  ui->spinBoxImageWidth->setValue(screen->size().width());
+  ui->spinBoxImageHeight->setValue(screen->size().height());
 
   ui->lineEditDirectory->setText(QDir::currentPath());
   ui->checkBoxRename->setChecked(true);

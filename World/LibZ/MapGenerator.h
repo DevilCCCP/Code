@@ -4,6 +4,7 @@
 #include <QString>
 #include <QVector>
 #include <QFutureWatcher>
+#include <QRandomGenerator>
 #include <QPixmap>
 
 #include <Lib/Include/Common.h>
@@ -25,12 +26,22 @@ class MapGenerator: public QObject
   QFutureWatcher<void>*       mGenerateWatcher;
   volatile bool               mCancel;
 
+  QRandomGenerator            mRand;
   Plate                       mSuperPlate;
   QVector<Plate>              mInitPlateList;
   QVector<Plate>              mMovedPlateList;
   QVector<Plate>              mWorldPlateList;
   int                         mCutCounter;
 
+  struct Hill {
+    QVector<QPointF> Main;
+    QVector<QPointF> High;
+    QVector<QPointF> Middle;
+    QVector<QPointF> Low;
+  };
+  typedef QVector<Hill> HillList;
+
+  HillList                    mMainHill;
   EarthLandscape              mEarthLandscape;
 
   Q_OBJECT
@@ -48,6 +59,7 @@ public:
   void Cancel();
   void Back();
   void Forward();
+  void Finish();
 
 protected:
   bool UpdatePercent(int perc);
@@ -57,6 +69,8 @@ private:
   void DoGenerateStage();
 
   void CreateWorld();
+  void CreatePlate();
+  void CreateNextPlate();
   void CreateSuperPlate();
   void CreateCentralPlate(Plate* plate, qreal scale, qreal sector);
   void CreateNewCentralPlate(Plate* plate, qreal scale, qreal sectorLeft, qreal sectorRight);
@@ -69,6 +83,7 @@ private:
   void MoveWater();
 
   void CreatePreviewEmpty();
+  void CreatePreviewPlates();
   void CreatePreviewWorldPlate();
   void CreatePreviewSuperPlate();
   void CreatePreviewStartPlates();

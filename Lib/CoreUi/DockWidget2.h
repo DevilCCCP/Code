@@ -8,7 +8,7 @@ class DockWidget2: public QDockWidget
   Q_OBJECT
 
 public:
-  DockWidget2(QWidget* parent = 0, Qt::WindowFlags flags = 0);
+  DockWidget2(QWidget* parent = 0, Qt::WindowFlags flags = Qt::WindowFlags());
 
 protected:
   /*override */virtual void resizeEvent(QResizeEvent* event) override;

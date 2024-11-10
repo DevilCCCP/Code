@@ -42,4 +42,5 @@ private slots:
   void on_pushButtonBack_clicked();
   void on_pushButtonForward_clicked();
   void on_pushButtonCancel_clicked();
+  void on_pushButtonDone_clicked();
 };

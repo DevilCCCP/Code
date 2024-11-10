@@ -36,11 +36,11 @@ public:
   void Move();
   void Move(const QPointF& vect);
 
-  void DeformPlate(qreal disp, int count);
-  void Randomize(qreal value);
+  void DeformPlate(QRandomGenerator* rand, qreal disp, int count);
+  void Randomize(QRandomGenerator* rand, qreal value);
   void MovePoint(int index, const QPointF& vectIdent, qreal len);
-  bool CreateCut(int i1, int i2, int count, Plate* plate1, Plate* plate2, int& count1, int& count2) const;
-  bool DeformCut(const QVector<QPointF>& cut, QVector<QPointF>* deformedCut) const;
+  bool CreateCut(QRandomGenerator* rand, int i1, int i2, int count, Plate* plate1, Plate* plate2, int& count1, int& count2) const;
+  bool DeformCut(QRandomGenerator* rand, const QVector<QPointF>& cut, QVector<QPointF>* deformedCut) const;
 
   int NextBoarderPoint(int index);
   int PrevBoarderPoint(int index);

@@ -45,6 +45,9 @@ class FormEarth: public QWidget
   qreal            mAxeThetaD;
   qreal            mAxePhiD;
 
+  QPixmap          mBackBuffer;
+  bool             mUpdated;
+
   Q_OBJECT
 
 public:
@@ -71,8 +74,12 @@ protected:
   /*override */virtual void paintEvent(QPaintEvent* event) override;
 
 private:
+  void Update();
+  void UpdatePrepare(int w, int h);
+  void UpdateValue(int& value, int newValue);
+  void UpdateValue(qreal& value, qreal newValue);
+
   void Draw();
-  void DrawPrepare(int w, int h);
   void DrawBackground(QPainter* painter);
   void DrawLandscape(QPainter* painter, const EarthLandscape& landscape);
   void DrawPlate(QPainter* painter, const QVector<QPointF>& border);
@@ -84,6 +91,7 @@ private:
   bool TranslateToPlaneRotate(const QPointF& p, QPointF& ps, QPoint& rotate);
 
   void Zoom(int k);
+  void MovePhi(qreal newCamPhi);
 
 private slots:
   void on_actionZoomIn_triggered();
@@ -93,4 +101,5 @@ private slots:
   void on_actionMoveRight_triggered();
   void on_actionMoveUp_triggered();
   void on_actionMoveDown_triggered();
+  void on_toolButtonMoveDebug_clicked();
 };

@@ -1,5 +1,6 @@
 #include <QtMath>
 #include <QDebug>
+#include <QRandomGenerator>
 
 #include <Lib/Common/DMath.h>
 
@@ -190,25 +191,25 @@ void Plate::Move(const QPointF& vect)
   Move();
 }
 
-void Plate::DeformPlate(qreal disp, int count)
+void Plate::DeformPlate(QRandomGenerator* rand, qreal disp, int count)
 {
   for (int i = 0; i < count; i++) {
-    Randomize(disp);
+    Randomize(rand, disp);
   }
   for (int i = 0; i < count/2; i++) {
-    Randomize(0.5 * disp);
+    Randomize(rand, 0.5 * disp);
   }
   for (int i = 0; i < count/2; i++) {
-    Randomize(0.25 * disp);
+    Randomize(rand, 0.25 * disp);
   }
 }
 
-void Plate::Randomize(qreal value)
+void Plate::Randomize(QRandomGenerator* rand, qreal value)
 {
-  qreal rndLen = (20 + (qrand() % 81)) * value * 0.01;
-  qreal rndAlpha = (qrand() % 180) * M_PI / 90.0;
+  qreal rndLen = rand->bounded(20, 101) * value * 0.01;
+  qreal rndAlpha = rand->bounded(180) * M_PI / 90.0;
   QPointF rndIdent(qSin(rndAlpha), qCos(rndAlpha));
-  int pointIndex = qrand() % mBorder.size();
+  int pointIndex = rand->bounded(mBorder.size());
 
   MovePoint(pointIndex, rndIdent, rndLen);
 }
@@ -246,7 +247,7 @@ void Plate::MovePoint(int index, const QPointF& vectIdent, qreal len)
   }
 }
 
-bool Plate::CreateCut(int i1, int i2, int count, Plate* plate1, Plate* plate2, int& count1, int& count2) const
+bool Plate::CreateCut(QRandomGenerator* rand, int i1, int i2, int count, Plate* plate1, Plate* plate2, int& count1, int& count2) const
 {
   if (i1 > i2) {
     qSwap(i1, i2);
@@ -291,7 +292,7 @@ bool Plate::CreateCut(int i1, int i2, int count, Plate* plate1, Plate* plate2, i
 
   for (int i = 0; i < 10; i++) {
     QVector<QPointF> deformedCut;
-    if (DeformCut(cut, &deformedCut)) {
+    if (DeformCut(rand, cut, &deformedCut)) {
       cut = deformedCut;
       break;
     }
@@ -333,7 +334,7 @@ bool Plate::CreateCut(int i1, int i2, int count, Plate* plate1, Plate* plate2, i
   return true;
 }
 
-bool Plate::DeformCut(const QVector<QPointF>& cut, QVector<QPointF>* deformedCut) const
+bool Plate::DeformCut(QRandomGenerator* rand, const QVector<QPointF>& cut, QVector<QPointF>* deformedCut) const
 {
   if (cut.size() <= 2) {
     return false;
@@ -343,15 +344,15 @@ bool Plate::DeformCut(const QVector<QPointF>& cut, QVector<QPointF>* deformedCut
   Plate cutPlate;
   cutPlate.Init(QPointF(0, 0), cut);
   for (int i = 0; i < kCutDeformCount; i++) {
-    qreal rndLen = (20 + (qrand() % 81)) * distance * kCutDeformValue * 0.01;
-    qreal rndAlpha = (qrand() % 180) * M_PI / 90.0;
+    qreal rndLen = rand->bounded(20, 101) * distance * kCutDeformValue * 0.01;
+    qreal rndAlpha = rand->bounded(180) * M_PI / 90.0;
     QPointF rndIdent(qSin(rndAlpha), qCos(rndAlpha));
     int minIndex = (int)rndLen + 1;
     if (minIndex > cutPlate.Border().size()/4) {
       continue;
     }
 
-    int pointIndex = minIndex + (qrand() % (cutPlate.Border().size() - 2*minIndex));
+    int pointIndex = minIndex + rand->bounded(cutPlate.Border().size() - 2*minIndex);
     cutPlate.MovePoint(pointIndex, rndIdent, rndLen);
   }
 

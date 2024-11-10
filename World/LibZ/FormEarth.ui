@@ -10,9 +10,6 @@
     <height>540</height>
    </rect>
   </property>
-  <property name="windowTitle">
-   <string>Form</string>
-  </property>
   <widget class="QWidget" name="widgetControls" native="true">
    <property name="geometry">
     <rect>
@@ -69,6 +66,13 @@
      <widget class="QToolButton" name="toolButtonMoveLeft">
       <property name="text">
        <string>...</string>
+      </property>
+     </widget>
+    </item>
+    <item row="2" column="0">
+     <widget class="QToolButton" name="toolButtonMoveDebug">
+      <property name="text">
+       <string>D</string>
       </property>
      </widget>
     </item>

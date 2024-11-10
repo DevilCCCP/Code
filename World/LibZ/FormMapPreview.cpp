@@ -51,7 +51,7 @@ void FormMapPreview::UpdateButtons()
   ui->pushButtonBack->setEnabled(mMapGenerator->GetCurrentStage() > 1);
   ui->pushButtonForward->setEnabled(mMapGenerator->GetCompleteStage() >= mMapGenerator->GetCurrentStage());
   ui->pushButtonForward->setVisible(mMapGenerator->GetCurrentStage() < mMapGenerator->getStageMax());
-  ui->pushButtonDone->setEnabled(mMapGenerator->GetCompleteStage() >= mMapGenerator->getStageMax());
+  ui->pushButtonDone->setEnabled(mMapGenerator->GetCurrentStage() >= mMapGenerator->getStageMax());
   ui->pushButtonDone->setVisible(mMapGenerator->GetCurrentStage() >= mMapGenerator->getStageMax());
 }
 
@@ -104,3 +104,9 @@ void FormMapPreview::on_pushButtonCancel_clicked()
 {
   mMapGenerator->Cancel();
 }
+
+void FormMapPreview::on_pushButtonDone_clicked()
+{
+  mMapGenerator->Cancel();
+}
+

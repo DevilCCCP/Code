@@ -1,16 +1,20 @@
 #include <QApplication>
-#include <QDesktopWidget>
+#include <QScreen>
 #include <QMessageBox>
 #include <QDateTime>
 #include <QtMath>
 
+#include <LibZ/FormEarth.h>
 #include <LibZ/FormMapPreview.h>
+#include <LibZ/MapGenerator.h>
 #include <LibZ/MapParameters.h>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
 #include "Core.h"
 
+
+bool gTest = false;
 
 MainWindow::MainWindow(QWidget* parent)
   : MainWindow2(parent), ui(new Ui::MainWindow)
@@ -23,76 +27,83 @@ MainWindow::MainWindow(QWidget* parent)
   setWindowTitle(qCore->getProgramName());
 
   if (!Restore()) {
-    QDesktopWidget* desktop = qApp->desktop();
-    int primaryScreen = desktop->primaryScreen();
-    QRect geometry = desktop->availableGeometry(primaryScreen);
+    QScreen* screen = qApp->primaryScreen();
+    QRect geometry = screen->availableGeometry();
     move(geometry.topLeft());
     resize(geometry.size() - (frameSize() - size()));
     setWindowState(windowState() | Qt::WindowMaximized);
   }
 
-  ui->scrollAreaMain->hide();
+  ui->formEarth->hide();
 
-  ui->formEarth->SetShowAxes(true);
+//  ui->scrollAreaMain->hide();
 
-  EarthLandscape earthLandscape;
-  EarthLevel terrainLevel;
+//  ui->formEarth->SetShowAxes(true);
 
-  EarthPlate plate;
-  plate.Color = QColor(Qt::green);
-  QVector<QPointF> border;
-  int radius = 20;
-  QPointF center(90, 0);
-  for (int j = 10; j <= 350; j++) {
-    qreal alpha = j * M_PI / 180.0;
-    QPointF p = center + radius * QPointF(sin(alpha), cos(alpha));
-    border.append(p);
-  }
-  QPointF p1 = border.front();
-  QPointF p2 = border.back();
-  for (int j = 0; j < 60; j++) {
-    border.prepend(QPointF(p1.x(), p1.y() + j));
-    border.append(QPointF(p2.x(), p2.y() + j));
-  }
-//  center.ry() += 60 + 2*radius;
-//  for (int j = 10; j <= 350; j++) {
-//    qreal alpha = (180 + j) * M_PI / 180.0;
-//    QPointF p = center + radius * QPointF(sin(alpha), cos(alpha));
-//    border.append(p);
-//  }
-//  QVector<QPointF> borderr;
-//  for (const QPointF& p: border) {
-//    borderr.prepend(p);
-//  }
-  plate.Border = border;
-  terrainLevel.append(plate);
+//  EarthLandscape earthLandscape;
+//  EarthLevel terrainLevel;
 
-//  qsrand(QDateTime::currentMSecsSinceEpoch());
-//  for (int i = 0; i < 6; i++) {
+//  if (gTest) {
 //    EarthPlate plate;
-//    plate.Color = QColor(Qt::green);
-//    int radius = 2 + qrand() % 20;
-//    QPointF center(radius + qrand() % (180 - 2*radius), radius + qrand() % (360 - 2*radius));
+//    plate.Color = QColor(Qt::darkGreen);
+//    QVector<QPointF> border;
+//    int radius = 20;
+//    QPointF center(90, 0);
 //    for (int j = 0; j < 360; j++) {
 //      qreal alpha = j * M_PI / 180.0;
 //      QPointF p = center + radius * QPointF(sin(alpha), cos(alpha));
-//      plate.Border.append(p);
+//      border.append(p);
 //    }
+//    plate.Border = border;
 //    terrainLevel.append(plate);
-//  }
-  earthLandscape.append(terrainLevel);
-  ui->formEarth->SetLandscape(earthLandscape);
-//  FormMapPreview* formMapPreview = new FormMapPreview(ui->scrollAreaWidgetContents);
-//  formMapPreview->resize(800, 800);
-//  formMapPreview->move(0, 0);
-//  ui->scrollAreaWidgetContents->resize(800, 800);
 
-//  MapParameters mapParameters;
-//  mapParameters.setGlobeSector(360);
-//  mapParameters.setGlobePlateCount(6);
-//  mapParameters.setWorldSector(120);
-//  mapParameters.setWorldPlateCount(2);
-//  formMapPreview->SetParameters(mapParameters);
+//    for (int j = -80; j <= 88; j += 2){
+//      EarthPlate plateX;
+//      plateX.Color = QColor(Qt::darkYellow);
+//      QVector<QPointF> border;
+//      for (int i = 5; i <= 180; i+=1) {
+//        QPointF p(i, j);
+//        border.prepend(p);
+//      }
+//      for (int i = 180; i >= 5; i-=1) {
+//        QPointF p(i, j + 1);
+//        border.prepend(p);
+//      }
+//      plateX.Border = border;
+//      terrainLevel.append(plateX);
+//    }
+
+//    for (int j = 2; j < 360; j += 2){
+//      EarthPlate plateY;
+//      plateY.Color = QColor(Qt::darkCyan);
+//      QVector<QPointF> border;
+//      for (int i = 5; i <= 90; i++) {
+//        QPointF p(j, i);
+//        border.append(p);
+//      }
+//      for (int i = 90; i >= 5; i--) {
+//        QPointF p(j + 1, i);
+//        border.append(p);
+//      }
+//      plateY.Border = border;
+//      terrainLevel.append(plateY);
+//    }
+
+//    earthLandscape.append(terrainLevel);
+//    ui->formEarth->SetLandscape(earthLandscape);
+//  }
+
+  FormMapPreview* formMapPreview = new FormMapPreview(ui->scrollAreaWidgetContents);
+  ui->scrollAreaWidgetContents->resize(800, 800);
+  formMapPreview->resize(800, 800);
+  formMapPreview->move(0, 0);
+
+  MapParameters mapParameters;
+  mapParameters.setGlobeSector(360);
+  mapParameters.setGlobePlateCount(6);
+  mapParameters.setWorldSector(120);
+  mapParameters.setWorldPlateCount(2);
+  formMapPreview->SetParameters(mapParameters);
 }
 
 MainWindow::~MainWindow()
